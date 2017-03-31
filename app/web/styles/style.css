@@ -1,0 +1,91 @@
+*
+{
+    padding: 0px;
+    margin: 0px;
+    font-family: Tahoma;
+}
+
+h1
+{
+    padding: 10px;
+    font-size: 32px;
+}
+
+table
+{
+    border-collapse: collapse;
+}
+
+a
+{
+    text-decoration: none;
+    color: black;
+}
+
+#header
+{
+    width: 100%;
+    background-color: #0080ff;
+    color: white;
+}
+
+#footer
+{
+    width: 100%;
+    background-color: #0069ff;
+    color: white;
+}
+
+.buttonSimple
+{
+    background-color: #0094ff;
+    border-radius: 5px;
+    padding: 5px 20px;
+    color: white;
+    margin: 10px;
+    display: inline-block;
+}
+
+.buttonSimple a
+{
+    color: white;
+    font-size: 20px;
+}
+
+.errorMessage
+{
+    background-color: #ff5858;
+    text-align: center;
+    color: white;
+    font-size: 20px;
+    display: inline-block;
+    margin: 10px;
+    padding: 5px 20px;
+    border-radius: 5px;
+}
+
+.tableCellLeftOdd
+{
+    background-color: #ffd5a3;
+}
+
+.tableCellLeftEven
+{
+    background-color: #ffe294;
+}
+
+.testUserTable
+{
+    border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.testUserTable th, td
+{
+    padding: 1px 4px;
+}
+
+.testUserWrapper
+{
+    display: inline-block;
+    padding: 10px;
+}

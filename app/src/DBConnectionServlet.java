@@ -1,3 +1,4 @@
+import com.mysql.jdbc.CommunicationsException;
 import dao.UserDAO;
 
 import javax.servlet.ServletException;
@@ -13,8 +14,8 @@ import java.sql.*;
 public class DBConnectionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        RequestDispatcher rd;
         GlobalConfig config = GlobalConfig.getInstance();
-        UserDAO userInfo = new UserDAO();
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -24,6 +25,7 @@ public class DBConnectionServlet extends HttpServlet {
             ResultSet resultSet = statement.executeQuery("SELECT `id`, `login`, `name`, `surname`, `email`, `phone` FROM `users`");
 
             resultSet.next();
+            UserDAO userInfo = new UserDAO();
             userInfo.id = resultSet.getInt(1);
             userInfo.login = resultSet.getString(2);
             userInfo.name = resultSet.getString(3);
@@ -31,12 +33,13 @@ public class DBConnectionServlet extends HttpServlet {
             userInfo.email = resultSet.getString(5);
             userInfo.phoneNumber = resultSet.getString(6);
 
+            rd = request.getRequestDispatcher("views/db_connection.jsp");
+            request.setAttribute("user", userInfo);
         } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
+            rd = request.getRequestDispatcher("views/error_message.jsp");
+            request.setAttribute("msg", "Failed to connect to database!");
         }
 
-        RequestDispatcher rd = request.getRequestDispatcher("/db_connection.jsp");
-        request.setAttribute("user", userInfo);
         rd.forward(request, response);
     }
 }

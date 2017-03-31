@@ -1,0 +1,22 @@
+*
+{
+    padding: 0px;
+    margin: 0px;
+    font-family: Tahoma;
+    font-size: 16px;
+}
+
+h1
+{
+    padding: 10px;
+    font-size: 32px;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 1px 4px;
+}

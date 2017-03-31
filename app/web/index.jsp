@@ -5,6 +5,6 @@
     <title></title>
   </head>
   <body>
-
+    Main page
   </body>
 </html>

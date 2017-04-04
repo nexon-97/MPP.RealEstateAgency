@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="loginFormWrapper">
-    <form id="loginForm" method="post">
+    <form id="loginForm" method="post" action="/auth">
         <table>
             <tr>
                 <td width="30%">Login</td>

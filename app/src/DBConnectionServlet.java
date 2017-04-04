@@ -1,5 +1,5 @@
-import com.mysql.jdbc.CommunicationsException;
 import dao.UserDAO;
+import test.GlobalConfig;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

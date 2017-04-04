@@ -89,3 +89,51 @@ a
     display: inline-block;
     padding: 10px;
 }
+
+.content
+{
+    padding: 10px 0px;
+    text-align: center;
+}
+
+.loginFormWrapper
+{
+    text-align: center;
+    display: inline-block;
+    background-color: #c5d8f5;
+    border-radius: 10px;
+    padding: 5px 10px;
+}
+
+#loginForm
+{
+    display: inline-block;
+    width: 400px;
+}
+
+#loginForm table
+{
+    width: 100%;
+}
+
+.loginButton
+{
+    background-color: #0094ff;
+    border-width: 0px;
+    border-radius: 7px;
+    padding: 4px 15px;
+    color: white;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.loginFormInput
+{
+    border-radius: 4px;
+    font-size: 16px;
+    color: black;
+    padding: 2px 4px;
+    margin: 2px 0px;
+    border: 1px solid #AAA;
+    width: 100%;
+}

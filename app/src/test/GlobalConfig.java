@@ -1,3 +1,5 @@
+package test;
+
 public class GlobalConfig {
     private static GlobalConfig instance = null;
 

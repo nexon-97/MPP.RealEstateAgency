@@ -1,4 +1,4 @@
-package controllers;
+package controller;
 
 public interface AuthController {
     boolean checkUser(String login);

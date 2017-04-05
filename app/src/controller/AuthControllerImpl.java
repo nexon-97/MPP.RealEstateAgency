@@ -1,12 +1,17 @@
-package controllers;
+package controller;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
+import dao.UserDAO;
+import services.AuthService;
+import services.ServiceManager;
 import test.GlobalConfig;
 import java.sql.*;
 
@@ -14,10 +19,17 @@ import java.sql.*;
 public class AuthControllerImpl extends HttpServlet implements AuthController {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher rd;
+        AuthService authService = (AuthService)ServiceManager.getInstance(request).getService("AuthService");
+        UserDAO loggedUser = authService.getLoggedUser();
 
-        rd = request.getRequestDispatcher("views/auth.jsp");
-        rd.forward(request, response);
+        if (loggedUser != null) {
+            System.out.println("User already logged in!");
+            response.sendRedirect("/");
+        } else {
+            RequestDispatcher rd;
+            rd = request.getRequestDispatcher("views/auth.jsp");
+            rd.forward(request, response);
+        }
     }
 
     @Override
@@ -42,6 +54,16 @@ public class AuthControllerImpl extends HttpServlet implements AuthController {
                 request.setAttribute("loginSucceeded", loginSucceeded);
                 if (loginSucceeded) {
                     request.setAttribute("login", login);
+
+                    Cookie authLoginCookie = new Cookie("auth_login", login);
+                    Cookie authPasswordCookie = new Cookie("auth_pass", password);
+                    int cookieMaxAge = 60 * 60 * 24 * 7;
+
+                    authLoginCookie.setMaxAge(cookieMaxAge);
+                    authPasswordCookie.setMaxAge(cookieMaxAge);
+
+                    response.addCookie(authLoginCookie);
+                    response.addCookie(authPasswordCookie);
                 }
             } catch (SQLException e) {
                 rd = request.getRequestDispatcher("views/error_message.jsp");

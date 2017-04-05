@@ -1,4 +1,6 @@
 import dao.UserDAO;
+import services.AuthService;
+import services.ServiceManager;
 import test.GlobalConfig;
 
 import javax.servlet.ServletException;
@@ -17,6 +19,7 @@ public class DBConnectionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher rd;
+        AuthService authService = (AuthService)ServiceManager.getInstance(request).getService("AuthService");
         GlobalConfig config = GlobalConfig.getInstance();
 
         try {

@@ -36,5 +36,12 @@
         <url-pattern>/auth</url-pattern>
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>RegisterController</servlet-name>
+        <url-pattern>/register.jsp</url-pattern>
+        <url-pattern>/register.html</url-pattern>
+        <url-pattern>/register</url-pattern>
+    </servlet-mapping>
     <!-- Spring controllers -->
 </web-app>

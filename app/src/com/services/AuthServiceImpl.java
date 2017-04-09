@@ -37,7 +37,19 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public boolean login(String login, String password) {
+    public boolean login(String login, String password, UserDAO userDAO) {
+        if (login == null || password == null) {
+            return false;
+        }
+
+        User user = userDAO.getByLogin(login);
+        if (user != null) {
+            if (user.getPasswordHash().equals(password)) {
+                setLoggedUser(user);
+                return true;
+            }
+        }
+
         return false;
     }
 

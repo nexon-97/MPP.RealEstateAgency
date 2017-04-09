@@ -1,7 +1,11 @@
 package com.controller;
 
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletResponse;
+
 public interface AuthController {
-    boolean checkUser(String login);
-    boolean login(String login, String password);
-    boolean logout();
+    ModelAndView visitAuthorizationForm();
+    ModelAndView authorize(HttpServletResponse response);
+    ModelAndView logout(HttpServletResponse response);
 }

@@ -14,6 +14,7 @@ import com.services.ServiceManager;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,11 +27,11 @@ public class AuthControllerImpl implements AuthController {
     private HttpServletRequest request;
 
     @RequestMapping(method = RequestMethod.GET, value = "/auth")
-    protected ModelAndView visitAuthorizationForm() {
+    public ModelAndView visitAuthorizationForm() {
         Map<String, Object> model = new HashMap<>();
         UserDAO userDAO = context.getBean(UserDAO.class);
 
-        AuthService authService = (AuthService)ServiceManager.getInstance().getService("AuthService");
+        /*AuthService authService = (AuthService)ServiceManager.getInstance().getService("AuthService");
         Cookie[] cookies = request.getCookies();
         if (authService.loginFromCookies(cookies, userDAO)) {
             User loggedUser = authService.getLoggedUser();
@@ -38,86 +39,62 @@ public class AuthControllerImpl implements AuthController {
             model.put("loginSucceeded", true);
             model.put("login", loggedUser.getLogin());
             return new ModelAndView("auth_result", model);
-        }
+        }*/
 
         return new ModelAndView("auth", model);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/auth")
-    protected ModelAndView authorize() {
-        //AuthService authService = (AuthService)ServiceManager.getInstance(request).getService("AuthService");
-        //UserDAOImpl loggedUser = authService.getLoggedUser();
+    public ModelAndView authorize(HttpServletResponse response) {
+        Map<String, Object> model = new HashMap<>();
+        UserDAO userDAO = context.getBean(UserDAO.class);
 
-        /*if (loggedUser != null) {
-            System.out.println("Person already logged in!");
-            response.sendRedirect("/");
-        } else {
-            RequestDispatcher rd;
-            rd = request.getRequestDispatcher("views/auth.jsp");
-            rd.forward(request, response);
-        }*/
+        String login = request.getParameter("login");
+        String password = request.getParameter("password");
 
-        Map<String, ?> model = new HashMap<>();
+        if (login != null && password != null) {
+            AuthService authService = (AuthService)ServiceManager.getInstance().getService("AuthService");
+
+            boolean loginSucceeded = authService.login(login, password, userDAO);
+            model.put("loginSucceeded", loginSucceeded);
+
+            if (loginSucceeded) {
+                User loggedUser = authService.getLoggedUser();
+
+                model.put("login", loggedUser.getLogin());
+
+                // Put login data to cookies
+                Cookie loginCookie = buildLoginCookie("auth_login", loggedUser.getLogin());
+                Cookie passCookie = buildLoginCookie("auth_pass", loggedUser.getPasswordHash());
+
+                response.addCookie(loginCookie);
+                response.addCookie(passCookie);
+            }
+        }
+
         return new ModelAndView("auth_result", model);
     }
 
-    /*@Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher rd;
-        Statement statement = getDbContext();
-
-        if (statement != null) {
-            try
-            {
-                String login = request.getParameter("login");
-                String password = request.getParameter("password");
-                String query = String.format("SELECT COUNT(*) FROM `users` WHERE `login` = '%s' and `password_hash` = '%s'", login, password);
-
-                ResultSet resultSet = statement.executeQuery(query);
-                resultSet.next();
-                int recordsCount = resultSet.getInt(1);
-
-                boolean loginSucceeded = (recordsCount == 1);
-
-                rd = request.getRequestDispatcher("views/auth_result.jsp");
-                request.setAttribute("loginSucceeded", loginSucceeded);
-                if (loginSucceeded) {
-                    request.setAttribute("login", login);
-
-                    Cookie authLoginCookie = new Cookie("auth_login", login);
-                    Cookie authPasswordCookie = new Cookie("auth_pass", password);
-                    int cookieMaxAge = 60 * 60 * 24 * 7;
-
-                    authLoginCookie.setMaxAge(cookieMaxAge);
-                    authPasswordCookie.setMaxAge(cookieMaxAge);
-
-                    response.addCookie(authLoginCookie);
-                    response.addCookie(authPasswordCookie);
-                }
-            } catch (SQLException e) {
-                rd = request.getRequestDispatcher("views/error_message.jsp");
-                request.setAttribute("msg", e.getMessage());
-            }
-        } else {
-            rd = request.getRequestDispatcher("views/error_message.jsp");
-            request.setAttribute("msg", "Failed to establish database connection");
-        }
-
-        rd.forward(request, response);
-    }*/
-
+    @RequestMapping(method = RequestMethod.GET, value = "/logout")
     @Override
-    public boolean checkUser(String login) {
-        return false;
+    public ModelAndView logout(HttpServletResponse response) {
+        resetCookie(response, "auth_login");
+        resetCookie(response, "auth_pass");
+
+        return new ModelAndView("auth");
     }
 
-    @Override
-    public boolean login(String login, String password) {
-        return false;
+    private void resetCookie(HttpServletResponse response, String cookieName) {
+        Cookie removedCookie = new Cookie(cookieName, new String());
+        removedCookie.setMaxAge(0);
+        response.addCookie(removedCookie);
     }
 
-    @Override
-    public boolean logout() {
-        return false;
+    private Cookie buildLoginCookie(String name, String value) {
+        int cookieDuration = 60 * 60 * 24 * 7;
+        Cookie cookie = new Cookie(name, value);
+        cookie.setMaxAge(cookieDuration);
+
+        return cookie;
     }
 }

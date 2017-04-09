@@ -5,34 +5,13 @@
 		  http://java.sun.com/xml/ns/javaee/web-app_3_1.xsd"
            version="3.1">
 
-    <servlet>
-        <servlet-name>DBConnectionServletName</servlet-name>
-        <servlet-class>DBConnectionServlet</servlet-class>
-    </servlet>
-
-    <servlet>
-        <servlet-name>AuthController</servlet-name>
-        <servlet-class>controller.AuthControllerImpl</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>DBConnectionServletName</servlet-name>
-        <url-pattern>/dbConnection</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>AuthController</servlet-name>
-        <url-pattern>/auth</url-pattern>
-    </servlet-mapping>
-
+    <!-- Spring controllers -->
     <servlet>
         <servlet-name>testServlet</servlet-name>
-        <servlet-class>
-            org.springframework.web.servlet.DispatcherServlet
-        </servlet-class>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>WEB-INF/servlets/testServlet-servlet.xml</param-value>
+            <param-value>/WEB-INF/servlets/testServlet-servlet.xml</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>
@@ -41,4 +20,20 @@
         <url-pattern>/testController.html</url-pattern>
         <url-pattern>/testController</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AuthController</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>/WEB-INF/servlets/authControllerServlet.xml</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AuthController</servlet-name>
+        <url-pattern>/auth.jsp</url-pattern>
+        <url-pattern>/auth.html</url-pattern>
+        <url-pattern>/auth</url-pattern>
+    </servlet-mapping>
+    <!-- Spring controllers -->
 </web-app>

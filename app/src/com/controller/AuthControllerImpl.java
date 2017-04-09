@@ -1,38 +1,67 @@
-package controller;
+package com.controller;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
+import com.dao.UserDAO;
+import com.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.services.AuthService;
+import com.services.ServiceManager;
+
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
-import dao.UserDAO;
-import services.AuthService;
-import services.ServiceManager;
-import test.GlobalConfig;
-import java.sql.*;
+@Controller
+public class AuthControllerImpl implements com.controller.AuthController {
+    @Autowired
+    ApplicationContext context;
 
-@WebServlet
-public class AuthControllerImpl extends HttpServlet implements AuthController {
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        AuthService authService = (AuthService)ServiceManager.getInstance(request).getService("AuthService");
-        UserDAO loggedUser = authService.getLoggedUser();
+    @Autowired
+    private HttpServletRequest request;
 
-        if (loggedUser != null) {
-            System.out.println("User already logged in!");
+    @RequestMapping(method = RequestMethod.GET, value = "/auth")
+    protected ModelAndView visitAuthorizationForm() {
+        Map<String, Object> model = new HashMap<>();
+        UserDAO userDAO = context.getBean(UserDAO.class);
+
+        AuthService authService = (AuthService)ServiceManager.getInstance().getService("AuthService");
+        Cookie[] cookies = request.getCookies();
+        if (authService.loginFromCookies(cookies, userDAO)) {
+            User loggedUser = authService.getLoggedUser();
+
+            model.put("loginSucceeded", true);
+            model.put("login", loggedUser.getLogin());
+            return new ModelAndView("auth_result", model);
+        }
+
+        return new ModelAndView("auth", model);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/auth")
+    protected ModelAndView authorize() {
+        //AuthService authService = (AuthService)ServiceManager.getInstance(request).getService("AuthService");
+        //UserDAOImpl loggedUser = authService.getLoggedUser();
+
+        /*if (loggedUser != null) {
+            System.out.println("Person already logged in!");
             response.sendRedirect("/");
         } else {
             RequestDispatcher rd;
             rd = request.getRequestDispatcher("views/auth.jsp");
             rd.forward(request, response);
-        }
+        }*/
+
+        Map<String, ?> model = new HashMap<>();
+        return new ModelAndView("auth_result", model);
     }
 
-    @Override
+    /*@Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher rd;
         Statement statement = getDbContext();
@@ -75,7 +104,7 @@ public class AuthControllerImpl extends HttpServlet implements AuthController {
         }
 
         rd.forward(request, response);
-    }
+    }*/
 
     @Override
     public boolean checkUser(String login) {
@@ -90,20 +119,5 @@ public class AuthControllerImpl extends HttpServlet implements AuthController {
     @Override
     public boolean logout() {
         return false;
-    }
-
-    private Statement getDbContext() {
-        GlobalConfig config = GlobalConfig.getInstance();
-
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + config.getDBSchema(),
-                    config.getDBLogin(), config.getDBPassword());
-            Statement statement = connection.createStatement();
-
-            return statement;
-        } catch (SQLException | ClassNotFoundException e) {
-            return null;
-        }
     }
 }

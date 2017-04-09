@@ -27,8 +27,11 @@ public class AuthServiceImpl implements AuthService {
             return false;
         }
 
-        User databaseUser = userDAO.get(login);
-        boolean loginSucceeded = (databaseUser != null) && (databaseUser.getPasswordHash() == password);
+        User databaseUser = userDAO.getByLogin(login);
+        boolean loginSucceeded = (databaseUser != null) && (databaseUser.getPasswordHash().equals(password));
+        if (loginSucceeded) {
+            setLoggedUser(databaseUser);
+        }
 
         return loginSucceeded;
     }

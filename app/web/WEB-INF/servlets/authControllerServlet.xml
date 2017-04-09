@@ -23,12 +23,17 @@
     </bean>
 
     <!-- Hibernate 4 SessionFactory Bean definition -->
-    <bean id="hibernate4AnnotatedSessionFactory"
+    <bean id="hibernate4SessionFactory"
           class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
         <property name="annotatedClasses">
             <list>
                 <value>com.model.Person</value>
+            </list>
+        </property>
+        <property name="mappingLocations">
+            <list>
+                <value>classpath:hibernate_mappings/*.hbm.xml</value>
             </list>
         </property>
         <property name="hibernateProperties">
@@ -42,6 +47,6 @@
     </bean>
 
     <bean id="userDAO" class="com.dao.UserDAOImpl">
-        <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+        <property name="sessionFactory" ref="hibernate4SessionFactory" />
     </bean>
 </beans>

@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-public class AuthControllerImpl implements com.controller.AuthController {
+public class AuthControllerImpl implements AuthController {
     @Autowired
     ApplicationContext context;
 

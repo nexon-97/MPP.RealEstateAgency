@@ -3,10 +3,10 @@ package com.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 public class User {
-    @Id
     private int id;
 
     private int roleId;
@@ -38,23 +38,23 @@ public class User {
     }
 
     public void setPasswordHash(String passwordHash) {
-        this.phone = passwordHash;
+        this.passwordHash = passwordHash;
     }
 
     public void setEmail(String email) {
-        this.phone = email;
+        this.email = email;
     }
 
     public void setName(String name) {
-        this.phone = name;
+        this.name = name;
     }
 
     public void setSurname(String surname) {
-        this.phone = surname;
+        this.surname = surname;
     }
 
     public void setPatronymic(String patronymic) {
-        this.phone = patronymic;
+        this.patronymic = patronymic;
     }
 
     public void setPhone(String phone) {
@@ -74,23 +74,23 @@ public class User {
     }
 
     public String getPasswordHash() {
-        return this.phone;
+        return this.passwordHash;
     }
 
     public String getEmail() {
-        return this.phone;
+        return this.email;
     }
 
     public String getName() {
-        return this.phone;
+        return this.name;
     }
 
     public String getSurname() {
-        return this.phone;
+        return this.surname;
     }
 
     public String getPatronymic() {
-        return this.phone;
+        return this.patronymic;
     }
 
     public String getPhone() {

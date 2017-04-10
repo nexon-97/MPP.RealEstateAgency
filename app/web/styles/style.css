@@ -137,3 +137,22 @@ a
     border: 1px solid #AAA;
     width: 100%;
 }
+
+.headerLeftBlock
+{
+    display: inline-block;
+    width: 75%;
+}
+
+.headerRightBlockWrapper
+{
+    height: auto;
+    display: inline-block;
+    float: right;
+}
+
+.headerRightBlock
+{
+    vertical-align: middle;
+    padding: 5px;
+}

@@ -2,19 +2,22 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <a href="/">
 <div id="header">
-    <div style="display: inline-block">
+    <div class="headerLeftBlock">
         <h1>Real Estate Agency - Header</h1>
     </div>
-    <div style="display: inline-block; vertical-align: middle;">
-        <c:choose>
-            <c:when test="${loginSucceeded}">
-                Hello, ${login}!
-            </c:when>
-            <c:otherwise>
-                <a href="#">Register</a>
-                <a href="/auth">Log In</a>
-            </c:otherwise>
-        </c:choose>
+    <div class="headerRightBlockWrapper">
+        <div class="headerRightBlock">
+            <c:choose>
+                <c:when test="${user != null}">
+                    Hello, ${user.login}!
+                </c:when>
+                <c:otherwise>
+                    <span><a href="#">Register</a></span>
+                    <span>|</span>
+                    <span><a href="/auth">Log In</a></span>
+                </c:otherwise>
+            </c:choose>
+        </div>
     </div>
 </div>
 </a>

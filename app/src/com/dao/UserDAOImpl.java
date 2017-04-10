@@ -6,20 +6,10 @@ import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
 
-public class UserDAOImpl implements UserDAO {
-    private SessionFactory sessionFactory;
-
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
-
+public class UserDAOImpl extends BaseDAO implements UserDAO {
     @Override
     public User getById(int id) {
-        Session session = this.sessionFactory.openSession();
+        Session session = getSessionFactory().openSession();
         session.beginTransaction();
 
         User user = (User)session.get(User.class, id);
@@ -32,7 +22,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User getByLogin(String login) {
-        Session session = this.sessionFactory.openSession();
+        Session session = getSessionFactory().openSession();
         User user = null;
 
         try {

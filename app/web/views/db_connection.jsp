@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>DB Connection Test</title>
-    <jsp:include page="../html_head_common.jsp" />
+    <jsp:include page="html_head_common.jsp" />
 </head>
 <body>
 <jsp:include page="header.jsp" />

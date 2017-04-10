@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>Real estate agency - login result</title>
-    <jsp:include page="../html_head_common.jsp" />
+    <jsp:include page="html_head_common.jsp" />
 </head>
 <body>
 <jsp:include page="header.jsp" />

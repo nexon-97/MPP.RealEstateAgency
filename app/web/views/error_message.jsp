@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Server error</title>
-    <jsp:include page="../html_head_common.jsp" />
+    <jsp:include page="html_head_common.jsp" />
 </head>
 <body>
 <jsp:include page="header.jsp" />

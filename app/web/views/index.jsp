@@ -5,11 +5,11 @@
   <jsp:include page="html_head_common.jsp" />
 </head>
 <body>
-<jsp:include page="views/header.jsp" />
+<jsp:include page="header.jsp" />
 <h1>Main page</h1>
 <div class="buttonSimple">
   <a href="/dbConnection">Test database connection</a>
 </div>
-<jsp:include page="views/footer.jsp" />
+<jsp:include page="footer.jsp" />
 </body>
 </html>

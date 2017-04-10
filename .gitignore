@@ -13,3 +13,4 @@ hs_err_pid*
 
 app/db_login_data.json
 app/out
+app/.idea

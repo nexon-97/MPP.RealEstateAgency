@@ -11,13 +11,12 @@
 <h1>Login page</h1>
 <div class="content">
     <c:choose>
-        <c:when test="${loginSucceeded}">
-            <div>Hello, ${login}</div>
+        <c:when test="${user != null}">
+            <div>Hello, ${user.login}</div>
             <div>Should be redirected from here</div>
         </c:when>
         <c:otherwise>
             <div>Failed to login</div>
-
             <jsp:include page="login_form.jsp"/>
         </c:otherwise>
     </c:choose>

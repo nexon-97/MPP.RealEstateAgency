@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.model.Role" table="role">
+        <meta attribute="class-description">
+            This class contains the user detail.
+        </meta>
+        <id name="id" column="role_id" type="int">
+            <generator class="increment"/>
+        </id>
+        <property name="name" column="name" type="string"/>
+        <set name="permissions" cascade="save-update" table="role_permission">
+            <key column="role_id"/>
+            <many-to-many column="permission_id" class="com.model.Permission"/>
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,15 +1,9 @@
 package com.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity
 public class User {
     private int id;
 
-    private int roleId;
+    private Role role;
 
     private String login;
 
@@ -29,8 +23,8 @@ public class User {
         this.id = id;
     }
 
-    public void setRoleId(int id) {
-        this.roleId = id;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public void setLogin(String login) {
@@ -65,8 +59,8 @@ public class User {
         return this.id;
     }
 
-    public int getRoleId() {
-        return this.roleId;
+    public Role getRole() {
+        return this.role;
     }
 
     public String getLogin() {

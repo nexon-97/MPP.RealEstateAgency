@@ -1,5 +1,7 @@
 package com.controller;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -8,21 +10,17 @@ import org.springframework.web.servlet.ModelAndView;
 import com.services.AuthService;
 import com.services.ServiceManager;
 
-import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
-
 @Controller
 public class AuthController extends BaseController {
     @RequestMapping(method = RequestMethod.GET, value = "/auth")
     public ModelAndView visitAuthorizationForm(HttpServletResponse response) {
         initControllerResources(context, request, response);
-        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
 
         AuthService authService = ServiceManager.getInstance().getAuthService();
         if (authService.getLoggedUser() != null) {
-            return new ModelAndView("redirect:/");
+            return redirect("/");
         } else {
-            return new ModelAndView("auth", model);
+            return buildModelAndView("auth");
         }
     }
 
@@ -30,18 +28,15 @@ public class AuthController extends BaseController {
     public ModelAndView authorize(HttpServletResponse response) {
         initControllerResources(context, request, response);
 
-        ServiceManager serviceManager = ServiceManager.getInstance();
-        Map<String, Object> model = serviceManager.getSharedResources().getModel();
-
         String login = request.getParameter("login");
         String password = request.getParameter("password");
 
         if (login != null && password != null) {
-            AuthService authService = serviceManager.getAuthService();
+            AuthService authService = ServiceManager.getInstance().getAuthService();
             authService.login(login, password);
         }
 
-        return new ModelAndView("auth_result", model);
+        return buildModelAndView("auth_result");
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/logout")
@@ -50,6 +45,6 @@ public class AuthController extends BaseController {
 
         ServiceManager.getInstance().getAuthService().logout();
 
-        return new ModelAndView("redirect:/");
+        return redirect("/");
     }
 }

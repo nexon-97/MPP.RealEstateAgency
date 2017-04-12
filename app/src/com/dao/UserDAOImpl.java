@@ -55,6 +55,20 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
 
     @Override
     public List<User> list() {
-        return null;
+        Session session = getSessionFactory().openSession();
+        List<User> users = null;
+
+        try {
+            Transaction tx = session.beginTransaction();
+            users = (List<User>) session.createQuery("FROM User").list();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (session.getTransaction() != null) session.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return users;
     }
 }

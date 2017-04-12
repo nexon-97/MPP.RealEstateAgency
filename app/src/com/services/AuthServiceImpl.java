@@ -57,25 +57,24 @@ public class AuthServiceImpl extends BaseService implements AuthService {
 
     @Override
     public boolean login(String login, String password) {
-        if (login == null || password == null) {
-            return false;
-        }
+        if (login != null || password != null) {
+            UserDAO userDAO = new UserDAOImpl();
 
-        UserDAO userDAO = new UserDAOImpl();
-        User user = userDAO.getByLogin(login);
-        if (user != null) {
-            if (user.getPasswordHash().equals(password)) {
-                setLoggedUser(user);
+            User user = userDAO.getByLogin(login);
+            if (user != null) {
+                if (user.getPasswordHash().equals(password)) {
+                    setLoggedUser(user);
 
-                // Put login data to cookies
-                Cookie loginCookie = buildLoginCookie(loginCookieName, user.getLogin());
-                Cookie passCookie = buildLoginCookie(passwordCookieName, user.getPasswordHash());
+                    // Put login data to cookies
+                    Cookie loginCookie = buildLoginCookie(loginCookieName, user.getLogin());
+                    Cookie passCookie = buildLoginCookie(passwordCookieName, user.getPasswordHash());
 
-                ServiceSharedResources sharedResources = getSharedResources();
-                sharedResources.addCookie(loginCookie);
-                sharedResources.addCookie(passCookie);
+                    ServiceSharedResources sharedResources = getSharedResources();
+                    sharedResources.addCookie(loginCookie);
+                    sharedResources.addCookie(passCookie);
 
-                return true;
+                    return true;
+                }
             }
         }
 

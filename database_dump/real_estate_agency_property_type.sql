@@ -16,29 +16,26 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `permission`
+-- Table structure for table `property_type`
 --
 
-DROP TABLE IF EXISTS `permission`;
+DROP TABLE IF EXISTS `property_type`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `permission` (
-  `permission_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) NOT NULL,
-  PRIMARY KEY (`permission_id`),
-  UNIQUE KEY `permission_id_UNIQUE` (`permission_id`),
-  UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+CREATE TABLE `property_type` (
+  `property_type_id` int(10) NOT NULL AUTO_INCREMENT,
+  `name` varchar(64) NOT NULL,
+  PRIMARY KEY (`property_type_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `permission`
+-- Dumping data for table `property_type`
 --
 
-LOCK TABLES `permission` WRITE;
-/*!40000 ALTER TABLE `permission` DISABLE KEYS */;
-INSERT INTO `permission` VALUES (2,'add_property'),(1,'display_topbar'),(3,'edit_property'),(5,'remove_property'),(4,'view_property');
-/*!40000 ALTER TABLE `permission` ENABLE KEYS */;
+LOCK TABLES `property_type` WRITE;
+/*!40000 ALTER TABLE `property_type` DISABLE KEYS */;
+/*!40000 ALTER TABLE `property_type` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -50,4 +47,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-04-12  3:27:27
+-- Dump completed on 2017-04-13  2:16:23

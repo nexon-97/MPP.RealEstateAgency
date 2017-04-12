@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.model.Property" table="property">
+        <meta attribute="class-description">
+            This class contains the user detail.
+        </meta>
+        <id name="id" type="int" column="property_id">
+            <generator class="increment"/>
+        </id>
+        <many-to-one name="type" column="property_type_id" class="com.model.PropertyType" not-null="true" lazy="false" foreign-key="fk_property_type"/>
+        <property name="city" column="city" type="string"/>
+        <property name="street" column="street" type="string"/>
+        <property name="houseNumber" column="house_number" type="int"/>
+        <property name="flatNumber" column="flat_number" type="int" not-null="false"/>
+        <property name="roomsCount" column="room_count" type="int" not-null="false"/>
+        <property name="area" column="area" type="int"/>
+        <property name="distanceToSubway" column="distance_to_subway" type="int" not-null="false"/>
+        <property name="distanceToTransportStop" column="distance_to_transport_stop" type="int" not-null="false"/>
+        <property name="hasFurniture" column="has_furniture" type="boolean"/>
+        <property name="hasInternet" column="has_internet" type="boolean"/>
+        <property name="hasPhone" column="has_phone" type="boolean"/>
+        <property name="hasTv" column="has_tv" type="boolean"/>
+        <property name="hasFridge" column="has_fridge" type="boolean"/>
+        <property name="hasStove" column="has_stove" type="boolean"/>
+        <property name="description" column="description" type="string"/>
+    </class>
+</hibernate-mapping>

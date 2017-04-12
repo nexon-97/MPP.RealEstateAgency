@@ -156,3 +156,12 @@ a
     vertical-align: middle;
     padding: 5px;
 }
+
+#adminPanel
+{
+    background-color: forestgreen;
+    padding: 3px 5px;
+    color: white;
+    border: 0px dashed black;
+    border-bottom-width: 2px;
+}

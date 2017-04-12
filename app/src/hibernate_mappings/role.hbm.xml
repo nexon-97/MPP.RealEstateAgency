@@ -12,7 +12,7 @@
             <generator class="increment"/>
         </id>
         <property name="name" column="name" type="string"/>
-        <set name="permissions" cascade="save-update" table="role_permission">
+        <set name="permissions" cascade="save-update" table="role_permission" lazy="false">
             <key column="role_id"/>
             <many-to-many column="permission_id" class="com.model.Permission"/>
         </set>

@@ -19,6 +19,7 @@ public class ServiceManager {
     }
 
     private void init() {
+        servicesMap.put(ServiceId.PermissionService, new PermissionServiceImpl(sharedResources));
         servicesMap.put(ServiceId.AuthorizationService, new AuthServiceImpl(sharedResources));
     }
 
@@ -27,7 +28,11 @@ public class ServiceManager {
     }
 
     public AuthService getAuthService() {
-        return (AuthService) servicesMap.get(ServiceId.AuthorizationService);
+        return (AuthService) getServiceById(ServiceId.AuthorizationService);
+    }
+
+    public PermissionService getPermissionService() {
+        return (PermissionService) getServiceById(ServiceId.PermissionService);
     }
 
     public ServiceSharedResources getSharedResources() {

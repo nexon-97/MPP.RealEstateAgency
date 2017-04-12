@@ -25,7 +25,7 @@ public class Permission {
         if (!this.getClass().equals(obj.getClass())) return false;
 
         Permission obj2 = (Permission)obj;
-        return ((this.id == obj2.getId()) && (this.name.equals(obj2.getName())));
+        return (this.id == obj2.getId());
     }
 
     public int hashCode() {

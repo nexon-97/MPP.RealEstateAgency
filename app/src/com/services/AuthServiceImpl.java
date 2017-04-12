@@ -2,6 +2,7 @@ package com.services;
 
 import com.dao.UserDAO;
 import com.dao.UserDAOImpl;
+import com.model.Permission;
 import com.model.User;
 
 import javax.servlet.http.Cookie;
@@ -101,6 +102,15 @@ public class AuthServiceImpl extends BaseService implements AuthService {
         // Put model data
         Map<String, Object> model = getSharedResources().getModel();
         model.put("user", user);
+
+        boolean hasAdminBarPermission = false;
+        if (user != null)
+        {
+            PermissionService permissionService = ServiceManager.getInstance().getPermissionService();
+            hasAdminBarPermission = permissionService.hasPermission(user.getRole(), permissionService.getPermissionById(PermissionId.DisplayAdminbar));
+        }
+
+        model.put("hasAdminBarPermission", hasAdminBarPermission);
     }
 
     private Cookie buildLoginCookie(String name, String value) {

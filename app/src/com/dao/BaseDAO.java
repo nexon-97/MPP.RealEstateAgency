@@ -1,6 +1,8 @@
 package com.dao;
 
 import com.services.ServiceManager;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.context.ApplicationContext;
 
@@ -14,5 +16,14 @@ public class BaseDAO {
 
     public SessionFactory getSessionFactory() {
         return sessionFactory;
+    }
+
+    protected Session openSession() {
+        try {
+            Session session = getSessionFactory().openSession();
+            return session;
+        } catch (HibernateException e) {
+            return null;
+        }
     }
 }

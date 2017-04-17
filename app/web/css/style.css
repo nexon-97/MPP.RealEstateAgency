@@ -92,7 +92,6 @@ a
 
 .content
 {
-    padding: 10px 0px;
     text-align: center;
 }
 
@@ -164,4 +163,49 @@ a
     color: white;
     border: 0px dashed black;
     border-bottom-width: 2px;
+}
+
+.propertyTableWrapper
+{
+    padding: 10px;
+}
+
+.propertyDescriptionTable
+{
+    display: inline-block;
+    width: 100%;
+    background-color: lightcyan;
+}
+
+.propertyDescriptionTableHeaderCell
+{
+    width: 100%;
+    padding: 4px 10px;
+    background-color: dodgerblue;
+}
+
+.propertyDescriptionTableHeader
+{
+    font-size: 24px;
+    color: white;
+}
+
+.propertyInfoNameCell
+{
+    padding-left: 12px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.propertyDescriptionCell
+{
+    padding: 0px 10px;
+}
+
+.propertyDescription
+{
+    padding: 5px 3px;
+    font-size: 16px;
+    background-color: azure;
+    border: 1px solid darkslategrey;
 }

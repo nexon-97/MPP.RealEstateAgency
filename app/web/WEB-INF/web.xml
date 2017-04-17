@@ -35,7 +35,6 @@
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
 
-
     <servlet>
         <servlet-name>RegisterController</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -45,11 +44,25 @@
         </init-param>
     </servlet>
     <servlet-mapping>
-        <servlet-name>RegisterController</servlet-name>
-        <url-pattern>/register.jsp</url-pattern>
-    <url-pattern>/register.html</url-pattern>
-    <url-pattern>/register</url-pattern>
+		<servlet-name>RegisterController</servlet-name>
+			<url-pattern>/register.jsp</url-pattern>
+		<url-pattern>/register.html</url-pattern>
+		<url-pattern>/register</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>PropertyController</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>/WEB-INF/servlets/propertyController.xml</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PropertyController</servlet-name>
+        <url-pattern>/property.jsp</url-pattern>
+        <url-pattern>/property.html</url-pattern>
+        <url-pattern>/property</url-pattern>
+    </servlet-mapping>
     <!-- Spring controllers -->
 </web-app>

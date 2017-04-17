@@ -57,15 +57,27 @@
                         </tr>
                     </c:if>
                     <tr>
-                        <td class="propertyInfoNameCell">Удобства:</td>
+                        <td class="propertyInfoNameCell">Удобства</td>
                         <td>
                             <div class="comforts">
-                                <div class="convenienceIcon">Мебель: ${property.hasFurniture ? "Есть" : "Нет"}</div>
-                                <div class="convenienceIcon">Телевизор: ${property.hasTv ? "Есть" : "Нет"}</div>
-                                <div class="convenienceIcon">Интернет: ${property.hasInternet ? "Есть" : "Нет"}</div>
-                                <div class="convenienceIcon">Холодильник: ${property.hasFridge ? "Есть" : "Нет"}</div>
-                                <div class="convenienceIcon">Плита: ${property.hasStove ? "Есть" : "Нет"}</div>
-                                <div class="convenienceIcon">Телефон: ${property.hasPhone ? "Есть" : "Нет"}</div>
+                                <div class="convenienceIconBack${property.hasFurniture ? "Yes" : "No"}">
+                                    <img src="img/furniture_icon_${property.hasFurniture ? "yes" : "no"}.png" width="64" />
+                                </div>
+                                <div class="convenienceIconBack${property.hasTv ? "Yes" : "No"}">
+                                    <img src="img/tv_icon_${property.hasTv ? "yes" : "no"}.png" width="64" />
+                                </div>
+                                <div class="convenienceIconBack${property.hasPhone ? "Yes" : "No"}">
+                                    <img src="img/phone_icon_${property.hasPhone ? "yes" : "no"}.png" width="64" />
+                                </div>
+                                <div class="convenienceIconBack${property.hasInternet ? "Yes" : "No"}">
+                                    <img src="img/wifi_icon_${property.hasInternet ? "yes" : "no"}.png" width="64" />
+                                </div>
+                                <div class="convenienceIconBack${property.hasFridge ? "Yes" : "No"}">
+                                    <img src="img/fridge_icon_${property.hasFridge ? "yes" : "no"}.png" width="64" />
+                                </div>
+                                <div class="convenienceIconBack${property.hasStove ? "Yes" : "No"}">
+                                    <img src="img/stove_icon_${property.hasStove ? "yes" : "no"}.png" width="64" />
+                                </div>
                             </div>
                         </td>
                     </tr>

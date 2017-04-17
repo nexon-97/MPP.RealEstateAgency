@@ -15,7 +15,7 @@
                     <span><a href="/logout">Log Out</a></span>
                 </c:when>
                 <c:otherwise>
-                    <span><a href="#">Register</a></span>
+                    <span><a href="/register">Register</a></span>
                     <span>|</span>
                     <span><a href="/auth">Log In</a></span>
                 </c:otherwise>

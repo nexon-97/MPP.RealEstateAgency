@@ -5,11 +5,11 @@
   <jsp:include page="html_head_common.jsp" />
 </head>
 <body>
-<jsp:include page="header.jsp" />
-<h1>Main page</h1>
-<div class="buttonSimple">
-  <a href="/">Under construction</a>
-</div>
-<jsp:include page="footer.jsp" />
+  <jsp:include page="header.jsp" />
+  <h1>Main page</h1>
+  <div class="buttonSimple">
+    <a href="/">Under construction</a>
+  </div>
+  <jsp:include page="footer.jsp" />
 </body>
 </html>

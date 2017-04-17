@@ -21,14 +21,19 @@ public class ServiceManager {
     private void init() {
         servicesMap.put(ServiceId.PermissionService, new PermissionServiceImpl(sharedResources));
         servicesMap.put(ServiceId.AuthorizationService, new AuthServiceImpl(sharedResources));
+        servicesMap.put(ServiceId.RegistrationService, new RegisterServiceImpl(sharedResources));
     }
 
     public BaseService getServiceById(ServiceId id) {
-        return (servicesMap.containsKey(id)) ? servicesMap.get(id) : null;
+        return servicesMap.getOrDefault(id, null);
     }
 
     public AuthService getAuthService() {
         return (AuthService) getServiceById(ServiceId.AuthorizationService);
+    }
+
+    public RegisterService getRegisterService() {
+        return (RegisterService) getServiceById(ServiceId.RegistrationService);
     }
 
     public PermissionService getPermissionService() {
@@ -50,4 +55,5 @@ public class ServiceManager {
     public static ServiceManager getInstance() {
         return instance;
     }
+
 }

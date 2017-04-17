@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class BaseController {
+
     @Autowired
     protected ApplicationContext context;
 

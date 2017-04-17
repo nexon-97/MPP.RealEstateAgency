@@ -9,9 +9,12 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class IndexController extends BaseController {
+
     @RequestMapping(method = RequestMethod.GET, value = "/")
     public ModelAndView navigateToIndex(HttpServletResponse response) {
         initControllerResources(context, request, response);
+
+        System.out.println("In index controller get");
 
         return buildModelAndView("index");
     }

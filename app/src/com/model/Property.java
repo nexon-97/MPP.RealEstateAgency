@@ -6,11 +6,11 @@ public class Property {
     private String city;
     private String street;
     private int houseNumber;
-    private int flatNumber;
-    private int roomsCount;
+    private Integer flatNumber;
+    private Integer roomsCount;
     private int area;
-    private int distanceToSubway;
-    private int distanceToTransportStop;
+    private Integer distanceToSubway;
+    private Integer distanceToTransportStop;
     private boolean hasFurniture;
     private boolean hasInternet;
     private boolean hasTv;
@@ -39,11 +39,11 @@ public class Property {
         this.houseNumber = houseNumber;
     }
 
-    public void setFlatNumber(int flatNumber) {
+    public void setFlatNumber(Integer flatNumber) {
         this.flatNumber = flatNumber;
     }
 
-    public void setRoomsCount(int roomsCount) {
+    public void setRoomsCount(Integer roomsCount) {
         this.roomsCount = roomsCount;
     }
 
@@ -51,11 +51,11 @@ public class Property {
         this.area = area;
     }
 
-    public void setDistanceToSubway(int distanceToSubway) {
+    public void setDistanceToSubway(Integer distanceToSubway) {
         this.distanceToSubway = distanceToSubway;
     }
 
-    public void setDistanceToTransportStop(int distanceToTransportStop) {
+    public void setDistanceToTransportStop(Integer distanceToTransportStop) {
         this.distanceToTransportStop = distanceToTransportStop;
     }
 
@@ -107,11 +107,11 @@ public class Property {
         return this.houseNumber;
     }
 
-    public int getFlatNumber() {
+    public Integer getFlatNumber() {
         return this.flatNumber;
     }
 
-    public int getRoomsCount() {
+    public Integer getRoomsCount() {
         return this.roomsCount;
     }
 
@@ -119,11 +119,11 @@ public class Property {
         return this.area;
     }
 
-    public int getDistanceToSubway() {
+    public Integer getDistanceToSubway() {
         return this.distanceToSubway;
     }
 
-    public int getDistanceToTransportStop() {
+    public Integer getDistanceToTransportStop() {
         return this.distanceToTransportStop;
     }
 

@@ -43,7 +43,7 @@ CREATE TABLE `property` (
   PRIMARY KEY (`property_id`),
   KEY `fk_property_type_idx` (`property_type_id`),
   CONSTRAINT `fk_property_type` FOREIGN KEY (`property_type_id`) REFERENCES `property_type` (`property_type_id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -52,6 +52,7 @@ CREATE TABLE `property` (
 
 LOCK TABLES `property` WRITE;
 /*!40000 ALTER TABLE `property` DISABLE KEYS */;
+INSERT INTO `property` VALUES (1,2,'Минск','Ленина',6,104,5,105,150,120,1,1,1,1,1,1,'Уютный загородный дом'),(2,1,'Лида','Советская',14,NULL,9,120,40,30,1,1,0,0,0,1,'Крутой офис'),(3,3,'Минск','Гайа',104,17,2,40,NULL,NULL,1,1,1,0,0,0,'Новостройка, огонь'),(4,3,'Барановичи','Зеленый луг',35,26,3,74,NULL,NULL,1,1,1,1,0,1,'Эта квартира осталась от бабушки, срочно нужно продать'),(5,4,'Минск','Сосновый бор',84,NULL,NULL,150,1045,50,0,1,1,0,0,0,'Отличное место, чтобы построить многофункциональный торговый комплекс!');
 /*!40000 ALTER TABLE `property` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -64,4 +65,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-04-13  2:16:23
+-- Dump completed on 2017-04-18 13:16:58

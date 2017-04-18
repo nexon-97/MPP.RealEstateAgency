@@ -47,7 +47,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,1,'Nexon','qwerty','nexons.97@gmail.com','Denis','Ponyakov','Sergeevich','+375291901254'),(2,8,'MakeevAlex','iamgod','makeev.alex@mai.ru','Alexander','Makeev','Pavlovich','Not set'),(3,3,'Maleika','446','maleika@mail.ru','Alex','Malei','Sergeevich','Not set'),(4,3,'Resik','lolkek','resik@bubble.com','Aurelius','Guryavichus','Sigitasovich','Not set');
+INSERT INTO `user` VALUES (1,1,'Nexon','qwerty','nexons.97@gmail.com','Денис','Поняков','Сергеевич','+375291901254'),(2,8,'MakeevAlex','iamgod','makeev.alex@mai.ru','Алексей','Макеев','Павлович',NULL),(3,3,'Maleika','446','maleika@mail.ru','Александр','Malei','Викторович',NULL),(4,3,'Resik','lolkek','resik@bubble.com','Аурелиюс','Гурявичюс','Сигитасович',NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -60,4 +60,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-04-13  2:16:23
+-- Dump completed on 2017-04-18 13:16:58

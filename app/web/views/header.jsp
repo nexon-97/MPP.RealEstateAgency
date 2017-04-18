@@ -10,7 +10,7 @@
         <div class="headerRightBlock">
             <c:choose>
                 <c:when test="${user != null}">
-                    <span>Hello, ${user.login}!</span>
+                    <span><a href="/profile">Hello, ${user.login}!</a></span>
                     <span>|</span>
                     <span><a href="/logout">Log Out</a></span>
                 </c:when>

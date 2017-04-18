@@ -10,7 +10,7 @@
 
     <bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
-        <property name="prefix" value="/views/" />
+        <property name="prefix" value="/views/profile/" />
         <property name="suffix" value=".jsp" />
     </bean>
 

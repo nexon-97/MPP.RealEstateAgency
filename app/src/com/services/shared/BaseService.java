@@ -1,4 +1,4 @@
-package com.services;
+package com.services.shared;
 
 public class BaseService {
     private ServiceSharedResources sharedResources;

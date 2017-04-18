@@ -6,10 +6,8 @@
 </head>
 <body>
   <jsp:include page="header.jsp" />
-  <h1>Main page</h1>
-  <div class="buttonSimple">
-    <a href="/">Under construction</a>
-  </div>
+  <h1>Главная</h1>
+  <div class="buttonSimple">Сайт в разработке</div>
   <jsp:include page="footer.jsp" />
 </body>
 </html>

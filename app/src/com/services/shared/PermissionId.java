@@ -1,4 +1,4 @@
-package com.services;
+package com.services.shared;
 
 public enum  PermissionId {
     DisplayAdminbar,

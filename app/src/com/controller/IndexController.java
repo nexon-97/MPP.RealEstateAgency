@@ -14,8 +14,6 @@ public class IndexController extends BaseController {
     public ModelAndView navigateToIndex(HttpServletResponse response) {
         initControllerResources(context, request, response);
 
-        System.out.println("In index controller get");
-
         return buildModelAndView("index");
     }
 }

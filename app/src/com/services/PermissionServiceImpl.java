@@ -2,6 +2,10 @@ package com.services;
 
 import com.model.Permission;
 import com.model.Role;
+import com.services.shared.BaseService;
+import com.services.shared.PermissionId;
+import com.services.shared.ServiceId;
+import com.services.shared.ServiceSharedResources;
 
 import java.util.HashMap;
 import java.util.Map;

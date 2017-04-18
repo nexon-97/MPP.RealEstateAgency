@@ -1,5 +1,6 @@
-package com.services;
+package com.services.shared;
 
+import com.services.*;
 import org.springframework.context.ApplicationContext;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +24,7 @@ public class ServiceManager {
         servicesMap.put(ServiceId.AuthorizationService, new AuthServiceImpl(sharedResources));
         servicesMap.put(ServiceId.RegistrationService, new RegisterServiceImpl(sharedResources));
         servicesMap.put(ServiceId.PropertyService, new PropertyServiceImpl(sharedResources));
+        servicesMap.put(ServiceId.UserService, new UserServiceImpl(sharedResources));
     }
 
     public BaseService getServiceById(ServiceId id) {
@@ -43,6 +45,10 @@ public class ServiceManager {
 
     public PropertyService getPropertyService() {
         return (PropertyService) getServiceById(ServiceId.PropertyService);
+    }
+
+    public UserService getUserService() {
+        return (UserService) getServiceById(ServiceId.UserService);
     }
 
     public ServiceSharedResources getSharedResources() {

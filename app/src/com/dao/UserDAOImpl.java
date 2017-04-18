@@ -22,7 +22,7 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
 
     @Override
     public User getByLogin(String login) {
-        Session session = getSessionFactory().openSession();
+        Session session = openSession();
         User user = null;
 
         try {
@@ -35,7 +35,6 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
             tx.commit();
         } catch (HibernateException e) {
             e.printStackTrace();
-            session.getTransaction().rollback();
         } finally {
             session.close();
         }

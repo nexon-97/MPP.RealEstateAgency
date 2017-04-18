@@ -38,7 +38,7 @@ public class ProfileController extends BaseController {
         initControllerResources(context, request, response);
 
         Map<String, String[]> parameters = request.getParameterMap();
-        String[] parametersToFetch = new String[] { "surname", "name", "patronymic", "email", "phone" };
+        String[] parametersToFetch = new String[] { "surname", "name", "patronymic", "email", "phone", "info" };
 
         Map<String, String> parsedRequestParams = new HashMap<>();
         boolean parsingSucceeded = true;
@@ -77,7 +77,8 @@ public class ProfileController extends BaseController {
             loggedUser.setName(dataMap.get("name"));
             loggedUser.setPatronymic(dataMap.get("patronymic"));
             loggedUser.setEmail(dataMap.get("email"));
-            loggedUser.setPhone(dataMap.get("phone"));
+            loggedUser.setPhone(dataMap.get("phone").length() > 0 ? dataMap.get("phone") : null);
+            loggedUser.setInfo(dataMap.get("info").length() > 0 ? dataMap.get("info") : null);
         }
 
         return loggedUser;

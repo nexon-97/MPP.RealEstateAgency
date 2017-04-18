@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="admin_panel.jsp" />
 <a href="/">
-<div id="header">
+<header>
     <div class="headerLeftBlock">
         <h1>Real Estate Agency - Header</h1>
     </div>
@@ -10,17 +10,15 @@
         <div class="headerRightBlock">
             <c:choose>
                 <c:when test="${user != null}">
-                    <span><a href="/profile">Hello, ${user.login}!</a></span>
-                    <span>|</span>
-                    <span><a href="/logout">Log Out</a></span>
+                    <a href="/profile"><span class="buttonSimple grayHeaderButton">Добро пожаловать, ${user.login}!</span></a>
+                    <a href="/logout"><span class="buttonSimple grayHeaderButton">Выйти</span></a>
                 </c:when>
                 <c:otherwise>
-                    <span><a href="/register">Register</a></span>
-                    <span>|</span>
-                    <span><a href="/auth">Log In</a></span>
+                    <a href="/register"><span class="buttonSimple grayHeaderButton">Регистрация</span></a>
+                    <a href="/auth"><span class="buttonSimple grayHeaderButton">Вход</span></a>
                 </c:otherwise>
             </c:choose>
         </div>
     </div>
-</div>
+</header>
 </a>

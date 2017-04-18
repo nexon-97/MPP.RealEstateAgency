@@ -22,18 +22,21 @@ a
     color: black;
 }
 
-#header
+header
 {
     width: 100%;
     background-color: #0080ff;
     color: white;
 }
 
-#footer
+footer
 {
+    text-align: center;
     width: 100%;
     background-color: #0069ff;
     color: white;
+    position: absolute;
+    bottom: 0;
 }
 
 .buttonSimple
@@ -42,8 +45,9 @@ a
     border-radius: 5px;
     padding: 5px 20px;
     color: white;
-    margin: 10px;
     display: inline-block;
+    border-width: 0;
+    font-size: 20px;
 }
 
 .buttonSimple a
@@ -102,6 +106,7 @@ a
     background-color: #c5d8f5;
     border-radius: 10px;
     padding: 5px 10px;
+    margin: 10px;
 }
 
 #loginForm
@@ -140,7 +145,6 @@ a
 .headerLeftBlock
 {
     display: inline-block;
-    width: 75%;
 }
 
 .headerRightBlockWrapper
@@ -226,4 +230,109 @@ a
     border-radius: 10px;
     padding: 5px;
     background-color: #ff584c;
+}
+
+.profileViewContent
+{
+    width: 1000px;
+    margin: 10px;
+    padding: 10px;
+    background-color: #c5d8f5;
+    display: inline-block;
+    border-radius: 10px;
+}
+
+.personalAreaLabel
+{
+    font-size: 24px;
+    text-align: left;
+    padding-left: 10px;
+    font-weight: bold;
+}
+
+.personalInfoBlockWrapper
+{
+    display: inline-block;
+    padding: 10px;
+}
+
+.personalInfoBlock
+{
+    background-color: #90c9ff;
+    border: 1px solid dimgray;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: left;
+}
+
+.personalInfoField
+{
+    background-color: #ddd;
+    padding: 2px 4px;
+    border: 1px double gray;
+}
+
+.profileLogin
+{
+    font-weight: bold;
+    padding-bottom: 10px;
+}
+
+.contactInfoBlock
+{
+    padding: 5px 0;
+}
+
+.contactInfoBlockName
+{
+    display: inline-block;
+    width: 100px;
+}
+
+.grayHeaderButton
+{
+    background-color: #9dbed3;
+    font-size: 16px;
+    color: black;
+    padding: 4px 8px;
+}
+
+.grayHeaderButton a
+{
+    font-size: 16px;
+    color: black;
+}
+
+.contactInfoBlockNameDiv
+{
+    display: inline-block;
+    width: 100px;
+}
+
+.contactInfoBlockValueDiv
+{
+    display: inline-block;
+    padding: 2px 0;
+}
+
+.contactInfoBlockValueInput
+{
+    padding: 3px 5px;
+    height: 25px;
+    font-size: 16px;
+    font-family: Tahoma;
+    width: 100%;
+    border: 1px solid darkgray;
+    border-radius: 5px;
+}
+
+.personalInfoTextInput
+{
+    padding: 3px 5px;
+    width: 100%;
+    height: 100px;
+    font-size: 16px;
+    max-width: 900px;
+    border: 1px solid darkgray;
+    border-radius: 5px;
 }

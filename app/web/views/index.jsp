@@ -7,7 +7,7 @@
 <body>
   <jsp:include page="header.jsp" />
   <h1>Главная</h1>
-  <div class="buttonSimple">Сайт в разработке</div>
+  <div class="buttonSimple" style="margin: 10px">Сайт в разработке</div>
   <jsp:include page="footer.jsp" />
 </body>
 </html>

@@ -1,6 +1,6 @@
 package com.dao;
 
-import com.services.ServiceManager;
+import com.services.shared.ServiceManager;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

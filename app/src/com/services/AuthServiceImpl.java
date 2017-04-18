@@ -2,8 +2,8 @@ package com.services;
 
 import com.dao.UserDAO;
 import com.dao.UserDAOImpl;
-import com.model.Permission;
 import com.model.User;
+import com.services.shared.*;
 
 import javax.servlet.http.Cookie;
 import java.util.Map;

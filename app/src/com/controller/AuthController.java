@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.services.AuthService;
-import com.services.ServiceManager;
+import com.services.shared.ServiceManager;
 
 @Controller
 public class AuthController extends BaseController {
@@ -16,8 +16,6 @@ public class AuthController extends BaseController {
     @RequestMapping(method = RequestMethod.GET, value = "/auth")
     public ModelAndView visitAuthorizationForm(HttpServletResponse response) {
         initControllerResources(context, request, response);
-
-        System.out.println("In auth controller get");
 
         AuthService authService = ServiceManager.getInstance().getAuthService();
         if (authService.getLoggedUser() != null) {

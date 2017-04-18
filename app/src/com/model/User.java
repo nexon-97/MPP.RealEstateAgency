@@ -19,6 +19,8 @@ public class User {
 
     private String phone;
 
+    private String info;
+
     public void setId(int id) {
         this.id = id;
     }
@@ -55,6 +57,10 @@ public class User {
         this.phone = phone;
     }
 
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
     public int getId() {
         return this.id;
     }
@@ -89,5 +95,9 @@ public class User {
 
     public String getPhone() {
         return this.phone;
+    }
+
+    public String getInfo() {
+        return this.info;
     }
 }

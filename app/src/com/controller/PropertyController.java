@@ -2,7 +2,7 @@ package com.controller;
 
 import com.model.Property;
 import com.services.PropertyService;
-import com.services.ServiceManager;
+import com.services.shared.ServiceManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,7 +14,7 @@ import java.util.Map;
 @Controller
 public class PropertyController extends BaseController  {
     @RequestMapping(method = RequestMethod.GET, value = "/property")
-    public ModelAndView visitAuthorizationForm(HttpServletResponse response) {
+    public ModelAndView showPropertyInfo(HttpServletResponse response) {
         initControllerResources(context, request, response);
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
 

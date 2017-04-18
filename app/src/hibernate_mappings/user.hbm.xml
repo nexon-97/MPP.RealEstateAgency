@@ -17,7 +17,8 @@
         <property name="name" column="name" type="string"/>
         <property name="surname" column="surname" type="string"/>
         <property name="patronymic" column="patronymic" type="string"/>
-        <property name="phone" column="phone" type="string"/>
+        <property name="phone" column="phone" type="string" not-null="false"/>
+        <property name="info" column="info" type="string" not-null="false"/>
         <many-to-one name="role" column="role_id" class="com.model.Role" not-null="true" lazy="false" foreign-key="fk_role"/>
     </class>
 </hibernate-mapping>

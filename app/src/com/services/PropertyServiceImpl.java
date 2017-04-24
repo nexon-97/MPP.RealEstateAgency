@@ -6,6 +6,11 @@ import com.model.Property;
 import com.services.shared.BaseService;
 import com.services.shared.ServiceId;
 import com.services.shared.ServiceSharedResources;
+import com.utils.request.FilterParameter;
+import com.utils.request.PropertyFilterParam;
+
+import java.util.List;
+import java.util.Map;
 
 public class PropertyServiceImpl extends BaseService implements PropertyService {
     public PropertyServiceImpl(ServiceSharedResources sharedResources) {
@@ -17,5 +22,12 @@ public class PropertyServiceImpl extends BaseService implements PropertyService 
         PropertyDAO dao = new PropertyDAOImpl();
 
         return dao.getPropertyById(id);
+    }
+
+    @Override
+    public List<Property> filterProperties(Map<PropertyFilterParam, FilterParameter> filterParameters) {
+        PropertyDAO dao = new PropertyDAOImpl();
+
+        return dao.filter(filterParameters);
     }
 }

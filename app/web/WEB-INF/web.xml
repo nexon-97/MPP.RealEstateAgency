@@ -63,6 +63,7 @@
         <url-pattern>/property.jsp</url-pattern>
         <url-pattern>/property.html</url-pattern>
         <url-pattern>/property</url-pattern>
+        <url-pattern>/propertyFilter</url-pattern>
     </servlet-mapping>
 
     <servlet>

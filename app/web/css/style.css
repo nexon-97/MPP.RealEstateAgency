@@ -336,3 +336,73 @@ footer
     border: 1px solid darkgray;
     border-radius: 5px;
 }
+
+.filterContentWrapper
+{
+    height: auto;
+    overflow: hidden;
+}
+
+.filterBlockWrapper
+{
+    float: left;
+    background-color: red;
+    width: 500px;
+    padding: 10px;
+}
+
+.filterResultWrapper
+{
+    float: none;
+    background-color: green;
+    width: auto;
+    overflow: hidden;
+    padding: 10px;
+}
+
+.criteriaBlock
+{
+    padding: 2px 0;
+    text-align: left;
+}
+
+.criteriaLabel
+{
+	display: inline-block;
+	width: 40%;
+	text-align: left;
+}
+
+.criteriaValue
+{
+	display: inline-block;
+	width: 55%;
+}
+
+.criteriaRangeWrapper
+{
+    text-align: right;
+    display: inline-block;
+    width: 55%;
+}
+
+.criteriaRangeInputLeft
+{
+    width: 120px;
+    margin-right: 2px;
+}
+
+.criteriaRangeInputRight
+{
+    width: 120px;
+    margin-left: 2px;
+}
+
+.criteriaInput
+{
+	border: 1px solid black;
+	border-radius: 8px;
+	font-size: 16px;
+    padding: 2px 4px;
+    display: inline-block;
+}

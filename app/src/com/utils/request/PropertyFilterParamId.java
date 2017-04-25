@@ -1,6 +1,6 @@
 package com.utils.request;
 
-public enum PropertyFilterParam {
+public enum PropertyFilterParamId {
     Cost,
     Area,
     RoomCount,

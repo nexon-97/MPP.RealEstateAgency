@@ -3,16 +3,31 @@ package com.dao;
 import com.model.Property;
 import com.model.User;
 import com.utils.request.FilterParameter;
-import com.utils.request.PropertyFilterParam;
+import com.utils.request.PropertyFilterParamId;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Restrictions;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class PropertyDAOImpl extends BaseDAO implements PropertyDAO {
+
+    private Map<PropertyFilterParamId, String> propertyColumnMapping;
+
+    public PropertyDAOImpl() {
+        propertyColumnMapping = new HashMap<>();
+        propertyColumnMapping.put(PropertyFilterParamId.Cost, "cost");
+        propertyColumnMapping.put(PropertyFilterParamId.Area, "area");
+        propertyColumnMapping.put(PropertyFilterParamId.RoomCount, "roomsCount");
+        propertyColumnMapping.put(PropertyFilterParamId.DistanceToSubway, "distanceToSubway");
+        propertyColumnMapping.put(PropertyFilterParamId.DistanceToTransportStop, "distanceToTransportStop");
+    }
+
     @Override
     public Property getPropertyById(int id) {
         Property property = null;
@@ -57,7 +72,7 @@ public class PropertyDAOImpl extends BaseDAO implements PropertyDAO {
     }
 
     @Override
-    public List<Property> filter(Map<PropertyFilterParam, FilterParameter> filterParams) {
+    public List<Property> filter(Map<PropertyFilterParamId, FilterParameter> filterParams) {
         List<Property> filteredProperties = null;
 
         Session session = openSession();
@@ -67,7 +82,16 @@ public class PropertyDAOImpl extends BaseDAO implements PropertyDAO {
 
                 // Construct criteria
                 Criteria filterCriteria = session.createCriteria(Property.class);
-                filterParams.get(PropertyFilterParam.Area).addCriteria(filterCriteria, "area");
+
+                for (FilterParameter param : filterParams.values()) {
+                    if (param.verify()) {
+                        String column = propertyColumnMapping.getOrDefault(param.getParamId(), null);
+                        if (column != null) {
+                            Criterion criterion = Restrictions.or(Restrictions.isNull(column), param.getCriterion(column));
+                            filterCriteria.add(criterion);
+                        }
+                    }
+                }
 
                 filteredProperties = filterCriteria.list();
 

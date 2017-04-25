@@ -347,7 +347,7 @@ footer
 {
     float: left;
     background-color: red;
-    width: 500px;
+    width: 600px;
     padding: 10px;
 }
 
@@ -369,21 +369,21 @@ footer
 .criteriaLabel
 {
 	display: inline-block;
-	width: 40%;
+	width: 300px;
 	text-align: left;
 }
 
 .criteriaValue
 {
 	display: inline-block;
-	width: 55%;
+	width: 290px;
 }
 
 .criteriaRangeWrapper
 {
     text-align: right;
     display: inline-block;
-    width: 55%;
+    width: 290px;
 }
 
 .criteriaRangeInputLeft

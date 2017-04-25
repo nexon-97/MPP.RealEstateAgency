@@ -7,7 +7,7 @@ import com.services.shared.BaseService;
 import com.services.shared.ServiceId;
 import com.services.shared.ServiceSharedResources;
 import com.utils.request.FilterParameter;
-import com.utils.request.PropertyFilterParam;
+import com.utils.request.PropertyFilterParamId;
 
 import java.util.List;
 import java.util.Map;
@@ -25,7 +25,7 @@ public class PropertyServiceImpl extends BaseService implements PropertyService 
     }
 
     @Override
-    public List<Property> filterProperties(Map<PropertyFilterParam, FilterParameter> filterParameters) {
+    public List<Property> filterProperties(Map<PropertyFilterParamId, FilterParameter> filterParameters) {
         PropertyDAO dao = new PropertyDAOImpl();
 
         return dao.filter(filterParameters);

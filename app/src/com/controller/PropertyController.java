@@ -5,7 +5,7 @@ import com.services.PropertyService;
 import com.services.shared.ServiceManager;
 import com.utils.request.FilterParameter;
 import com.utils.request.IntegerRangeParameter;
-import com.utils.request.PropertyFilterParam;
+import com.utils.request.PropertyFilterParamId;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -65,12 +65,12 @@ public class PropertyController extends BaseController  {
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
 
         // Parse filter params
-        Map<PropertyFilterParam, FilterParameter> filterParams = new HashMap<>();
-        filterParams.put(PropertyFilterParam.Cost, loadIntegerRangeParameter("costMin", "costMax"));
-        filterParams.put(PropertyFilterParam.Area, loadIntegerRangeParameter("areaMin", "areaMax"));
-        filterParams.put(PropertyFilterParam.RoomCount, loadIntegerRangeParameter("roomCountMin", "roomCountMax"));
-        filterParams.put(PropertyFilterParam.DistanceToTransportStop, loadIntegerRangeParameter("distanceToTransportStopMin", "distanceToTransportStopMax"));
-        filterParams.put(PropertyFilterParam.DistanceToSubway, loadIntegerRangeParameter("distanceToSubwayMin", "distanceToSubwayMax"));
+        Map<PropertyFilterParamId, FilterParameter> filterParams = new HashMap<>();
+        //addIntegerRangeFilterParam(filterParams, PropertyFilterParamId.Cost, "costMin", "costMax");
+        addIntegerRangeFilterParam(filterParams, PropertyFilterParamId.Area, "areaMin", "areaMax");
+        addIntegerRangeFilterParam(filterParams, PropertyFilterParamId.RoomCount, "roomCountMin", "roomCountMax");
+        addIntegerRangeFilterParam(filterParams, PropertyFilterParamId.DistanceToTransportStop, "distanceToTransportStopMin", "distanceToTransportStopMax");
+        addIntegerRangeFilterParam(filterParams, PropertyFilterParamId.DistanceToSubway, "distanceToSubwayMin", "distanceToSubwayMax");
 
         // Use service to get matching properties
         PropertyService propertyService = ServiceManager.getInstance().getPropertyService();
@@ -79,20 +79,30 @@ public class PropertyController extends BaseController  {
         model.put("properties", filteredProperties);
 
         // Put filter params to preserve form inputs
-        String[] filterParamsNames = new String[] {
-                "costMin", "costMax", "areaMin", "areaMax", "roomCountMin", "roomCountMax",
-                "distanceToTransportStopMin", "distanceToTransportStopMax", "distanceToSubwayMin", "distanceToSubwayMax"
-        };
-        Map<String, String> filterParamsModel = new HashMap<>();
-        for (String paramName : filterParamsNames) {
-            filterParamsModel.put(paramName, request.getParameter(paramName));
-        }
+        Map<String, String> filterParamsModel = constructFilterParametersModel();
         model.put("filterParams", filterParamsModel);
 
         return buildModelAndView("property_filter");
     }
 
-    private IntegerRangeParameter loadIntegerRangeParameter(String min, String max) {
-        return IntegerRangeParameter.constructFromStrings(request.getParameter(min), request.getParameter(max));
+    private Map<String, String> constructFilterParametersModel() {
+        String[] filterParamsNames = new String[] {
+                "costMin", "costMax",
+                "areaMin", "areaMax",
+                "roomCountMin", "roomCountMax",
+                "distanceToTransportStopMin", "distanceToTransportStopMax",
+                "distanceToSubwayMin", "distanceToSubwayMax"
+        };
+
+        Map<String, String> filterParamsModel = new HashMap<>();
+        for (String paramName : filterParamsNames) {
+            filterParamsModel.put(paramName, request.getParameter(paramName));
+        }
+
+        return filterParamsModel;
+    }
+
+    private void addIntegerRangeFilterParam(Map<PropertyFilterParamId, FilterParameter> params, PropertyFilterParamId paramId, String min, String max) {
+        params.put(paramId, new IntegerRangeParameter(request.getParameter(min), request.getParameter(max), paramId));
     }
 }

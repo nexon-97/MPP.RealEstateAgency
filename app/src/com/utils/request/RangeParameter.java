@@ -1,28 +1,31 @@
 package com.utils.request;
 
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Restrictions;
+
 public abstract class RangeParameter<T> implements Verifiable, FilterParameter {
 
-    protected T min;
-    protected T max;
+    private PropertyFilterParamId paramId;
+    protected String min;
+    protected String max;
 
-    public RangeParameter(T min, T max) {
+    public RangeParameter(String min, String max, PropertyFilterParamId paramId) {
         this.min = min;
         this.max = max;
+        this.paramId = paramId;
     }
 
-    public void setMin(T min) {
-        this.min = min;
+    abstract public T getMin();
+
+    abstract public T getMax();
+
+    @Override
+    public PropertyFilterParamId getParamId() {
+        return paramId;
     }
 
-    public void setMax(T max) {
-        this.max = max;
-    }
-
-    public T getMin() {
-        return min;
-    }
-
-    public T getMax() {
-        return max;
+    @Override
+    public Criterion getCriterion(String column) {
+        return Restrictions.between(column, getMin(), getMax());
     }
 }

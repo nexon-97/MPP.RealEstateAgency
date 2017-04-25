@@ -1,7 +1,8 @@
 package com.utils.request;
 
-import org.hibernate.Criteria;
+import org.hibernate.criterion.Criterion;
 
-public interface FilterParameter {
-    void addCriteria(Criteria criteria, String column);
+public interface FilterParameter extends Verifiable {
+    PropertyFilterParamId getParamId();
+    Criterion getCriterion(String column);
 }

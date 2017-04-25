@@ -1,33 +1,47 @@
 package com.utils.request;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
-
 public class IntegerRangeParameter extends RangeParameter<Integer> {
 
-    public IntegerRangeParameter(int min, int max) {
-        super(min, max);
+    private class IntegerParseResult {
+        public boolean success;
+        public int value;
+
+        public IntegerParseResult(int value, boolean success) {
+            this.value = value;
+            this.success = success;
+        }
     }
 
-    public static IntegerRangeParameter constructFromStrings(String minStr, String maxStr) {
-        return new IntegerRangeParameter(tryParseInteger(minStr), tryParseInteger(maxStr));
+    public IntegerRangeParameter(String min, String max, PropertyFilterParamId paramId) {
+        super(min, max, paramId);
     }
 
     @Override
     public boolean verify() {
-        return true;
+        boolean minValid = tryParseInteger(min).success;
+        boolean maxValid = tryParseInteger(max).success;
+
+        return minValid || maxValid;
     }
 
     @Override
-    public void addCriteria(Criteria criteria, String column) {
-        criteria.add(Restrictions.between(column, min, max));
+    public Integer getMin() {
+        IntegerParseResult parseResult = tryParseInteger(min);
+        return parseResult.success ? parseResult.value : Integer.MIN_VALUE;
     }
 
-    private static int tryParseInteger(String value) {
+    @Override
+    public Integer getMax() {
+        IntegerParseResult parseResult = tryParseInteger(max);
+        return parseResult.success ? parseResult.value : Integer.MAX_VALUE;
+    }
+
+    private IntegerParseResult tryParseInteger(String value) {
         try {
-            return Integer.valueOf(value);
+            int parsedValue = Integer.valueOf(value);
+            return new IntegerParseResult(parsedValue, true);
         } catch (NullPointerException | NumberFormatException e) {
-            return 0;
+            return new IntegerParseResult(0, false);
         }
     }
 }

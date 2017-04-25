@@ -26,6 +26,12 @@ public class PropertyDAOImpl extends BaseDAO implements PropertyDAO {
         propertyColumnMapping.put(PropertyFilterParamId.RoomCount, "roomsCount");
         propertyColumnMapping.put(PropertyFilterParamId.DistanceToSubway, "distanceToSubway");
         propertyColumnMapping.put(PropertyFilterParamId.DistanceToTransportStop, "distanceToTransportStop");
+        propertyColumnMapping.put(PropertyFilterParamId.HasFurniture, "hasFurniture");
+        propertyColumnMapping.put(PropertyFilterParamId.HasInternet, "hasInternet");
+        propertyColumnMapping.put(PropertyFilterParamId.HasTv, "hasTv");
+        propertyColumnMapping.put(PropertyFilterParamId.HasPhone, "hasPhone");
+        propertyColumnMapping.put(PropertyFilterParamId.HasFridge, "hasFridge");
+        propertyColumnMapping.put(PropertyFilterParamId.HasStove, "hasStove");
     }
 
     @Override

@@ -56,37 +56,37 @@
 									<div class="criteriaBlock">
 										<div class="criteriaLabel">Мебель</div>
 										<div class="criteriaValue">
-											<input type="checkbox" name="furnitureCheck" />
+											<input type="checkbox" name="comforts" value="furniture" />
 										</div>
 									</div>
 									<div class="criteriaBlock">
 										<div class="criteriaLabel">Телевизор</div>
 										<div class="criteriaValue">
-											<input type="checkbox" name="tvCheck" />
+											<input type="checkbox" name="comforts" value="tv" />
 										</div>
 									</div>
 									<div class="criteriaBlock">
 										<div class="criteriaLabel">Интернет</div>
 										<div class="criteriaValue">
-											<input type="checkbox" name="internetCheck" />
+											<input type="checkbox" name="comforts" value="internet" />
 										</div>
 									</div>
 									<div class="criteriaBlock">
 										<div class="criteriaLabel">Холодильник</div>
 										<div class="criteriaValue">
-											<input type="checkbox" name="fridgeCheck" />
+											<input type="checkbox" name="comforts" value="fridge" />
 										</div>
 									</div>
 									<div class="criteriaBlock">
 										<div class="criteriaLabel">Телефон</div>
 										<div class="criteriaValue">
-											<input type="checkbox" name="phoneCheck" />
+											<input type="checkbox" name="comforts" value="phone" />
 										</div>
 									</div>
 									<div class="criteriaBlock">
 										<div class="criteriaLabel">Кухонная плита</div>
 										<div class="criteriaValue">
-											<input type="checkbox" name="stoveCheck" />
+											<input type="checkbox" name="comforts" value="stove" />
 										</div>
 									</div>
 								</div>

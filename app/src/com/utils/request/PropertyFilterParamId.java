@@ -6,4 +6,10 @@ public enum PropertyFilterParamId {
     RoomCount,
     DistanceToSubway,
     DistanceToTransportStop,
+    HasFurniture,
+    HasTv,
+    HasInternet,
+    HasFridge,
+    HasStove,
+    HasPhone,
 }

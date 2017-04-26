@@ -9,5 +9,7 @@ import java.util.Map;
 
 public interface PropertyService {
     Property getPropertyById(int id);
+    boolean addProperty(Property property);
+    boolean updateProperty(Property property);
     List<Property> filterProperties(Map<PropertyFilterParamId, FilterParameter> filterParameters);
 }

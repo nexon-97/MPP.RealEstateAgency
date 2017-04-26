@@ -25,6 +25,16 @@ public class PropertyServiceImpl extends BaseService implements PropertyService 
     }
 
     @Override
+    public boolean addProperty(Property property) {
+        return false;
+    }
+
+    @Override
+    public boolean updateProperty(Property property) {
+        return false;
+    }
+
+    @Override
     public List<Property> filterProperties(Map<PropertyFilterParamId, FilterParameter> filterParameters) {
         PropertyDAO dao = new PropertyDAOImpl();
 

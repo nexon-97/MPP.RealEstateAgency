@@ -22,6 +22,14 @@ import java.util.Map;
 @Controller
 public class PropertyController extends BaseController  {
 
+    private interface ComfortsPutOperation {
+        void put(String name);
+    }
+
+    private final String[] comfortsNames = {
+        "furniture", "tv", "internet", "fridge", "stove", "phone"
+    };
+
     @RequestMapping(method = RequestMethod.GET, value = "/property")
     public ModelAndView showPropertyInfo(HttpServletResponse response) {
         initControllerResources(context, request, response);
@@ -82,7 +90,9 @@ public class PropertyController extends BaseController  {
 
         // Put filter params to preserve form inputs
         Map<String, String> filterParamsModel = constructFilterParametersModel();
+        Map<String, Boolean> comfortsParamsModel = constructComfortsParametersModel();
         model.put("filterParams", filterParamsModel);
+        model.put("comfortsParams", comfortsParamsModel);
 
         return buildModelAndView("property_filter");
     }
@@ -100,7 +110,7 @@ public class PropertyController extends BaseController  {
     }
 
     private Map<String, String> constructFilterParametersModel() {
-        String[] filterParamsNames = new String[] {
+        String[] filterParamsNames = new String[]{
                 "costMin", "costMax",
                 "areaMin", "areaMax",
                 "roomCountMin", "roomCountMax",
@@ -114,6 +124,21 @@ public class PropertyController extends BaseController  {
         }
 
         return filterParamsModel;
+    }
+
+    private Map<String, Boolean> constructComfortsParametersModel() {
+        final Map<String, Boolean> comfortsParamsModel = new HashMap<>();
+
+        final String[] comforts = request.getParameterValues("comforts");
+        if (comforts != null) {
+            ComfortsPutOperation putOperation = (name) -> comfortsParamsModel.put(name, Arrays.asList(comforts).contains(name));
+
+            for (String name : comfortsNames) {
+                putOperation.put(name);
+            }
+        }
+
+        return comfortsParamsModel;
     }
 
     private void fillComfortsParams(Map<PropertyFilterParamId, FilterParameter> params) {

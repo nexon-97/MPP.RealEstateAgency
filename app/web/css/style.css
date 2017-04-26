@@ -213,6 +213,12 @@ footer
     background-color: #69e073;
 }
 
+.error-field
+{
+    color: red;
+    font-size: 14px;
+}
+
 .convenienceIconBackNo
 {
     border: 3px solid darkslategrey;

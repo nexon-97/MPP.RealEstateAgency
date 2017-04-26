@@ -19,16 +19,12 @@ public class ProfileController extends BaseController {
     public ModelAndView showProfile(HttpServletResponse response) {
         initControllerResources(context, request, response);
 
-
-
         return buildModelAndView("profile");
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/profileEdit")
     public ModelAndView showProfileEditorPage(HttpServletResponse response) {
         initControllerResources(context, request, response);
-
-
 
         return buildModelAndView("edit_profile");
     }

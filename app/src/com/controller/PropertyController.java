@@ -63,9 +63,6 @@ public class PropertyController extends BaseController  {
     @RequestMapping(method = RequestMethod.GET, value = "/propertyFilter")
     public ModelAndView showFilter(HttpServletResponse response) {
         initControllerResources(context, request, response);
-        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
-
-
 
         return buildModelAndView("property_filter");
     }
@@ -101,11 +98,15 @@ public class PropertyController extends BaseController  {
     public ModelAndView visitAddPropertyForm(HttpServletResponse response) {
         initControllerResources(context, request, response);
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
-        System.out.println("In property controller get");
+
+        if (ServiceManager.getInstance().getAuthService().getLoggedUser() == null) {
+            return buildModelAndView("../unauthorized_view");
+        }
 
         PropertyService propService = ServiceManager.getInstance().getPropertyService();
         PropertyType[] types = PropertyType.values();
         model.put("types", types);
+
         return buildModelAndView("addProperty");
     }
 

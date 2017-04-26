@@ -35,7 +35,7 @@ CREATE TABLE `property_type` (
 
 LOCK TABLES `property_type` WRITE;
 /*!40000 ALTER TABLE `property_type` DISABLE KEYS */;
-INSERT INTO `property_type` VALUES (1,'Office'),(2,'House'),(3,'Block of flats'),(4,'Trading center'),(5,'Entertainment center'),(6,'Sports facility');
+INSERT INTO `property_type` VALUES (0,'Office'),(1,'House'),(2,'Block of flats'),(3,'Trading center'),(4,'Entertainment center'),(5,'Sports facility');
 /*!40000 ALTER TABLE `property_type` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -48,4 +48,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-04-19  1:49:40
+-- Dump completed on 2017-04-27  2:38:27

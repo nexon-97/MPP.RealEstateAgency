@@ -1,5 +1,10 @@
 package com.model;
 
 public enum PropertyType {
-    Castle, Flat, House
+    Office,
+    House,
+    Flat,
+    TradingCenter,
+    EntertainmentCenter,
+    SportsFacility,
 }

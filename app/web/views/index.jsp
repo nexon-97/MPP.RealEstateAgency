@@ -5,9 +5,15 @@
   <jsp:include page="html_head_common.jsp" />
 </head>
 <body>
-  <jsp:include page="header.jsp" />
-  <h1>Главная</h1>
-  <div class="buttonSimple" style="margin: 10px">Сайт в разработке</div>
-  <jsp:include page="footer.jsp" />
+    <div class="wrapper">
+        <jsp:include page="header.jsp" />
+        <div class="content">
+            <div>Описание сайта</div>
+            <h2>Предложения</h2>
+            <a href="/propertyFilter"><div class="buttonSimple" style="margin: 10px">Фильтр</div></a>
+            <div>Здесь дефолтные предложения</div>
+        </div>
+        <jsp:include page="footer.jsp" />
+    </div>
 </body>
 </html>

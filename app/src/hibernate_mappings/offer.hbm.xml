@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.model.Offer" table="offer">
+        <id name="id" type="int" column="offer_id">
+            <generator class="increment"/>
+        </id>
+        <property name="offerType" column="offer_type_id">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">com.model.OfferType</param>
+            </type>
+        </property>
+        <many-to-one name="property" column="property_id" class="com.model.Property" not-null="true" lazy="false"/>
+        <property name="cost" column="cost" type="java.util.Currency"/>
+    </class>
+</hibernate-mapping>

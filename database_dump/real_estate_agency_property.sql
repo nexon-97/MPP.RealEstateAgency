@@ -25,6 +25,7 @@ DROP TABLE IF EXISTS `property`;
 CREATE TABLE `property` (
   `property_id` int(11) NOT NULL AUTO_INCREMENT,
   `property_type_id` int(11) NOT NULL,
+  `owner` int(11) NOT NULL,
   `city` varchar(128) NOT NULL,
   `street` varchar(128) NOT NULL,
   `house_number` int(11) NOT NULL,
@@ -52,7 +53,7 @@ CREATE TABLE `property` (
 
 LOCK TABLES `property` WRITE;
 /*!40000 ALTER TABLE `property` DISABLE KEYS */;
-INSERT INTO `property` VALUES (1,2,'Минск','Ленина',6,104,5,105,150,120,1,1,1,1,1,1,'Уютный загородный дом'),(2,1,'Лида','Советская',14,NULL,9,120,40,30,1,1,0,0,0,1,'Крутой офис'),(3,3,'Минск','Гайа',104,17,2,40,NULL,NULL,1,1,1,0,0,0,'Новостройка, огонь'),(4,3,'Барановичи','Зеленый луг',35,26,3,74,NULL,NULL,1,1,1,1,0,1,'Эта квартира осталась от бабушки, срочно нужно продать'),(5,4,'Минск','Сосновый бор',84,NULL,NULL,150,1045,50,0,1,1,0,0,0,'Отличное место, чтобы построить многофункциональный торговый комплекс!');
+INSERT INTO `property` VALUES (1,1,1,'Минск','Ленина',6,104,5,105,150,120,1,1,1,1,1,1,'Уютный загородный дом'),(2,0,2,'Лида','Советская',14,NULL,9,120,40,30,1,1,0,0,0,1,'Крутой офис'),(3,2,3,'Минск','Гайа',104,17,2,40,NULL,NULL,1,1,1,0,0,0,'Новостройка, огонь'),(4,2,2,'Барановичи','Зеленый луг',35,26,3,74,NULL,NULL,1,1,1,1,0,1,'Эта квартира осталась от бабушки, срочно нужно продать'),(5,3,4,'Минск','Сосновый бор',84,NULL,NULL,150,1045,50,0,1,1,0,0,0,'Отличное место, чтобы построить многофункциональный торговый комплекс!');
 /*!40000 ALTER TABLE `property` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -65,4 +66,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-04-19  1:49:40
+-- Dump completed on 2017-04-27  2:38:28

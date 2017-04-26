@@ -3,6 +3,7 @@ package com.model;
 public class Property {
     private int id;
     private PropertyType type;
+    private User owner;
     private String city;
     private String street;
     private int houseNumber;
@@ -25,6 +26,10 @@ public class Property {
 
     public void setType(PropertyType type) {
         this.type = type;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
     public void setCity(String city) {
@@ -93,6 +98,10 @@ public class Property {
 
     public PropertyType getType() {
         return this.type;
+    }
+
+    public User getOwner() {
+        return this.owner;
     }
 
     public String getCity() {

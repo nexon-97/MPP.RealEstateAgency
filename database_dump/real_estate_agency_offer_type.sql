@@ -16,29 +16,27 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `permission`
+-- Table structure for table `offer_type`
 --
 
-DROP TABLE IF EXISTS `permission`;
+DROP TABLE IF EXISTS `offer_type`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `permission` (
-  `permission_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `offer_type` (
+  `offer_type_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
-  PRIMARY KEY (`permission_id`),
-  UNIQUE KEY `permission_id_UNIQUE` (`permission_id`),
-  UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`offer_type_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `permission`
+-- Dumping data for table `offer_type`
 --
 
-LOCK TABLES `permission` WRITE;
-/*!40000 ALTER TABLE `permission` DISABLE KEYS */;
-INSERT INTO `permission` VALUES (2,'add_property'),(1,'display_topbar'),(3,'edit_property'),(5,'remove_property'),(4,'view_property');
-/*!40000 ALTER TABLE `permission` ENABLE KEYS */;
+LOCK TABLES `offer_type` WRITE;
+/*!40000 ALTER TABLE `offer_type` DISABLE KEYS */;
+INSERT INTO `offer_type` VALUES (0,'sale'),(1,'lease');
+/*!40000 ALTER TABLE `offer_type` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

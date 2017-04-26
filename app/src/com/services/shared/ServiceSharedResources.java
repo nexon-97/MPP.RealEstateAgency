@@ -1,4 +1,4 @@
-package com.services;
+package com.services.shared;
 
 import org.springframework.context.ApplicationContext;
 

@@ -5,13 +5,16 @@ import com.dao.UserDAOImpl;
 import com.model.Role;
 import com.model.User;
 
-
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.services.shared.BaseService;
+import com.services.shared.ServiceId;
+import com.services.shared.ServiceSharedResources;
 
 public class RegisterServiceImpl extends BaseService implements RegisterService {
 

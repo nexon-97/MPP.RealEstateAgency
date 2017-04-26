@@ -2,8 +2,7 @@ package com.controller;
 
 import com.model.User;
 import com.services.RegisterService;
-import com.services.RegisterServiceImpl;
-import com.services.ServiceManager;
+import com.services.shared.ServiceManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

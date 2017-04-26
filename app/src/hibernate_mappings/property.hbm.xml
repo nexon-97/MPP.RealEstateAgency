@@ -11,7 +11,11 @@
         <id name="id" type="int" column="property_id">
             <generator class="increment"/>
         </id>
-        <many-to-one name="type" column="property_type_id" class="com.model.PropertyType" not-null="true" lazy="false" foreign-key="fk_property_type"/>
+        <property name="type" column="property_type_id">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">com.model.PropertyType</param>
+            </type>
+        </property>
         <property name="city" column="city" type="string"/>
         <property name="street" column="street" type="string"/>
         <property name="houseNumber" column="house_number" type="int"/>

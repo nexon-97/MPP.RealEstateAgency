@@ -24,17 +24,33 @@ a
 
 header
 {
-    width: 100%;
+    left: 0;
+    right: 0;
     background-color: #0080ff;
     color: white;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+.wrapper {
+    position: relative;
+    min-height: 100%;
+}
+
+.content {
+    padding-bottom: 50px;
 }
 
 footer
 {
     text-align: center;
-    width: 100%;
     background-color: #0069ff;
     color: white;
+    left: 0;
+    right: 0;
     position: absolute;
     bottom: 0;
 }
@@ -382,6 +398,88 @@ footer
 	font-size: 16px;
     padding: 3px 5px;
     display: inline-block;
+}
+
+.property-form-wrapper
+{
+    text-align: center;
+    display: inline-block;
+    background-color: #c5d8f5;
+    border-radius: 10px;
+    padding: 5px 10px;
+}
+
+#property-form
+{
+    display: inline-block;
+    width: 500px;
+}
+
+#property-form table
+{
+    width: 100%;
+}
+
+.property-form-button
+{
+    background-color: #0094ff;
+    border-width: 0px;
+    border-radius: 7px;
+    padding: 4px 15px;
+    color: white;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.property-form-input
+{
+    border-radius: 4px;
+    font-size: 16px;
+    color: black;
+    padding: 2px 4px;
+    margin: 2px 0px;
+    border: 1px solid #AAA;
+    width: 100%;
+}
+
+.property-form-checkbox {
+    display: none;
+}
+
+.property-form-checkbox-custom {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ccc;
+    border-radius: 3px;
+    display: inline-block;
+    background: white;
+}
+
+.property-form-checkbox:checked + .property-form-checkbox-custom::before {
+    content: "";
+    display: block;
+    position: absolute;
+
+    top: 2px;
+    right: 2px;
+    bottom: 2px;
+    left: 2px;
+
+    background: #0094ff;
+    border-radius: 2px;
+}
+
+.property-form-textarea
+{
+    border-radius: 4px;
+    font-size: 16px;
+    color: black;
+    padding: 2px 4px;
+    margin: 2px 0px;
+    border: 1px solid #AAA;
+    width: 100%;
+    resize: none;
 }
 
 .criteriaCheckbox

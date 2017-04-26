@@ -59,7 +59,38 @@ public class PropertyDAOImpl extends BaseDAO implements PropertyDAO {
 
     @Override
     public boolean updateProperty(Property property) {
-        return false;
+        Session session = openSession();
+        if (session != null) {
+            try {
+                Transaction tx = session.beginTransaction();
+                session.update(property);
+                tx.commit();
+            } catch (HibernateException e) {
+                e.printStackTrace();
+                return false;
+            } finally {
+                session.close();
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean addProperty(Property property) {
+        Session session = openSession();
+        if (session != null) {
+            try {
+                Transaction tx = session.beginTransaction();
+                session.save(property);
+                tx.commit();
+            } catch (HibernateException e) {
+                e.printStackTrace();
+                return false;
+            } finally {
+                session.close();
+            }
+        }
+        return true;
     }
 
     @Override

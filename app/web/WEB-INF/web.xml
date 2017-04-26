@@ -64,6 +64,7 @@
         <url-pattern>/property.html</url-pattern>
         <url-pattern>/property</url-pattern>
         <url-pattern>/propertyFilter</url-pattern>
+        <url-pattern>/addProperty</url-pattern>
     </servlet-mapping>
 
     <servlet>

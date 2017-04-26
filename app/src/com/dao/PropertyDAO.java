@@ -12,6 +12,7 @@ public interface PropertyDAO {
     Property getPropertyById(int id);
     boolean updateProperty(Property property);
     boolean deleteProperty(Property property);
+    boolean addProperty(Property property);
     List<Property> getPropertiesOwnedByUser(User user);
     List<Property> list();
     List<Property> filter(Map<PropertyFilterParamId, FilterParameter> filterParams);

@@ -1,6 +1,7 @@
 package com.controller;
 
 import com.model.Property;
+import com.model.PropertyType;
 import com.services.PropertyService;
 import com.services.shared.ServiceManager;
 import com.utils.request.BooleanParameter;
@@ -84,6 +85,18 @@ public class PropertyController extends BaseController  {
         model.put("filterParams", filterParamsModel);
 
         return buildModelAndView("property_filter");
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/addProperty")
+    public ModelAndView visitAddPropertyForm(HttpServletResponse response) {
+        initControllerResources(context, request, response);
+        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
+        System.out.println("In property controller get");
+
+        PropertyService propService = ServiceManager.getInstance().getPropertyService();
+        PropertyType[] types = PropertyType.values();
+        model.put("types", types);
+        return buildModelAndView("addProperty");
     }
 
     private Map<String, String> constructFilterParametersModel() {

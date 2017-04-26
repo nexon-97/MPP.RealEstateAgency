@@ -68,32 +68,6 @@ footer
     border-radius: 5px;
 }
 
-.tableCellLeftOdd
-{
-    background-color: #ffd5a3;
-}
-
-.tableCellLeftEven
-{
-    background-color: #ffe294;
-}
-
-.testUserTable
-{
-    border: 1px solid rgba(0, 0, 0, 0.5);
-}
-
-.testUserTable th, td
-{
-    padding: 1px 4px;
-}
-
-.testUserWrapper
-{
-    display: inline-block;
-    padding: 10px;
-}
-
 .content
 {
     text-align: center;
@@ -346,15 +320,16 @@ footer
 .filterBlockWrapper
 {
     float: left;
-    background-color: red;
     width: 600px;
     padding: 10px;
+    margin-left: 10px;
+    background-color: #9dbed3;
+    border-radius: 10px;
 }
 
 .filterResultWrapper
 {
     float: none;
-    background-color: green;
     width: auto;
     overflow: hidden;
     padding: 10px;
@@ -371,10 +346,12 @@ footer
 	display: inline-block;
 	width: 300px;
 	text-align: left;
+    vertical-align: middle;
 }
 
 .criteriaValue
 {
+    text-align: right;
 	display: inline-block;
 	width: 290px;
 }
@@ -400,9 +377,30 @@ footer
 
 .criteriaInput
 {
-	border: 1px solid black;
-	border-radius: 8px;
+	border: 1px solid #003a98;
+	border-radius: 5px;
 	font-size: 16px;
-    padding: 2px 4px;
+    padding: 3px 5px;
     display: inline-block;
+}
+
+.criteriaCheckbox
+{
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.filterCriteriaLabel
+{
+    font-size: 24px;
+    color: #222222;
+    padding-bottom: 15px;
+}
+
+.comfortsLabel
+{
+    font-size: 20px;
+    color: #222222;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }

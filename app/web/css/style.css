@@ -219,6 +219,12 @@ a
     background-color: #69e073;
 }
 
+.error-field
+{
+    color: red;
+    font-size: 14px;
+}
+
 .convenienceIconBackNo
 {
     border: 3px solid darkslategrey;
@@ -227,3 +233,4 @@ a
     padding: 5px;
     background-color: #ff584c;
 }
+

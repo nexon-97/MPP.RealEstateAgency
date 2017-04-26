@@ -6,7 +6,7 @@
 <hibernate-mapping>
     <class name="com.model.Property" table="property">
         <meta attribute="class-description">
-            This class contains the user detail.
+            This class contains the property detail.
         </meta>
         <id name="id" type="int" column="property_id">
             <generator class="increment"/>

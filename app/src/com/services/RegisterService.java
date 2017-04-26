@@ -1,5 +1,7 @@
 package com.services;
 
+import java.util.Map;
+
 public interface RegisterService {
-    boolean register();
+    boolean register(Map<String, String[]> params);
 }

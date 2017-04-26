@@ -6,7 +6,7 @@
 <hibernate-mapping>
     <class name="com.model.Role" table="role">
         <meta attribute="class-description">
-            This class contains the user detail.
+            This class contains the role detail.
         </meta>
         <id name="id" column="role_id" type="int">
             <generator class="increment"/>

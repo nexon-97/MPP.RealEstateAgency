@@ -60,6 +60,30 @@ public class PropertyController extends BaseController  {
         return buildModelAndView("property");
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/addProperty")
+    public ModelAndView visitAddPropertyForm(HttpServletResponse response) {
+        initControllerResources(context, request, response);
+        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
+        System.out.println("In property controller get");
+
+        PropertyService propService = ServiceManager.getInstance().getPropertyService();
+        PropertyType[] types = PropertyType.values();
+        model.put("types", types);
+        return buildModelAndView("addProperty");
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/addProperty")
+    public ModelAndView register(HttpServletResponse response) {
+        initControllerResources(context, request, response);
+        PropertyService propertyService = ServiceManager.getInstance().getPropertyService();
+        boolean isRegisterCorrect = propertyService.addProperty(request.getParameterMap());
+        if (isRegisterCorrect){
+            return buildModelAndView("index");}
+        else {
+            return buildModelAndView("addProperty");
+        }
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/propertyFilter")
     public ModelAndView showFilter(HttpServletResponse response) {
         initControllerResources(context, request, response);
@@ -95,18 +119,6 @@ public class PropertyController extends BaseController  {
         model.put("comfortsParams", comfortsParamsModel);
 
         return buildModelAndView("property_filter");
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/addProperty")
-    public ModelAndView visitAddPropertyForm(HttpServletResponse response) {
-        initControllerResources(context, request, response);
-        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
-        System.out.println("In property controller get");
-
-        PropertyService propService = ServiceManager.getInstance().getPropertyService();
-        PropertyType[] types = PropertyType.values();
-        model.put("types", types);
-        return buildModelAndView("addProperty");
     }
 
     private Map<String, String> constructFilterParametersModel() {

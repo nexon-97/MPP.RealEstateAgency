@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface OfferService {
     List<Offer> getUserOffers(User user);
+    List<Offer> listAllOffers();
     Offer getOfferById(int id);
 }

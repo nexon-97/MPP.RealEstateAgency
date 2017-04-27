@@ -97,4 +97,24 @@ public class OfferDAOImpl extends BaseDAO implements OfferDAO {
     public List<Offer> listUserOffers(User user) {
         return null;
     }
+
+    @Override
+    public List<Offer> list() {
+        Session session = openSession();
+        if (session != null) {
+            try {
+                Transaction tx = session.beginTransaction();
+                List<Offer> allOffers = session.createCriteria(Offer.class).list();
+                tx.commit();
+
+                return allOffers;
+            } catch (HibernateException e) {
+                e.printStackTrace();
+            } finally {
+                session.close();
+            }
+        }
+
+        return null;
+    }
 }

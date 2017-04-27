@@ -502,3 +502,27 @@ footer
     padding-top: 10px;
     padding-bottom: 10px;
 }
+
+.siteDescriptionArea
+{
+    text-align: left;
+    font-size: 18px;
+    margin: 15px 20px;
+    padding: 15px;
+    background-color: #9dbed3;
+    border-radius: 10px;
+}
+
+.offer-view-short-container
+{
+    background-color: #cfafff;
+    display: inline-block;
+    text-align: left;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.offers-container
+{
+    margin: 15px 10px;
+}

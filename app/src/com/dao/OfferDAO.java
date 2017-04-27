@@ -11,4 +11,5 @@ public interface OfferDAO {
     boolean deleteOffer(Offer offer);
     boolean addOffer(Offer offer);
     List<Offer> listUserOffers(User user);
+    List<Offer> list();
 }

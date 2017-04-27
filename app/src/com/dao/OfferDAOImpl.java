@@ -3,11 +3,10 @@ package com.dao;
 import com.model.Offer;
 import com.model.Property;
 import com.model.User;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OfferDAOImpl extends BaseDAO implements OfferDAO {
@@ -95,6 +94,33 @@ public class OfferDAOImpl extends BaseDAO implements OfferDAO {
 
     @Override
     public List<Offer> listUserOffers(User user) {
+        Session session = openSession();
+        if (session != null) {
+            try {
+                Transaction tx = session.beginTransaction();
+
+                String userId = String.valueOf(user.getId());
+                SQLQuery query = session.createSQLQuery("SELECT {o.*}, {p.*} FROM Offer o JOIN Property p ON o.property_id = p.property_id WHERE p.owner = " + userId)
+                        .addEntity("o", Offer.class)
+                        .addJoin("p","o.property");
+                List rows = query.list();
+
+                List<Offer> filteredOffers = new ArrayList<>();
+                for (Object row : rows) {
+                    Object[] joinedRow = (Object[])row;
+                    filteredOffers.add((Offer)joinedRow[0]);
+                }
+
+                tx.commit();
+
+                return filteredOffers;
+            } catch (HibernateException e) {
+                e.printStackTrace();
+            } finally {
+                session.close();
+            }
+        }
+
         return null;
     }
 

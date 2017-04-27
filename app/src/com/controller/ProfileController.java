@@ -1,5 +1,6 @@
 package com.controller;
 
+import com.model.Offer;
 import com.model.Property;
 import com.model.User;
 import com.services.shared.ServiceManager;
@@ -26,7 +27,10 @@ public class ProfileController extends BaseController {
         User loggedUser = serviceManager.getAuthService().getLoggedUser();
         if (loggedUser != null) {
             List<Property> userProperties = serviceManager.getPropertyService().getPropertiesOwnedByUser(loggedUser);
+            List<Offer> userOffers = serviceManager.getOfferService().getUserOffers(loggedUser);
+
             model.put("userProperties", userProperties);
+            model.put("userOffers", userOffers);
         }
 
         return buildModelAndView("profile");

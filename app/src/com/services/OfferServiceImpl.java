@@ -18,9 +18,9 @@ public class OfferServiceImpl extends BaseService implements OfferService {
 
     @Override
     public List<Offer> getUserOffers(User user) {
+        OfferDAO offerDAO = new OfferDAOImpl();
 
-
-        return null;
+        return offerDAO.listUserOffers(user);
     }
 
     @Override

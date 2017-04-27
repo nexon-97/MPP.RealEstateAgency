@@ -55,8 +55,14 @@
                     <div class="personalAreaLabel" style="margin-top: 15px">Предложения</div>
                     <c:choose>
                         <c:when test="${fn:length(userProperties) > 0}">
+                            <div class="offers-container">
+                                 <c:forEach var="offer" items="${userOffers}">
+                                     <c:set var="offer" value="${offer}" scope="request" />
+                                     <jsp:include page="../offer/offer_compact_view.jsp" />
+                                 </c:forEach>
+                            </div>
                             <div>
-                                <div class="buttonSimple" style="margin-top: 10px;">
+                                <div class="buttonSimple">
                                     <a href="/addOffer">Добавить</a>
                                 </div>
                             </div>

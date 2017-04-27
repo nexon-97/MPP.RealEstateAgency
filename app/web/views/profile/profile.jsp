@@ -43,7 +43,9 @@
                     </div>
                     <div class="personalAreaLabel" style="margin-top: 15px">Собственность</div>
                     <c:forEach var="property" items="${userProperties}">
-
+                        <div>
+                            <a href="/property?id=${property.id}">Собственность [${property.id}]</a>
+                        </div>
                     </c:forEach>
                     <div>
                         <div class="buttonSimple" style="margin-top: 10px;">

@@ -25,6 +25,7 @@ public class ServiceManager {
         servicesMap.put(ServiceId.RegistrationService, new RegisterServiceImpl(sharedResources));
         servicesMap.put(ServiceId.PropertyService, new PropertyServiceImpl(sharedResources));
         servicesMap.put(ServiceId.UserService, new UserServiceImpl(sharedResources));
+        servicesMap.put(ServiceId.OfferService, new OfferServiceImpl(sharedResources));
     }
 
     public BaseService getServiceById(ServiceId id) {
@@ -49,6 +50,10 @@ public class ServiceManager {
 
     public UserService getUserService() {
         return (UserService) getServiceById(ServiceId.UserService);
+    }
+
+    public OfferService getOfferService() {
+        return (OfferService) getServiceById(ServiceId.OfferService);
     }
 
     public ServiceSharedResources getSharedResources() {

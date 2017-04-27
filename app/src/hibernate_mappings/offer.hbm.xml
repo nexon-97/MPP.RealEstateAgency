@@ -14,6 +14,6 @@
             </type>
         </property>
         <many-to-one name="property" column="property_id" class="com.model.Property" not-null="true" lazy="false"/>
-        <property name="cost" column="cost" type="java.util.Currency"/>
+        <property name="cost" column="cost" type="big_decimal"/>
     </class>
 </hibernate-mapping>

@@ -82,5 +82,25 @@
         <url-pattern>/profileEdit.jsp</url-pattern>
         <url-pattern>/profileEdit</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>OfferController</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>/WEB-INF/servlets/offerController.xml</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>OfferController</servlet-name>
+        <url-pattern>/offer.jsp</url-pattern>
+        <url-pattern>/offer</url-pattern>
+        <url-pattern>/addOffer.jsp</url-pattern>
+        <url-pattern>/addOffer</url-pattern>
+        <url-pattern>/editOffer.jsp</url-pattern>
+        <url-pattern>/editOffer</url-pattern>
+        <url-pattern>/deleteOffer.jsp</url-pattern>
+        <url-pattern>/deleteOffer</url-pattern>
+    </servlet-mapping>
     <!-- Spring controllers -->
 </web-app>

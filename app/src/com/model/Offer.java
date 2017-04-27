@@ -1,5 +1,7 @@
 package com.model;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Currency;
 
 public class Offer {
@@ -7,7 +9,7 @@ public class Offer {
     private int id;
     private OfferType offerType;
     private Property property;
-    private Currency cost;
+    private BigDecimal cost;
 
     public void setId(int id) {
         this.id = id;
@@ -21,7 +23,7 @@ public class Offer {
         this.property = property;
     }
 
-    public void setCost(Currency cost) {
+    public void setCost(BigDecimal cost) {
         this.cost = cost;
     }
 
@@ -37,7 +39,7 @@ public class Offer {
         return this.property;
     }
 
-    public Currency getCost() {
+    public BigDecimal getCost() {
         return this.cost;
     }
 }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.model.Transaction" table="transaction">
+        <meta attribute="class-description">
+            This class contains the transaction detail.
+        </meta>
+        <id name="id" type="int" column="transaction_id">
+            <generator class="increment"/>
+        </id>
+        <many-to-one name="buyer" column="buyer_id" class="com.model.User" not-null="true" lazy="false" foreign-key="fk_buyer"/>
+        <many-to-one name="seller" column="seller_id" class="com.model.User" not-null="true" lazy="false" foreign-key="fk_seller"/>
+        <property name="companyFine" column="company_fine" type="big_decimal"/>
+        <property name="payment" column="payment" type="big_decimal"/>
+        <property name="date" column="date" type="date"/>
+    </class>
+</hibernate-mapping>

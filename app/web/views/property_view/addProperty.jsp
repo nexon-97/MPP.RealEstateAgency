@@ -26,34 +26,74 @@
                     <tr>
                         <td>City:</td>
                         <td><input id="cityInput" type="text" class="property-form-input" name="city"/></td>
+                        <td>
+                            <div id="city-error" class="error-field">
+                                <c:if test="${(propertyInfo != null) && (propertyInfo.city == null)}">City name should contains only english symbols(A-Z, a-z), numbers(0-9) or ( _ )</c:if>
+                            </div>
+                        </td>
                     </tr>
                     <tr>
                         <td>Street:</td>
                         <td><input id="streetInput" type="text" class="property-form-input" name="street"/></td>
+                        <td>
+                            <div id="street-error" class="error-field">
+                                <c:if test="${(propertyInfo != null) && (propertyInfo.street == null)}">Street name should contains only english symbols(A-Z, a-z), numbers(0-9) or ( _ )</c:if>
+                            </div>
+                        </td>
                     </tr>
                     <tr>
                         <td>House number:</td>
                         <td><input id="houseNumberInput" type="number" class="property-form-input" name="houseNumber"/></td>
+                        <td>
+                            <div id="house-number-error" class="error-field">
+                                <c:if test="${(propertyInfo != null) && (propertyInfo.houseNumber == -1)}">House number should be more then 0</c:if>
+                            </div>
+                        </td>
                     </tr>
                     <tr>
                         <td>Flat number:</td>
                         <td><input id="flatNumberInput" type="number" class="property-form-input" name="flatNumber"/></td>
+                        <td>
+                            <div id="flat-number-error" class="error-field">
+                                <c:if test="${(propertyInfo != null) && (propertyInfo.flatNumber == -1)}">Flat number should be more then 0</c:if>
+                            </div>
+                        </td>
                     </tr>
                     <tr>
                         <td>Rooms count:</td>
                         <td><input id="roomsCountInput" type="number" class="property-form-input" name="roomsCount"/></td>
+                        <td>
+                            <div id="rooms-error" class="error-field">
+                                <c:if test="${(propertyInfo != null) && (propertyInfo.roomsCount == -1)}">Rooms count should be more then 0</c:if>
+                            </div>
+                        </td>
                     </tr>
                     <tr>
                         <td>Area:</td>
                         <td><input id="areaInput" type="number" class="property-form-input" name="area"/></td>
+                        <td>
+                            <div id="area-error" class="error-field">
+                                <c:if test="${(propertyInfo != null) && (propertyInfo.area == -1)}">Area should be more then 0</c:if>
+                            </div>
+                        </td>
                     </tr>
                     <tr>
                         <td>Distance to subway:</td>
                         <td><input id="subwayInput" type="number" class="property-form-input" name="subway"/></td>
+                        <td>
+                            <div id="subway-error" class="error-field">
+                                <c:if test="${(propertyInfo != null) && (propertyInfo.distanceToSubway == -1)}">Distance should be positive</c:if>
+                            </div>
+                        </td>
                     </tr>
                     <tr>
                         <td>Distance to bus stop:</td>
                         <td><input id="busInput" type="number" class="property-form-input" name="bus"/></td>
+                        <td>
+                            <div id="bus-error" class="error-field">
+                                <c:if test="${(propertyInfo != null) && (propertyInfo.distanceToTransportStop == -1)}">Distance should be positive</c:if>
+                            </div>
+                        </td>
                     </tr>
                     <tr>
                         <td>Furniture:</td>

@@ -6,7 +6,14 @@
         <table style="width: 100%">
             <tr>
                 <td colspan="2" class="propertyDescriptionTableHeaderCell">
-                    <div class="propertyDescriptionTableHeader">Предложение [${offer.id}]</div>
+                    <div class="propertyDescriptionTableHeader">
+                        <h3>Предложение [${offer.id}]</h3>
+                        <c:set var="property" value="${offer.property}" />
+                        <c:if test="${property.owner.id == user.id || user.role.id == 0}">
+                            <a href="/editOffer?id=${offer.id}"><div class="pen-button-full"><img src="/img/pen.png" /></div></a>
+                            <a href="/deleteOffer?id=${offer.id}"><div class="delete-button-full"><img src="/img/cross.png" /></div></a>
+                        </c:if>
+                    </div>
                 </td>
             </tr>
             <tr>

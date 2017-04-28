@@ -47,7 +47,7 @@ public class OfferServiceImpl extends BaseService implements OfferService {
     public boolean deleteOffer(Offer offer) {
         // Check delete offer permission
         User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
-        boolean isOwner = loggedUser != null && offer.getProperty().getOwner().equals(loggedUser);
+        boolean isOwner = loggedUser != null && offer.getProperty().getOwner().getId() == loggedUser.getId();
         boolean isAdmin = loggedUser.getRole().getRoleId().equals(RoleId.Admin);
         if (isOwner || isAdmin) {
             OfferDAO offerDAO = new OfferDAOImpl();

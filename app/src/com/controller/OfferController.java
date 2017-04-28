@@ -85,14 +85,14 @@ public class OfferController extends BaseController {
     public ModelAndView showEditOfferView(HttpServletResponse response) {
         initControllerResources(context, request, response);
 
-        return buildModelAndView("/");
+        return redirect("/");
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/editOffer")
     public ModelAndView editOfferAction(HttpServletResponse response) {
         initControllerResources(context, request, response);
 
-        return buildModelAndView("/");
+        return redirect("/");
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/deleteOffer")

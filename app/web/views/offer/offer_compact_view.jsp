@@ -8,5 +8,9 @@
         <div>Тип: ${offer.offerType}</div>
         <div>Стоимость: ${offer.cost} $</div>
         <div>Адрес: ${property.city}, ${property.street}, ${property.houseNumber}</div>
+        <c:if test="${property.owner.id == user.id || user.role.id == 0}">
+            <a href="/editOffer?id=${offer.id}"><div class="pen-button"><img src="/img/pen.png" /></div></a>
+            <a href="/deleteOffer?id=${offer.id}"><div class="delete-button"><img src="/img/cross.png" /></div></a>
+        </c:if>
     </div>
 </a>

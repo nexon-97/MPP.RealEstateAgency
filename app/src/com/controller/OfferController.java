@@ -1,15 +1,23 @@
 package com.controller;
 
-import com.model.Offer;
+import com.model.*;
 import com.services.OfferService;
+import com.services.PropertyService;
 import com.services.shared.ServiceManager;
+import com.utils.request.OfferValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.ParseException;
+import java.util.List;
 import java.util.Map;
+import java.util.StringJoiner;
 
 @Controller
 public class OfferController extends BaseController {
@@ -39,15 +47,38 @@ public class OfferController extends BaseController {
     @RequestMapping(method = RequestMethod.GET, value = "/addOffer")
     public ModelAndView showAddOfferView(HttpServletResponse response) {
         initControllerResources(context, request, response);
+        ServiceManager serviceManager = ServiceManager.getInstance();
+        Map<String, Object> model = serviceManager.getSharedResources().getModel();
 
-        return buildModelAndView("index");
+        User loggedUser = serviceManager.getAuthService().getLoggedUser();
+        if (loggedUser != null) {
+            PropertyService propertyService = serviceManager.getPropertyService();
+            List<Property> userProperties = propertyService.getPropertiesOwnedByUser(loggedUser);
+            model.put("userProperties", userProperties);
+
+            OfferType[] offerTypes = OfferType.values();
+            model.put("offerTypes", offerTypes);
+        }
+
+        return buildModelAndView("add_offer_view");
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/addOffer")
     public ModelAndView addOfferAction(HttpServletResponse response) {
         initControllerResources(context, request, response);
+        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
 
-        return buildModelAndView("index");
+        OfferValidator validator = new OfferValidator(request.getParameterMap());
+        if (validator.verify()) {
+            Offer offer = validator.getOffer();
+            OfferService offerService = ServiceManager.getInstance().getOfferService();
+            if (offerService.addOffer(offer)) {
+                return redirect("/offer?id=" + String.valueOf(offer.getId()));
+            }
+        }
+
+        model.put("msg", "Не удалось добавить предложение! Проверьте правильность параметров!");
+        return buildModelAndView("../error_message");
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/editOffer")
@@ -68,6 +99,6 @@ public class OfferController extends BaseController {
     public ModelAndView deleteOfferAction(HttpServletResponse response) {
         initControllerResources(context, request, response);
 
-        return redirect("/profile");
+        return redirect("index");
     }
 }

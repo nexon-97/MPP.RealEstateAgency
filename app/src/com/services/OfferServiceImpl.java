@@ -36,4 +36,11 @@ public class OfferServiceImpl extends BaseService implements OfferService {
 
         return offerDAO.getOfferById(id);
     }
+
+    @Override
+    public boolean addOffer(Offer offer) {
+        OfferDAO offerDAO = new OfferDAOImpl();
+
+        return offerDAO.addOffer(offer);
+    }
 }

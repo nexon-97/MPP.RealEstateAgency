@@ -5,6 +5,10 @@ import com.services.OfferService;
 import com.services.PropertyService;
 import com.services.shared.ServiceManager;
 import com.utils.request.*;
+import com.utils.request.validator.BigDecimalParameterValidator;
+import com.utils.request.validator.EnumParameterValidator;
+import com.utils.request.validator.IntegerParameterValidator;
+import com.utils.request.validator.RequestValidationChain;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -12,13 +16,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.ParseException;
 import java.util.*;
 
 @Controller
 public class OfferController extends BaseController {
+
+    private RequestValidationChain offerValidationChain;
 
     private interface ComfortsPutOperation {
         void put(String name);
@@ -27,6 +30,10 @@ public class OfferController extends BaseController {
     private final String[] comfortsNames = {
             "furniture", "tv", "internet", "fridge", "stove", "phone"
     };
+
+    public OfferController() {
+        this.offerValidationChain = buildOfferValidationChain();
+    }
 
     @RequestMapping(method = RequestMethod.GET, value = "/offer")
     public ModelAndView showOffer(HttpServletResponse response) {
@@ -72,19 +79,18 @@ public class OfferController extends BaseController {
     @RequestMapping(method = RequestMethod.POST, value = "/addOffer")
     public ModelAndView addOfferAction(HttpServletResponse response) {
         initControllerResources(context, request, response);
-        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
 
-        OfferValidator validator = new OfferValidator(request.getParameterMap());
-        if (validator.verify()) {
-            Offer offer = validator.getOffer();
+        Offer offer = constructOfferFromRequest();
+        if (offer != null) {
             OfferService offerService = ServiceManager.getInstance().getOfferService();
             if (offerService.addOffer(offer)) {
                 return redirect("/offer?id=" + String.valueOf(offer.getId()));
             }
+        } else {
+            return showErrorMessage(offerValidationChain.getErrorMessage());
         }
 
-        model.put("msg", "Не удалось добавить предложение! Проверьте правильность параметров!");
-        return buildModelAndView("../error_message");
+        return showErrorMessage("Не удалось добавить предложение! Проверьте правильность параметров!");
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/editOffer")
@@ -128,26 +134,18 @@ public class OfferController extends BaseController {
     @RequestMapping(method = RequestMethod.POST, value = "/editOffer")
     public ModelAndView editOfferAction(HttpServletResponse response) {
         initControllerResources(context, request, response);
-        boolean updateSuccess = false;
 
-        OfferValidator validator = new OfferValidator(request.getParameterMap());
-        if (validator.verify()) {
-            Offer offer = validator.getOffer();
+        Offer offer = constructOfferFromRequest();
+        if (offer != null) {
+            OfferService offerService = ServiceManager.getInstance().getOfferService();
+            boolean updateSuccess = offerService.updateOffer(offer);
 
-            User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
-            if (ServiceManager.getInstance().getPermissionService().canEditOffer(loggedUser, offer)) {
-                OfferService offerService = ServiceManager.getInstance().getOfferService();
-                updateSuccess = offerService.updateOffer(offer);
-
-                if (updateSuccess) {
-                    return redirect("/offer?id=" + String.valueOf(offer.getId()));
-                }
+            if (updateSuccess) {
+                return redirect("/offer?id=" + String.valueOf(offer.getId()));
             }
         }
 
-        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
-        model.put("msg", "Не удалось изменить предложение!");
-        return buildModelAndView("../error_message");
+        return showErrorMessage("Не удалось изменить предложение!");
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/deleteOffer")
@@ -214,6 +212,13 @@ public class OfferController extends BaseController {
         return buildModelAndView("offer_filter");
     }
 
+    private RequestValidationChain buildOfferValidationChain() {
+        return new RequestValidationChain()
+            .addValidator(new BigDecimalParameterValidator("cost"))
+            .addValidator(new IntegerParameterValidator("property"))
+            .addValidator(new EnumParameterValidator<>(OfferType.class, "offerType"));
+    }
+
     private Map<String, String> constructFilterParametersModel() {
         String[] filterParamsNames = new String[]{
                 "costMin", "costMax",
@@ -267,9 +272,52 @@ public class OfferController extends BaseController {
         params.put(paramId, new BooleanParameter(paramId, contain));
     }
 
+    private Offer constructOfferFromRequest() {
+        boolean offerValid = offerValidationChain.validate();
+        if (offerValid) {
+            Integer propertyId = (Integer)offerValidationChain.getValue("property");
+            Property property = ServiceManager.getInstance().getPropertyService().getPropertyById(propertyId);
+
+            if (property != null) {
+                BigDecimal cost = (BigDecimal)offerValidationChain.getValue("cost");
+                OfferType offerType = (OfferType)offerValidationChain.getValue("offerType");
+
+                Offer offer = new Offer();
+                offer.setOfferType(offerType);
+                offer.setCost(cost);
+                offer.setProperty(property);
+
+                // Try loading offer id from request parameter
+                Integer id = getIdFromRequest();
+                if (id != null) {
+                    offer.setId(id);
+                }
+
+                return offer;
+            }
+        }
+
+        return null;
+    }
+
+    private Integer getIdFromRequest() {
+        String idParam = request.getParameter("id");
+        if (idParam != null) {
+            return ParseUtils.parseInteger(idParam);
+        }
+
+        return null;
+    }
+
     private ModelAndView showUndefinedOfferMessage() {
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
         model.put("msg", "Такого предложения не существует!");
+        return buildModelAndView("../error_message");
+    }
+
+    private ModelAndView showErrorMessage(String message) {
+        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
+        model.put("msg", message);
         return buildModelAndView("../error_message");
     }
 }

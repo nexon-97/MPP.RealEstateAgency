@@ -11,6 +11,7 @@ import com.services.shared.*;
 import com.utils.request.FilterParameter;
 import com.utils.request.PropertyFilterParamId;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -43,9 +44,14 @@ public class OfferServiceImpl extends BaseService implements OfferService {
 
     @Override
     public boolean addOffer(Offer offer) {
-        OfferDAO offerDAO = new OfferDAOImpl();
+        User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
 
-        return offerDAO.addOffer(offer);
+        if (loggedUser != null && isValid(offer)) {
+            OfferDAO offerDAO = new OfferDAOImpl();
+            return offerDAO.addOffer(offer);
+        }
+
+        return false;
     }
 
     @Override
@@ -66,7 +72,7 @@ public class OfferServiceImpl extends BaseService implements OfferService {
         User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
         boolean hasPermission = ServiceManager.getInstance().getPermissionService().canEditOffer(loggedUser, offer);
 
-        if (hasPermission) {
+        if (hasPermission && isValid(offer)) {
             OfferDAO offerDAO = new OfferDAOImpl();
             return offerDAO.updateOffer(offer);
         }
@@ -79,5 +85,14 @@ public class OfferServiceImpl extends BaseService implements OfferService {
         OfferDAO dao = new OfferDAOImpl();
 
         return dao.filter(filterParameters);
+    }
+
+    @Override
+    public boolean isValid(Offer offer) {
+        boolean costPositive = offer.getCost().compareTo(BigDecimal.ZERO) >= 0;
+        boolean propertyExists = offer.getProperty() != null;
+        boolean offerTypeNotNull = offer.getOfferType() != null;
+
+        return costPositive && propertyExists && offerTypeNotNull;
     }
 }

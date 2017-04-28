@@ -16,4 +16,5 @@ public interface OfferService {
     boolean deleteOffer(Offer offer);
     boolean updateOffer(Offer offer);
     List<Offer> filterOffers(Map<PropertyFilterParamId, FilterParameter> filterParameters);
+    boolean isValid(Offer offer);
 }

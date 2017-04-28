@@ -19,85 +19,103 @@
                                 <div class="criteriaBlock">
                                     <div class="criteriaLabel">Цена</div>
                                     <div class="criteriaRangeWrapper">
-                                        <input type="text" name="costMin" class="criteriaInput criteriaRangeInputLeft"
+                                        <input type="number" name="costMin" class="criteriaInput criteriaRangeInputLeft"
                                                value="<c:out value="${filterParams['costMin']}"/>" placeholder="От" />
-                                        <input type="text" name="costMax" class="criteriaInput criteriaRangeInputRight"
+                                        <input type="number" name="costMax" class="criteriaInput criteriaRangeInputRight"
                                                value="<c:out value="${filterParams['costMax']}"/>" placeholder="До" />
                                     </div>
                                 </div>
                                 <div class="criteriaBlock">
                                     <div class="criteriaLabel">Площадь</div>
                                     <div class="criteriaRangeWrapper">
-                                        <input type="text" name="areaMin" class="criteriaInput criteriaRangeInputLeft"
+                                        <input type="number" name="areaMin" class="criteriaInput criteriaRangeInputLeft"
                                                value="<c:out value="${filterParams['areaMin']}"/>" placeholder="От" />
-                                        <input type="text" name="areaMax" class="criteriaInput criteriaRangeInputRight"
+                                        <input type="number" name="areaMax" class="criteriaInput criteriaRangeInputRight"
                                                value="<c:out value="${filterParams['areaMax']}"/>" placeholder="До" />
                                     </div>
                                 </div>
                                 <div class="criteriaBlock">
                                     <div class="criteriaLabel">Количество комнат</div>
                                     <div class="criteriaRangeWrapper">
-                                        <input type="text" name="roomCountMin" class="criteriaInput criteriaRangeInputLeft"
+                                        <input type="number" name="roomCountMin" class="criteriaInput criteriaRangeInputLeft"
                                                value="<c:out value="${filterParams['roomCountMin']}"/>" placeholder="От" />
-                                        <input type="text" name="roomCountMax" class="criteriaInput criteriaRangeInputRight"
+                                        <input type="number" name="roomCountMax" class="criteriaInput criteriaRangeInputRight"
                                                value="<c:out value="${filterParams['roomCountMax']}"/>" placeholder="До" />
                                     </div>
                                 </div>
                                 <div class="criteriaBlock">
                                     <div class="criteriaLabel">Расстояние до метро</div>
                                     <div class="criteriaRangeWrapper">
-                                        <input type="text" name="distanceToSubwayMin" class="criteriaInput criteriaRangeInputLeft"
+                                        <input type="number" name="distanceToSubwayMin" class="criteriaInput criteriaRangeInputLeft"
                                                value="<c:out value="${filterParams['distanceToSubwayMin']}"/>" placeholder="От" />
-                                        <input type="text" name="distanceToSubwayMax" class="criteriaInput criteriaRangeInputRight"
+                                        <input type="number" name="distanceToSubwayMax" class="criteriaInput criteriaRangeInputRight"
                                                value="<c:out value="${filterParams['distanceToSubwayMax']}"/>" placeholder="До" />
                                     </div>
                                 </div>
                                 <div class="criteriaBlock">
                                     <div class="criteriaLabel">Расстояние до остановки транспорта</div>
                                     <div class="criteriaRangeWrapper">
-                                        <input type="text" name="distanceToTransportStopMin" class="criteriaInput criteriaRangeInputLeft"
+                                        <input type="number" name="distanceToTransportStopMin" class="criteriaInput criteriaRangeInputLeft"
                                                value="<c:out value="${filterParams['distanceToTransportStopMin']}"/>" placeholder="От" />
-                                        <input type="text" name="distanceToTransportStopMax" class="criteriaInput criteriaRangeInputRight"
+                                        <input type="number" name="distanceToTransportStopMax" class="criteriaInput criteriaRangeInputRight"
                                                value="<c:out value="${filterParams['distanceToTransportStopMax']}"/>" placeholder="До" />
                                     </div>
                                 </div>
                                 <div>
                                     <h3 class="comfortsLabel">Удобства</h3>
-                                    <div class="criteriaBlock">
-                                        <div class="criteriaLabel">Мебель</div>
-                                        <div class="criteriaValue">
-                                            <input type="checkbox" name="comforts" value="furniture" class="criteriaCheckbox" <c:if test="${comfortsParams['furniture']}">checked</c:if> />
-                                        </div>
+                                    <div class="criteriaBlock"/>
+										<label>
+											<div class="criteriaLabel">Мебель</div>
+                                        	<div class="criteriaValue">
+												<input type="checkbox" name="comforts" value="furniture" class="property-form-checkbox" <c:if test="${comfortsParams['furniture']}">checked</c:if> />
+												<span class="property-form-checkbox-custom"></span>
+											</div>
+										</label>
                                     </div>
                                     <div class="criteriaBlock">
-                                        <div class="criteriaLabel">Телевизор</div>
-                                        <div class="criteriaValue">
-                                            <input type="checkbox" name="comforts" value="tv" class="criteriaCheckbox" <c:if test="${comfortsParams['tv']}">checked</c:if> />
-                                        </div>
+										<label>
+											<div class="criteriaLabel">Телевизор</div>
+											<div class="criteriaValue">
+												<input type="checkbox" name="comforts" value="tv" class="property-form-checkbox" <c:if test="${comfortsParams['tv']}">checked</c:if> />
+												<span class="property-form-checkbox-custom"></span>
+											</div>
+										</label>
                                     </div>
                                     <div class="criteriaBlock">
-                                        <div class="criteriaLabel">Интернет</div>
-                                        <div class="criteriaValue">
-                                            <input type="checkbox" name="comforts" value="internet" class="criteriaCheckbox" <c:if test="${comfortsParams['internet']}">checked</c:if> />
-                                        </div>
+										<label>
+											<div class="criteriaLabel">Интернет</div>
+											<div class="criteriaValue">
+												<input type="checkbox" name="comforts" value="internet" class="property-form-checkbox" <c:if test="${comfortsParams['internet']}">checked</c:if> />
+												<span class="property-form-checkbox-custom"></span>
+											</div>
+										</label>
                                     </div>
                                     <div class="criteriaBlock">
-                                        <div class="criteriaLabel">Холодильник</div>
-                                        <div class="criteriaValue">
-                                            <input type="checkbox" name="comforts" value="fridge" class="criteriaCheckbox" <c:if test="${comfortsParams['fridge']}">checked</c:if> />
-                                        </div>
+										<label>
+											<div class="criteriaLabel">Холодильник</div>
+											<div class="criteriaValue">
+												<input type="checkbox" name="comforts" value="fridge" class="property-form-checkbox" <c:if test="${comfortsParams['fridge']}">checked</c:if> />
+												<span class="property-form-checkbox-custom"></span>
+											</div>
+										</label>
                                     </div>
                                     <div class="criteriaBlock">
-                                        <div class="criteriaLabel">Телефон</div>
-                                        <div class="criteriaValue">
-                                            <input type="checkbox" name="comforts" value="phone" class="criteriaCheckbox" <c:if test="${comfortsParams['phone']}">checked</c:if> />
-                                        </div>
+										<label>
+											<div class="criteriaLabel">Телефон</div>
+											<div class="criteriaValue">
+												<input type="checkbox" name="comforts" value="phone" class="property-form-checkbox" <c:if test="${comfortsParams['phone']}">checked</c:if> />
+												<span class="property-form-checkbox-custom"></span>
+											</div>
+										</label>
                                     </div>
                                     <div class="criteriaBlock">
-                                        <div class="criteriaLabel">Кухонная плита</div>
-                                        <div class="criteriaValue">
-                                            <input type="checkbox" name="comforts" value="stove" class="criteriaCheckbox" <c:if test="${comfortsParams['stove']}">checked</c:if> />
-                                        </div>
+										<label>
+											<div class="criteriaLabel">Кухонная плита</div>
+											<div class="criteriaValue">
+												<input type="checkbox" name="comforts" value="stove" class="property-form-checkbox" <c:if test="${comfortsParams['stove']}">checked</c:if> />
+												<span class="property-form-checkbox-custom"></span>
+											</div>
+										</label>
                                     </div>
                                 </div>
                                 <input type="submit" value="Найти" class="buttonSimple" />

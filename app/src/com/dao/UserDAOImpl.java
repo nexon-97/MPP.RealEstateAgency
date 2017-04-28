@@ -44,7 +44,23 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
 
     @Override
     public boolean save(User user) {
-        return false;
+        if (getByLogin(user.getLogin()) != null){
+            return false;
+        }
+        Session  session = getSessionFactory().openSession();
+        if (session != null) {
+            try {
+                Transaction tx = session.beginTransaction();
+                session.save(user);
+                tx.commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            } finally {
+                session.close();
+            }
+        }
+        return true;
     }
 
     @Override

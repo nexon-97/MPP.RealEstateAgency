@@ -1,10 +1,11 @@
 package com.dao;
 
 import com.model.Deal;
-import com.model.Document;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+
+import java.util.List;
 
 public class DealDAOImpl extends BaseDAO implements DealDAO {
 
@@ -40,5 +41,24 @@ public class DealDAOImpl extends BaseDAO implements DealDAO {
             }
         }
         return deal;
+    }
+
+    @Override
+    public List<Deal> list() {
+        Session session = openSession();
+        if (session != null) {
+            try{
+                Transaction tx = session.beginTransaction();
+                List<Deal> deals = session.createCriteria(Deal.class).list();
+                tx.commit();
+
+                return deals;
+            }
+            catch (HibernateException e){
+                e.printStackTrace();
+            }
+        }
+
+        return null;
     }
 }

@@ -3,5 +3,6 @@
 <c:if test="${hasAdminBarPermission}">
 <div id="adminPanel">
     <span style="font-weight: bold;">Admin bar</span>
+    <span class="buttonSimple grayHeaderButton"><a href="/deals">Сделки</a></span>
 </div>
 </c:if>

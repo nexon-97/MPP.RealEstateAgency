@@ -203,7 +203,7 @@ public class OfferDAOImpl extends BaseDAO implements OfferDAO {
     }
 
     private String constructFilterQuery(Map<PropertyFilterParamId, FilterParameter> filterParams) {
-        String query = "SELECT {o.*}, {p.*} FROM Offer o JOIN Property p ON o.property_id = p.property_id WHERE ";
+        String query = "SELECT {o.*}, {p.*} FROM Offer o JOIN Property p ON o.property_id = p.property_id";
 
         boolean isFirst = true;
         for (FilterParameter param : filterParams.values()) {
@@ -212,6 +212,8 @@ public class OfferDAOImpl extends BaseDAO implements OfferDAO {
                 if (column != null) {
                     if (!isFirst) {
                         query = query + " and ";
+                    } else {
+                        query = query + " WHERE ";
                     }
 
                     query = query + param.getFilterQuery("o", column);
@@ -222,6 +224,8 @@ public class OfferDAOImpl extends BaseDAO implements OfferDAO {
                 if (column != null) {
                     if (!isFirst) {
                         query = query + " and ";
+                    } else {
+                        query = query + " WHERE ";
                     }
 
                     query = query + param.getFilterQuery("p", column);

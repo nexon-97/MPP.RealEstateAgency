@@ -7,7 +7,6 @@ public class Deal {
     private User realtor;
     private User broker;
 
-
     public int getId() {
         return id;
     }

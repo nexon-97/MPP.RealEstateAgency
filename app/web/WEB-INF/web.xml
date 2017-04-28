@@ -103,5 +103,23 @@
         <url-pattern>/offerFilter.jsp</url-pattern>
         <url-pattern>/offerFilter</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DealController</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>/WEB-INF/servlets/dealController.xml</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DealController</servlet-name>
+        <url-pattern>/deals.jsp</url-pattern>
+        <url-pattern>/deals</url-pattern>
+        <url-pattern>/deal.jsp</url-pattern>
+        <url-pattern>/deal</url-pattern>
+        <url-pattern>/addDeal.jsp</url-pattern>
+        <url-pattern>/addDeal</url-pattern>
+    </servlet-mapping>
     <!-- Spring controllers -->
 </web-app>

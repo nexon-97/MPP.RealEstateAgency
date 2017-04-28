@@ -36,7 +36,7 @@ public class PropertyServiceImpl extends BaseService implements PropertyService 
         PropertyDAO propertyDAO = new PropertyDAOImpl();
         boolean isCorrectFields = true;
 
-        property.setType( PropertyType.valueOf(params.get("type")[0]));
+        property.setType(getPropertyType(params, "type"));
         property.setCity(getStringParam(params, "city"));
         property.setStreet(getStringParam(params, "street"));
         property.setHouseNumber(getNotNullIntParam(params, "houseNumber"));
@@ -56,6 +56,10 @@ public class PropertyServiceImpl extends BaseService implements PropertyService 
 
         User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
         property.setOwner(loggedUser);
+
+        if (!checkTypeParam(property.getType())) {
+            isCorrectFields = false;
+        }
 
         if (!checkStringName(property.getCity())){
             property.setCity(null);
@@ -126,6 +130,15 @@ public class PropertyServiceImpl extends BaseService implements PropertyService 
         return propertyDAO.getPropertiesOwnedByUser(user);
     }
 
+    private PropertyType getPropertyType(Map<String, String[]> params, String paramKey){
+        try {
+            return PropertyType.valueOf(params.get("type")[0]);
+        }
+        catch(NullPointerException | IllegalArgumentException e){
+            return null;
+        }
+    }
+
     private String getDescription(Map<String, String[]> params, String paramKey){
         String[] paramValues = params.get(paramKey);
         if (paramValues == null || paramValues[0]== null) return "";
@@ -139,19 +152,34 @@ public class PropertyServiceImpl extends BaseService implements PropertyService 
     }
 
     private int getNotNullIntParam(Map<String, String[]> params, String paramKey){
-        String[] paramValues = params.get(paramKey);
-        if (paramValues == null || paramValues[0]==null || paramValues[0] == "") return -1;
-        else return Integer.parseInt(paramValues[0]);
+        try {
+            String[] paramValues = params.get(paramKey);
+            if (paramValues == null || paramValues[0] == null || paramValues[0] == "") return -1;
+            else return Integer.parseInt(paramValues[0]);
+        }
+        catch (NullPointerException | NumberFormatException e){
+            return -1;
+        }
     }
 
     private Integer getIntParam(Map<String, String[]> params, String paramKey){
-        String[] paramValues = params.get(paramKey);
-        if (paramValues == null || paramValues[0]==null || paramValues[0] == "") return null;
-        else return Integer.parseInt(paramValues[0]);
+        try {
+            String[] paramValues = params.get(paramKey);
+            if (paramValues == null || paramValues[0] == null || paramValues[0] == "") return null;
+            else return Integer.parseInt(paramValues[0]);
+        }
+        catch (NullPointerException | NumberFormatException e){
+            return -1;
+        }
     }
 
     private boolean isChecked(String[] value){
         return value!=null;
+    }
+
+    private boolean checkTypeParam(PropertyType propertyType){
+        if (propertyType == null) return false;
+        else return true;
     }
 
     private boolean checkStringName(String data){
@@ -162,7 +190,7 @@ public class PropertyServiceImpl extends BaseService implements PropertyService 
     }
 
     private boolean checkDistance(Integer data){
-        if (data==null) return true;
+        if (data == null) return true;
         else return data>=0;
     }
 

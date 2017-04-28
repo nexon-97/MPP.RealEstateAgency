@@ -26,6 +26,10 @@ public class RegisterServiceImpl extends BaseService implements RegisterService 
     public boolean register(Map<String, String[]> params) {
         User user = new User();
         UserDAO userDAO = new UserDAOImpl();
+        if (userDAO.getByLogin( params.get("login")[0]) != null){
+
+            return false;
+        }
         boolean isCorrectFields = true;
 
         user.setLogin( params.get("login")[0]);

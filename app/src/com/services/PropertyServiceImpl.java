@@ -8,6 +8,7 @@ import com.model.PropertyType;
 
 import com.services.shared.BaseService;
 import com.services.shared.ServiceId;
+import com.services.shared.ServiceManager;
 import com.services.shared.ServiceSharedResources;
 import com.utils.request.FilterParameter;
 import com.utils.request.PropertyFilterParamId;
@@ -51,6 +52,9 @@ public class PropertyServiceImpl extends BaseService implements PropertyService 
         property.setHasFridge(isChecked(params.get("fridge")));
         property.setHasStove(isChecked(params.get("stove")));
         property.setDescription(params.get("description")[0]);
+
+        User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
+        property.setOwner(loggedUser);
 
         if (!checkStringName(property.getCity())){
             property.setCity(null);

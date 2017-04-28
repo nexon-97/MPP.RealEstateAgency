@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.Enumeration;
-import java.util.Map;
 
 @Controller
 public class RegisterController extends BaseController{

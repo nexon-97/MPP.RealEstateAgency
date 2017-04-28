@@ -64,23 +64,31 @@ public class PropertyController extends BaseController  {
     public ModelAndView visitAddPropertyForm(HttpServletResponse response) {
         initControllerResources(context, request, response);
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
-        System.out.println("In property controller get");
 
-        PropertyService propService = ServiceManager.getInstance().getPropertyService();
-        PropertyType[] types = PropertyType.values();
-        model.put("types", types);
-        return buildModelAndView("addProperty");
+        if (ServiceManager.getInstance().getAuthService().getLoggedUser() != null) {
+            PropertyService propService = ServiceManager.getInstance().getPropertyService();
+            PropertyType[] types = PropertyType.values();
+            model.put("types", types);
+
+            return buildModelAndView("addProperty");
+        } else {
+            return buildModelAndView("../unauthorized_view");
+        }
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/addProperty")
     public ModelAndView register(HttpServletResponse response) {
         initControllerResources(context, request, response);
-        PropertyService propertyService = ServiceManager.getInstance().getPropertyService();
-        boolean isRegisterCorrect = propertyService.addProperty(request.getParameterMap());
-        if (isRegisterCorrect){
-            return buildModelAndView("index");}
-        else {
-            return buildModelAndView("addProperty");
+        if (ServiceManager.getInstance().getAuthService().getLoggedUser() == null) {
+            return buildModelAndView("../unauthorized_view");
+        } else {
+            PropertyService propertyService = ServiceManager.getInstance().getPropertyService();
+            boolean isRegisterCorrect = propertyService.addProperty(request.getParameterMap());
+            if (isRegisterCorrect){
+                return redirect("/");}
+            else {
+                return buildModelAndView("addProperty");
+            }
         }
     }
 

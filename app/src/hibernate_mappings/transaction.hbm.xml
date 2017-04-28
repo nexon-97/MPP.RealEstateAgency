@@ -15,6 +15,6 @@
         <many-to-one name="seller" column="seller_id" class="com.model.User" not-null="true" lazy="false" foreign-key="fk_seller"/>
         <property name="companyFine" column="company_fine" type="big_decimal"/>
         <property name="payment" column="payment" type="big_decimal"/>
-        <property name="date" column="date" type="date"/>
+        <property name="date" column="date" type="timestamp"/>
     </class>
 </hibernate-mapping>

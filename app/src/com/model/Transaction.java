@@ -1,7 +1,7 @@
 package com.model;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class Transaction {
     private int id;
@@ -9,7 +9,7 @@ public class Transaction {
     private User seller;
     private BigDecimal companyFine;
     private BigDecimal payment;
-    private Date date;
+    private Timestamp date;
 
     public int getId() { return this.id;  }
 
@@ -21,7 +21,7 @@ public class Transaction {
 
     public BigDecimal getPayment() { return this.payment; }
 
-    public Date getDate() { return this.date; }
+    public Timestamp getDate() { return this.date; }
 
     public void setId(int id) { this.id = id; }
 
@@ -33,5 +33,5 @@ public class Transaction {
 
     public void setPayment(BigDecimal payment) { this.payment = payment; }
 
-    public void setDate(Date date) { this.date = date; }
+    public void setDate(Timestamp date) { this.date = date; }
 }

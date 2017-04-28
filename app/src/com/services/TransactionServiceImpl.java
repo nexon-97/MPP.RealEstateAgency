@@ -9,11 +9,11 @@ import com.services.shared.ServiceId;
 import com.services.shared.ServiceSharedResources;
 
 import java.math.BigDecimal;
-import java.time.ZoneId;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
 import java.util.List;
+import java.util.TimeZone;
 
 public class TransactionServiceImpl extends BaseService implements TransactionService  {
     public TransactionServiceImpl(ServiceSharedResources sharedResources) { super(ServiceId.TransactionService, sharedResources); }
@@ -22,13 +22,18 @@ public class TransactionServiceImpl extends BaseService implements TransactionSe
     public boolean addTransaction(User buyer, User seller, BigDecimal companyFine, BigDecimal payment) {
         TransactionDAO transactionDAO = new TransactionDAOImpl();
         Transaction transaction = new Transaction();
-        Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
+        long now = calendar.getTimeInMillis();
+
+        Timestamp date = new Timestamp(now);
 
         transaction.setBuyer(buyer);
         transaction.setSeller(seller);
         transaction.setCompanyFine(companyFine);
         transaction.setPayment(payment);
-        transaction.setDate(cal.getTime());
+        transaction.setDate(date);
 
         return transactionDAO.addTransaction(transaction);
     }

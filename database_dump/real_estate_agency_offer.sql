@@ -26,10 +26,10 @@ CREATE TABLE `offer` (
   `offer_id` int(11) NOT NULL AUTO_INCREMENT,
   `property_id` int(11) NOT NULL,
   `offer_type_id` int(11) NOT NULL,
-  `cost` decimal(10,0) NOT NULL,
+  `cost` decimal(20,0) NOT NULL,
   PRIMARY KEY (`offer_id`),
   KEY `fk_property_idx` (`property_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +38,7 @@ CREATE TABLE `offer` (
 
 LOCK TABLES `offer` WRITE;
 /*!40000 ALTER TABLE `offer` DISABLE KEYS */;
-INSERT INTO `offer` VALUES (1,1,1,125),(2,2,2,36),(3,3,1,28),(4,4,2,140),(5,5,1,86);
+INSERT INTO `offer` VALUES (1,1,0,125),(2,2,1,36),(3,3,0,28),(4,4,1,140),(5,5,1,160),(6,1,1,210),(7,2,0,560);
 /*!40000 ALTER TABLE `offer` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -51,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-04-27  2:38:27
+-- Dump completed on 2017-04-28  3:56:47

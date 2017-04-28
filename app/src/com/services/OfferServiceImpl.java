@@ -3,10 +3,9 @@ package com.services;
 import com.dao.OfferDAO;
 import com.dao.OfferDAOImpl;
 import com.model.Offer;
+import com.model.RoleId;
 import com.model.User;
-import com.services.shared.BaseService;
-import com.services.shared.ServiceId;
-import com.services.shared.ServiceSharedResources;
+import com.services.shared.*;
 
 import java.util.List;
 
@@ -42,5 +41,19 @@ public class OfferServiceImpl extends BaseService implements OfferService {
         OfferDAO offerDAO = new OfferDAOImpl();
 
         return offerDAO.addOffer(offer);
+    }
+
+    @Override
+    public boolean deleteOffer(Offer offer) {
+        // Check delete offer permission
+        User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
+        boolean isOwner = loggedUser != null && offer.getProperty().getOwner().equals(loggedUser);
+        boolean isAdmin = loggedUser.getRole().getRoleId().equals(RoleId.Admin);
+        if (isOwner || isAdmin) {
+            OfferDAO offerDAO = new OfferDAOImpl();
+            return offerDAO.deleteOffer(offer);
+        }
+
+        return false;
     }
 }

@@ -37,7 +37,7 @@ CREATE TABLE `role` (
 
 LOCK TABLES `role` WRITE;
 /*!40000 ALTER TABLE `role` DISABLE KEYS */;
-INSERT INTO `role` VALUES (1,'Admin'),(4,'Broker'),(7,'Buyer'),(8,'Director'),(2,'Guest'),(5,'Rieltor'),(6,'Seller'),(3,'User');
+INSERT INTO `role` VALUES (0,'Admin'),(3,'Broker'),(6,'Buyer'),(7,'Director'),(1,'Guest'),(4,'Rieltor'),(5,'Seller'),(2,'User');
 /*!40000 ALTER TABLE `role` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -50,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-04-27  2:38:27
+-- Dump completed on 2017-04-28  3:56:47

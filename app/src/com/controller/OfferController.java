@@ -85,20 +85,48 @@ public class OfferController extends BaseController {
     public ModelAndView showEditOfferView(HttpServletResponse response) {
         initControllerResources(context, request, response);
 
-        return buildModelAndView("index");
+        return buildModelAndView("/");
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/editOffer")
     public ModelAndView editOfferAction(HttpServletResponse response) {
         initControllerResources(context, request, response);
 
-        return buildModelAndView("index");
+        return buildModelAndView("/");
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/deleteOffer")
     public ModelAndView deleteOfferAction(HttpServletResponse response) {
         initControllerResources(context, request, response);
+        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
 
-        return redirect("index");
+        int offerId = -1;
+        try {
+            offerId = Integer.valueOf(request.getParameter("id"));
+        } catch (NullPointerException | NumberFormatException e) {
+            return showUndefinedOfferMessage();
+        }
+
+        OfferService offerService = ServiceManager.getInstance().getOfferService();
+        Offer offer = offerService.getOfferById(offerId);
+        if (offer != null) {
+            boolean deletionSuccess = offerService.deleteOffer(offer);
+            if (deletionSuccess) {
+                return redirect("/profile");
+            }
+            else
+            {
+                model.put("msg", "Не удалось удалить предложение!");
+                return buildModelAndView("../error_message");
+            }
+        }
+
+        return showUndefinedOfferMessage();
+    }
+
+    private ModelAndView showUndefinedOfferMessage() {
+        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
+        model.put("msg", "Такого предложения не существует!");
+        return buildModelAndView("../error_message");
     }
 }

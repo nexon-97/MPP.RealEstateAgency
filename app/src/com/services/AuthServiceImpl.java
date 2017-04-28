@@ -6,6 +6,11 @@ import com.model.User;
 import com.services.shared.*;
 
 import javax.servlet.http.Cookie;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 public class AuthServiceImpl extends BaseService implements AuthService {
@@ -34,9 +39,17 @@ public class AuthServiceImpl extends BaseService implements AuthService {
                 String cookieName = cookie.getName();
 
                 if (cookieName.equals(loginCookieName)) {
-                    login = cookie.getValue();
+                    try {
+                        login = URLDecoder.decode(cookie.getValue(), "UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
                 } else if (cookieName.equals(passwordCookieName)) {
-                    password = cookie.getValue();
+                    try {
+                        password = URLDecoder.decode(cookie.getValue(), "UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
@@ -45,7 +58,7 @@ public class AuthServiceImpl extends BaseService implements AuthService {
             }
 
             User databaseUser = userDAO.getByLogin(login);
-            boolean loginSucceeded = (databaseUser != null) && (databaseUser.getPasswordHash().equals(password));
+            boolean loginSucceeded = (databaseUser != null) && (databaseUser.getPasswordHash().equals(password));//.equals(getPasswordHash(password)));//
             if (loginSucceeded) {
                 setLoggedUser(databaseUser);
             }
@@ -63,12 +76,12 @@ public class AuthServiceImpl extends BaseService implements AuthService {
 
             User user = userDAO.getByLogin(login);
             if (user != null) {
-                if (user.getPasswordHash().equals(password)) {
+                if (user.getPasswordHash().equals(getPasswordHash(password))) {
                     setLoggedUser(user);
 
                     // Put login data to cookies
                     Cookie loginCookie = buildLoginCookie(loginCookieName, user.getLogin());
-                    Cookie passCookie = buildLoginCookie(passwordCookieName, user.getPasswordHash());
+                    Cookie passCookie = buildLoginCookie(passwordCookieName, getPasswordHash(password));//password);//;
 
                     ServiceSharedResources sharedResources = getSharedResources();
                     sharedResources.addCookie(loginCookie);
@@ -115,9 +128,26 @@ public class AuthServiceImpl extends BaseService implements AuthService {
 
     private Cookie buildLoginCookie(String name, String value) {
         int cookieDuration = 60 * 60 * 24 * 7;
-        Cookie cookie = new Cookie(name, value);
-        cookie.setMaxAge(cookieDuration);
+        Cookie cookie = null;
+        try {
+            cookie = new Cookie(name, URLEncoder.encode(value, "UTF-8"));
+            cookie.setMaxAge(cookieDuration);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
 
         return cookie;
+    }
+
+    private static String getPasswordHash(String password){
+        String passwordHash = "";
+        try {
+            MessageDigest md5 = MessageDigest.getInstance("MD5");
+            passwordHash = new String(md5.digest(password.getBytes()));
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return passwordHash;
     }
 }

@@ -12,6 +12,5 @@ public interface PropertyService {
     Property getPropertyById(int id);
     boolean addProperty(Map<String, String[]> params);
     boolean updateProperty(Map<String, String[]> params);
-    List<Property> filterProperties(Map<PropertyFilterParamId, FilterParameter> filterParameters);
     List<Property> getPropertiesOwnedByUser(User user);
 }

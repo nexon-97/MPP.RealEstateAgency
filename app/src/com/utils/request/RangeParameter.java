@@ -28,4 +28,9 @@ public abstract class RangeParameter<T> implements Verifiable, FilterParameter {
     public Criterion getCriterion(String column) {
         return Restrictions.between(column, getMin(), getMax());
     }
+
+    @Override
+    public String getFilterQuery(String e, String column) {
+        return String.format("(%s.%s is null or (%s.%s between %s and %s))", e, column, e, column, String.valueOf(getMin()), String.valueOf(getMax()));
+    }
 }

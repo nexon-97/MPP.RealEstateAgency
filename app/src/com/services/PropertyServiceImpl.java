@@ -114,13 +114,6 @@ public class PropertyServiceImpl extends BaseService implements PropertyService 
     }
 
     @Override
-    public List<Property> filterProperties(Map<PropertyFilterParamId, FilterParameter> filterParameters) {
-        PropertyDAO dao = new PropertyDAOImpl();
-
-        return dao.filter(filterParameters);
-    }
-
-    @Override
     public List<Property> getPropertiesOwnedByUser(User user) {
         PropertyDAO propertyDAO = new PropertyDAOImpl();
 

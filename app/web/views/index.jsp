@@ -17,7 +17,7 @@
                 <br>
                 <p><i>Трудное – это то, что можно сделать немедленно, а невозможное – потребует немного больше времени!</i></p>
             </div>
-            <a href="/propertyFilter"><div class="buttonSimple" style="margin: 10px">Фильтр</div></a>
+            <a href="/offerFilter"><div class="buttonSimple" style="margin: 10px">Фильтр</div></a>
             <h2>Предложения</h2>
             <div class="offers-container">
                 <c:forEach var="offer" items="${offers}">

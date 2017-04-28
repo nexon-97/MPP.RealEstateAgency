@@ -63,7 +63,6 @@
         <url-pattern>/property.jsp</url-pattern>
         <url-pattern>/property.html</url-pattern>
         <url-pattern>/property</url-pattern>
-        <url-pattern>/propertyFilter</url-pattern>
         <url-pattern>/addProperty</url-pattern>
     </servlet-mapping>
 
@@ -101,6 +100,8 @@
         <url-pattern>/editOffer</url-pattern>
         <url-pattern>/deleteOffer.jsp</url-pattern>
         <url-pattern>/deleteOffer</url-pattern>
+        <url-pattern>/offerFilter.jsp</url-pattern>
+        <url-pattern>/offerFilter</url-pattern>
     </servlet-mapping>
     <!-- Spring controllers -->
 </web-app>

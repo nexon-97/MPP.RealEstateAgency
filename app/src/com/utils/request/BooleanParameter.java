@@ -27,4 +27,9 @@ public class BooleanParameter implements FilterParameter {
     public Criterion getCriterion(String column) {
         return Restrictions.eq(column, value);
     }
+
+    @Override
+    public String getFilterQuery(String entityName, String column) {
+        return String.format("(%s.%s = 1)", entityName, column);
+    }
 }

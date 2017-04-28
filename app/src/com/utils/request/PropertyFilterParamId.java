@@ -2,6 +2,7 @@ package com.utils.request;
 
 public enum PropertyFilterParamId {
     Cost,
+    OfferType,
     Area,
     RoomCount,
     DistanceToSubway,

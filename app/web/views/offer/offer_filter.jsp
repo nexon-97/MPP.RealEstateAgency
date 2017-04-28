@@ -15,7 +15,7 @@
 					<div class="filterBlockWrapper">
                         <h2 class="filterCriteriaLabel">Критерии поиска</h2>
                         <div class="criteriaForm">
-                            <form action="/propertyFilter" method="post">
+                            <form action="/offerFilter" method="post">
                                 <div class="criteriaBlock">
                                     <div class="criteriaLabel">Цена</div>
                                     <div class="criteriaRangeWrapper">
@@ -124,10 +124,10 @@
                     </div>
 					<div class="filterResultWrapper">
 						<h2>Результаты поиска</h2>
-						<h3>Matches: ${fn:length(properties)}</h3>
-                        <c:forEach var="property" items="${properties}">
+						<h3>Matches: ${fn:length(offers)}</h3>
+                        <c:forEach var="offer" items="${offers}">
                             <div>
-                                <a href="/property?id=${property.id}">Собственность [${property.id}]</a>
+                                <a href="/offer?id=${offer.id}">Предложение [${offer.id}]</a>
                             </div>
                         </c:forEach>
 					</div>

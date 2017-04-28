@@ -5,31 +5,35 @@ import java.util.Date;
 
 public class Document {
     private int id;
-    private int documentTypeID;
-    private int buyerID;
-    private int sellerID;
-    private int offerID;
+    private DocumentType documentType;
+    private User buyer;
+    private User seller;
+    private Offer offer;
     private Date confirmDate;
     private Date graduationDate;
 
+    public int getId() {
+        return id;
+    }
+
+    public DocumentType getDocumentType() {
+        return documentType;
+    }
+
+    public User getBuyer() {
+        return buyer;
+    }
+
+    public User getSeller() {
+        return seller;
+    }
+
+    public Offer getOffer() {
+        return offer;
+    }
+
     public Date getGraduationDate() {
         return graduationDate;
-    }
-
-    public int getDocumentTypeID() {
-        return documentTypeID;
-    }
-
-    public int getBuyerID() {
-        return buyerID;
-    }
-
-    public int getSellerID() {
-        return sellerID;
-    }
-
-    public int getOfferID() {
-        return offerID;
     }
 
     public Date getConfirmDate() {
@@ -40,20 +44,20 @@ public class Document {
         this.id = id;
     }
 
-    public void setDocumentTypeID(int documentTypeID) {
-        this.documentTypeID = documentTypeID;
+    public void setDocumentType(DocumentType documentType) {
+        this.documentType = documentType;
     }
 
-    public void setBuyerID(int buyerID) {
-        this.buyerID = buyerID;
+    public void setBuyer(User buyer) {
+        this.buyer = buyer;
     }
 
-    public void setSellerID(int sellerID) {
-        this.sellerID = sellerID;
+    public void setSeller(User seller) {
+        this.seller = seller;
     }
 
-    public void setOfferID(int offerID) {
-        this.offerID = offerID;
+    public void setOffer(Offer offer) {
+        this.offer = offer;
     }
 
     public void setGraduationDate(Date graduationDate) {
@@ -64,8 +68,6 @@ public class Document {
         this.confirmDate = confirmDate;
     }
 
-    public int getId() {
-        return id;
-    }
+
 
 }

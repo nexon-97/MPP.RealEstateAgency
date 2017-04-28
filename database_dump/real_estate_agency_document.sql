@@ -16,35 +16,37 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `transaction`
+-- Table structure for table `document`
 --
 
-DROP TABLE IF EXISTS `transaction`;
+DROP TABLE IF EXISTS `document`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `transaction` (
-  `transaction_id` int(15) unsigned NOT NULL AUTO_INCREMENT,
-  `buyer_id` int(11) unsigned NOT NULL,
+CREATE TABLE `document` (
+  `document_id` int(11) NOT NULL AUTO_INCREMENT,
+  `document_type_id` int(11) NOT NULL,
+  `date_confirm` date NOT NULL,
+  `date_graduation` date NOT NULL,
   `seller_id` int(11) unsigned NOT NULL,
-  `company_fine` decimal(15,0) NOT NULL,
-  `payment` decimal(15,0) NOT NULL,
-  `date` datetime NOT NULL,
-  PRIMARY KEY (`transaction_id`),
-  UNIQUE KEY `transaction_id_UNIQUE` (`transaction_id`),
-  KEY `fk_seller_idx` (`seller_id`),
-  KEY `fk_buyer_idx` (`buyer_id`),
-  CONSTRAINT `fk_buyer` FOREIGN KEY (`buyer_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_seller` FOREIGN KEY (`seller_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  `buyer_id` int(11) unsigned NOT NULL,
+  `offer_id` int(11) NOT NULL,
+  PRIMARY KEY (`document_id`),
+  UNIQUE KEY `seller_id_UNIQUE` (`seller_id`),
+  UNIQUE KEY `buyer_id_UNIQUE` (`buyer_id`),
+  KEY `offer_id_fk_idx` (`offer_id`),
+  CONSTRAINT `buyer_id_fk` FOREIGN KEY (`buyer_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `offer_id_fk` FOREIGN KEY (`offer_id`) REFERENCES `offer` (`offer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `seller_id_fk` FOREIGN KEY (`seller_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `transaction`
+-- Dumping data for table `document`
 --
 
-LOCK TABLES `transaction` WRITE;
-/*!40000 ALTER TABLE `transaction` DISABLE KEYS */;
-/*!40000 ALTER TABLE `transaction` ENABLE KEYS */;
+LOCK TABLES `document` WRITE;
+/*!40000 ALTER TABLE `document` DISABLE KEYS */;
+/*!40000 ALTER TABLE `document` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -56,4 +58,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-04-28  1:23:59
+-- Dump completed on 2017-04-28  4:27:41

@@ -84,15 +84,64 @@ public class OfferController extends BaseController {
     @RequestMapping(method = RequestMethod.GET, value = "/editOffer")
     public ModelAndView showEditOfferView(HttpServletResponse response) {
         initControllerResources(context, request, response);
+        ServiceManager serviceManager = ServiceManager.getInstance();
+        Map<String, Object> model = serviceManager.getSharedResources().getModel();
 
-        return redirect("/");
+        if (!serviceManager.getAuthService().isUserLoggedIn()) {
+            return buildModelAndView("../unauthorized_view");
+        }
+
+        int offerId;
+        try {
+            offerId = Integer.valueOf(request.getParameter("id"));
+        } catch (NullPointerException | NumberFormatException e) {
+            model.put("msg", "Не существует такого предложения!");
+            return buildModelAndView("../error_message");
+        }
+
+        Offer offer = serviceManager.getOfferService().getOfferById(offerId);
+        User loggedUser = serviceManager.getAuthService().getLoggedUser();
+        if (offer != null && serviceManager.getPermissionService().canEditOffer(loggedUser, offer)) {
+            model.put("offer", offer);
+
+            PropertyService propertyService = serviceManager.getPropertyService();
+            List<Property> userProperties = propertyService.getPropertiesOwnedByUser(loggedUser);
+            model.put("userProperties", userProperties);
+
+            OfferType[] offerTypes = OfferType.values();
+            model.put("offerTypes", offerTypes);
+            model.put("currentOfferType", String.valueOf(offer.getOfferType()));
+        } else {
+            model.put("msg", "У вас нет прав для редактирования данного предложения!");
+            return buildModelAndView("../error_message");
+        }
+
+        return buildModelAndView("edit_offer_view");
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/editOffer")
     public ModelAndView editOfferAction(HttpServletResponse response) {
         initControllerResources(context, request, response);
+        boolean updateSuccess = false;
 
-        return redirect("/");
+        OfferValidator validator = new OfferValidator(request.getParameterMap());
+        if (validator.verify()) {
+            Offer offer = validator.getOffer();
+
+            User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
+            if (ServiceManager.getInstance().getPermissionService().canEditOffer(loggedUser, offer)) {
+                OfferService offerService = ServiceManager.getInstance().getOfferService();
+                updateSuccess = offerService.updateOffer(offer);
+
+                if (updateSuccess) {
+                    return redirect("/offer?id=" + String.valueOf(offer.getId()));
+                }
+            }
+        }
+
+        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
+        model.put("msg", "Не удалось изменить предложение!");
+        return buildModelAndView("../error_message");
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/deleteOffer")

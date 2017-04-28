@@ -29,6 +29,13 @@ public class OfferValidator implements Verifiable {
         }
 
         offer = new Offer();
+
+        try {
+            String idStr = params.get("id")[0];
+            int requestId = Integer.valueOf(idStr);
+            offer.setId(requestId);
+        } catch (NullPointerException | NumberFormatException e) {}
+
         parsingValid = parsePropertyId(propertyIdStr) && parseOfferType(offerTypeStr) && parseCost(costStr);
     }
 

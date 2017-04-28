@@ -88,6 +88,11 @@ public class AuthServiceImpl extends BaseService implements AuthService {
     }
 
     @Override
+    public boolean isUserLoggedIn() {
+        return this.loggedUser != null;
+    }
+
+    @Override
     public boolean logout() {
         ServiceSharedResources sharedResources = getSharedResources();
         sharedResources.resetCookie(loginCookieName);

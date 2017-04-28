@@ -1,11 +1,7 @@
 package com.services;
 
-import com.model.Permission;
-import com.model.Role;
-import com.services.shared.BaseService;
-import com.services.shared.PermissionId;
-import com.services.shared.ServiceId;
-import com.services.shared.ServiceSharedResources;
+import com.model.*;
+import com.services.shared.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,6 +45,31 @@ public class PermissionServiceImpl extends BaseService implements PermissionServ
     @Override
     public boolean removePermission(Role role, Permission permission) {
         return false;
+    }
+
+    @Override
+    public boolean canEditOffer(User user, Offer offer) {
+        if (offer != null && user != null) {
+            boolean isOwner = (user.getId() == offer.getProperty().getOwner().getId());
+            return isOwner;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean canDeleteOffer(User user, Offer offer) {
+        if (offer != null && user != null) {
+            boolean isOwner = (user.getId() == offer.getProperty().getOwner().getId());
+            return isOwner || isLoggedUserAdmin();
+        }
+
+        return false;
+    }
+
+    private boolean isLoggedUserAdmin() {
+        User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
+        return (loggedUser != null && loggedUser.getRole().getRoleId().equals(RoleId.Admin));
     }
 
     private void initIdMapping() {

@@ -28,8 +28,6 @@ public class RegisterServiceImpl extends BaseService implements RegisterService 
         UserDAO userDAO = new UserDAOImpl();
         boolean isCorrectFields = true;
 
-        String str = new String(params.get("name")[0].getBytes(),Charset.defaultCharset());
-
         user.setLogin( params.get("login")[0]);
         user.setEmail(params.get("email")[0]);
         user.setName(params.get("name")[0]);

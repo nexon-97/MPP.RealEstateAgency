@@ -1,6 +1,7 @@
 package com.controller;
 
 import com.model.User;
+import com.services.AuthServiceImpl;
 import com.services.RegisterService;
 import com.services.shared.ServiceManager;
 import org.springframework.stereotype.Controller;
@@ -16,7 +17,12 @@ public class RegisterController extends BaseController{
     @RequestMapping(method = RequestMethod.GET, value = "/register")
     public ModelAndView visitRegistrationForm(HttpServletResponse response) {
         initControllerResources(context, request, response);
-        return buildModelAndView("register");
+        if (ServiceManager.getInstance().getAuthService().getLoggedUser() != null){
+            return buildModelAndView("register_logged");
+        }
+        else {
+            return buildModelAndView("register");
+        }
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/register")

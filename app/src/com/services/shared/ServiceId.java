@@ -6,4 +6,5 @@ public enum  ServiceId {
     PermissionService,
     PropertyService,
     UserService,
+    TransactionService
 }

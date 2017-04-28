@@ -6,10 +6,11 @@ public class Property {
     private User owner;
     private String city;
     private String street;
-    private int houseNumber;
+    private Integer houseNumber;
+    private Integer blockNumber;
     private Integer flatNumber;
     private Integer roomsCount;
-    private int area;
+    private Integer area;
     private Integer distanceToSubway;
     private Integer distanceToTransportStop;
     private boolean hasFurniture;
@@ -40,9 +41,11 @@ public class Property {
         this.street = street;
     }
 
-    public void setHouseNumber(int houseNumber) {
+    public void setHouseNumber(Integer houseNumber) {
         this.houseNumber = houseNumber;
     }
+
+    public void setBlockNumber(Integer blockNumber) { this.blockNumber = blockNumber; }
 
     public void setFlatNumber(Integer flatNumber) {
         this.flatNumber = flatNumber;
@@ -52,7 +55,7 @@ public class Property {
         this.roomsCount = roomsCount;
     }
 
-    public void setArea(int area) {
+    public void setArea(Integer area) {
         this.area = area;
     }
 
@@ -92,7 +95,7 @@ public class Property {
         this.description = description;
     }
 
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
 
@@ -112,9 +115,11 @@ public class Property {
         return this.street;
     }
 
-    public int getHouseNumber() {
+    public Integer getHouseNumber() {
         return this.houseNumber;
     }
+
+    public Integer getBlockNumber() { return this.blockNumber; }
 
     public Integer getFlatNumber() {
         return this.flatNumber;
@@ -124,7 +129,7 @@ public class Property {
         return this.roomsCount;
     }
 
-    public int getArea() {
+    public Integer getArea() {
         return this.area;
     }
 

@@ -20,6 +20,7 @@
         <property name="city" column="city" type="string"/>
         <property name="street" column="street" type="string"/>
         <property name="houseNumber" column="house_number" type="int"/>
+        <property name="blockNumber" column="block_number" type="int"/>
         <property name="flatNumber" column="flat_number" type="int" not-null="false"/>
         <property name="roomsCount" column="room_count" type="int" not-null="false"/>
         <property name="area" column="area" type="int"/>

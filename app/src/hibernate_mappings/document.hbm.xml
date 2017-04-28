@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.model.Document" table="documents">
+        <meta attribute="class-description">
+            This class contains the documents detail.
+        </meta>
+
+        <id name="id" type="int" column="document_id">
+            <generator class="increment"/>
+        </id>
+
+        <property name="documentTypeID" column="document_type_id" type="int">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">com.model.DocumentType</param>
+            </type>
+        </property>
+        <property name="sellerID" column="seller_id" type="int"/>
+        <property name="buyerID" column="buyer_id" type="int"/>
+        <property name="offerID" column="offer_id" type="int"/>
+        <property name="confirmDate" column="date_confirm" type="java.util.Date"/>
+        <property name="graduationDate" column="date_graduation" type="java.util.Date"/>
+
+        <many-to-one name="sellerID" column="seller_id" class="com.model.User" not-null="true" lazy="false" foreign-key="seller_id_fk"/>
+        <many-to-one name="buyerID" column="buyer_id" class="com.model.User" not-null="true" lazy="false" foreign-key="buyer_id_fk"/>
+        <many-to-one name="offerID" column="offer_id" class="com.model.Offer" not-null="true" lazy="false" foreign-key="offer_id_fk"/>
+        <many-to-one name="documentTypeID" column="document_type_id" class="com.model.DocumentType" not-null="true" lazy="false" foreign-key="document_type_id_fk"/>
+
+    </class>
+</hibernate-mapping>

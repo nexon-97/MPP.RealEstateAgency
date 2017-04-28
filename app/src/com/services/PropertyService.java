@@ -1,6 +1,7 @@
 package com.services;
 
 import com.model.Property;
+import com.model.User;
 import com.utils.request.FilterParameter;
 import com.utils.request.PropertyFilterParamId;
 
@@ -12,4 +13,5 @@ public interface PropertyService {
     boolean addProperty(Map<String, String[]> params);
     boolean updateProperty(Map<String, String[]> params);
     List<Property> filterProperties(Map<PropertyFilterParamId, FilterParameter> filterParameters);
+    List<Property> getPropertiesOwnedByUser(User user);
 }

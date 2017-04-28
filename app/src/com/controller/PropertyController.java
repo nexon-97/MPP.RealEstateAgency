@@ -87,9 +87,6 @@ public class PropertyController extends BaseController  {
     @RequestMapping(method = RequestMethod.GET, value = "/propertyFilter")
     public ModelAndView showFilter(HttpServletResponse response) {
         initControllerResources(context, request, response);
-        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
-
-
 
         return buildModelAndView("property_filter");
     }

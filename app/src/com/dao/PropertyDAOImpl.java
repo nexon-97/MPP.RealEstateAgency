@@ -100,6 +100,25 @@ public class PropertyDAOImpl extends BaseDAO implements PropertyDAO {
 
     @Override
     public List<Property> getPropertiesOwnedByUser(User user) {
+        Session session = openSession();
+        if (session != null) {
+            try {
+                Transaction tx = session.beginTransaction();
+
+                Criteria filterCriteria = session.createCriteria(Property.class);
+                filterCriteria.add(Restrictions.eq("owner", user));
+                List<Property> userProperties = (List<Property>)filterCriteria.list();
+
+                tx.commit();
+
+                return userProperties;
+            } catch (HibernateException e) {
+                e.printStackTrace();
+            } finally {
+                session.close();
+            }
+        }
+
         return null;
     }
 

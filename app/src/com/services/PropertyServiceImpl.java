@@ -3,6 +3,7 @@ package com.services;
 import com.dao.PropertyDAO;
 import com.dao.PropertyDAOImpl;
 import com.model.Property;
+import com.model.User;
 import com.model.PropertyType;
 
 import com.services.shared.BaseService;
@@ -113,6 +114,13 @@ public class PropertyServiceImpl extends BaseService implements PropertyService 
         PropertyDAO dao = new PropertyDAOImpl();
 
         return dao.filter(filterParameters);
+    }
+
+    @Override
+    public List<Property> getPropertiesOwnedByUser(User user) {
+        PropertyDAO propertyDAO = new PropertyDAOImpl();
+
+        return propertyDAO.getPropertiesOwnedByUser(user);
     }
 
     private boolean isChecked(String[] value){

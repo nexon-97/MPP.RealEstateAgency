@@ -31,6 +31,15 @@ public class Role {
         return this.permissions;
     }
 
+    public RoleId getRoleId() {
+        try {
+            RoleId roleId = RoleId.values()[this.id];
+            return roleId;
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        }
+    }
+
     public boolean equals(Object obj) {
         if (obj == null) return false;
         if (!this.getClass().equals(obj.getClass())) return false;

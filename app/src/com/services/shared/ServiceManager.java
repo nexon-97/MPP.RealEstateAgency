@@ -25,6 +25,7 @@ public class ServiceManager {
         servicesMap.put(ServiceId.RegistrationService, new RegisterServiceImpl(sharedResources));
         servicesMap.put(ServiceId.PropertyService, new PropertyServiceImpl(sharedResources));
         servicesMap.put(ServiceId.UserService, new UserServiceImpl(sharedResources));
+        servicesMap.put(ServiceId.OfferService, new OfferServiceImpl(sharedResources));
         servicesMap.put(ServiceId.TransactionService, new TransactionServiceImpl(sharedResources));
     }
 
@@ -52,7 +53,13 @@ public class ServiceManager {
         return (UserService) getServiceById(ServiceId.UserService);
     }
 
-    public TransactionService getTransactionService() { return (TransactionService) getServiceById(ServiceId.TransactionService); }
+    public OfferService getOfferService() {
+        return (OfferService) getServiceById(ServiceId.OfferService);
+    }
+  
+    public TransactionService getTransactionService() {
+        return (TransactionService) getServiceById(ServiceId.TransactionService);
+    }
 
     public ServiceSharedResources getSharedResources() {
         return sharedResources;

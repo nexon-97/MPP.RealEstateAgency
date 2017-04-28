@@ -16,30 +16,27 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `role_permission`
+-- Table structure for table `offer_type`
 --
 
-DROP TABLE IF EXISTS `role_permission`;
+DROP TABLE IF EXISTS `offer_type`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `role_permission` (
-  `role_id` int(10) unsigned NOT NULL,
-  `permission_id` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`role_id`,`permission_id`),
-  KEY `fk_permission_id_idx` (`permission_id`),
-  CONSTRAINT `fk_permission_id` FOREIGN KEY (`permission_id`) REFERENCES `permission` (`permission_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_role_id` FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `offer_type` (
+  `offer_type_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  PRIMARY KEY (`offer_type_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `role_permission`
+-- Dumping data for table `offer_type`
 --
 
-LOCK TABLES `role_permission` WRITE;
-/*!40000 ALTER TABLE `role_permission` DISABLE KEYS */;
-INSERT INTO `role_permission` VALUES (0,1),(7,1),(0,2),(5,2),(7,2),(0,3),(5,3),(7,3),(0,4),(1,4),(2,4),(3,4),(4,4),(5,4),(6,4),(7,4),(0,5),(7,5);
-/*!40000 ALTER TABLE `role_permission` ENABLE KEYS */;
+LOCK TABLES `offer_type` WRITE;
+/*!40000 ALTER TABLE `offer_type` DISABLE KEYS */;
+INSERT INTO `offer_type` VALUES (0,'sale'),(1,'lease');
+/*!40000 ALTER TABLE `offer_type` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

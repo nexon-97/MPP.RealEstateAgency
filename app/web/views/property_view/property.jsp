@@ -26,6 +26,10 @@
                         </td>
                     </tr>
                     <tr>
+                        <td class="propertyInfoNameCell" width="25%">Владелец</td>
+                        <td><a href="/user?id=${property.owner.id}">${property.owner.surname} ${property.owner.name} ${property.owner.patronymic}</a></td>
+                    </tr>
+                    <tr>
                         <td class="propertyInfoNameCell" width="25%">Площадь</td>
                         <td>${property.area} м^2</td>
                     </tr>

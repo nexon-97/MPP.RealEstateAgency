@@ -1,5 +1,7 @@
 package com.controller;
 
+import com.model.Offer;
+import com.model.Property;
 import com.model.User;
 import com.services.shared.ServiceManager;
 import org.springframework.stereotype.Controller;
@@ -9,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
 
@@ -18,8 +21,17 @@ public class ProfileController extends BaseController {
     @RequestMapping(method = RequestMethod.GET, value = "/profile")
     public ModelAndView showProfile(HttpServletResponse response) {
         initControllerResources(context, request, response);
+        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
+        ServiceManager serviceManager = ServiceManager.getInstance();
 
+        User loggedUser = serviceManager.getAuthService().getLoggedUser();
+        if (loggedUser != null) {
+            List<Property> userProperties = serviceManager.getPropertyService().getPropertiesOwnedByUser(loggedUser);
+            List<Offer> userOffers = serviceManager.getOfferService().getUserOffers(loggedUser);
 
+            model.put("userProperties", userProperties);
+            model.put("userOffers", userOffers);
+        }
 
         return buildModelAndView("profile");
     }
@@ -27,8 +39,6 @@ public class ProfileController extends BaseController {
     @RequestMapping(method = RequestMethod.GET, value = "/profileEdit")
     public ModelAndView showProfileEditorPage(HttpServletResponse response) {
         initControllerResources(context, request, response);
-
-
 
         return buildModelAndView("edit_profile");
     }

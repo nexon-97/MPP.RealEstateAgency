@@ -48,7 +48,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,1,'Nexon','qwerty','nexons.97@gmail.com','Денис','Поняков','Сергеевич','+375291901254','Нормальный такой чувак'),(2,8,'MakeevAlex','iamgod','makeev.alex@mai.ru','Алексей','Макеев','Павлович',NULL,'Это наш начальник'),(3,3,'Maleika','446','maleika@mail.ru','Александр','Малей','Викторович',NULL,'Ровный поц'),(4,3,'Resik','lolkek','resik@bubble.com','Аурелиюс','Гурявичюс','Сигитасович',NULL,'Литовец, просто литовец.');
+INSERT INTO `user` VALUES (1,0,'Nexon','qwerty','nexons.97@gmail.com','Денис','Поняков','Сергеевич','+375291901254','Нормальный такой чувак'),(2,7,'MakeevAlex','iamgod','makeev.alex@mai.ru','Алексей','Макеев','Павлович',NULL,'Это наш начальник'),(3,2,'Maleika','446','maleika@mail.ru','Александр','Малей','Викторович',NULL,'Ровный поц'),(4,2,'Resik','lolkek','resik@bubble.com','Аурелиюс','Гурявичюс','Сигитасович',NULL,'Литовец, просто литовец.');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -61,4 +61,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-04-19  1:49:40
+-- Dump completed on 2017-04-28  3:56:47

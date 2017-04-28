@@ -16,6 +16,7 @@
                 <param name="enumClass">com.model.PropertyType</param>
             </type>
         </property>
+        <many-to-one name="owner" column="owner" class="com.model.User" not-null="true" lazy="false"/>
         <property name="city" column="city" type="string"/>
         <property name="street" column="street" type="string"/>
         <property name="houseNumber" column="house_number" type="int"/>

@@ -6,7 +6,7 @@ import java.util.Map;
 public class RequestValidationChain {
 
     private Map<String, RequestParameterValidator> chain;
-    private String errorMessage;
+    private Map<String, String> errorMessageMap;
 
     public RequestValidationChain() {
         this.chain = new HashMap<>();
@@ -27,17 +27,18 @@ public class RequestValidationChain {
     }
 
     public boolean validate() {
+        this.errorMessageMap = new HashMap<>();
+        boolean isValidated = true;
         for (RequestParameterValidator validator : chain.values()) {
             if (!validator.validate()) {
-                this.errorMessage = validator.getErrorMessage();
-                return false;
+                this.errorMessageMap.put(validator.getParameterName(), validator.getErrorMessage());
+                isValidated = false;
             }
         }
-
-        return true;
+        return isValidated;
     }
 
-    public String getErrorMessage() {
-        return this.errorMessage;
+    public Map<String, String> getErrorMessageMap() {
+        return this.errorMessageMap;
     }
 }

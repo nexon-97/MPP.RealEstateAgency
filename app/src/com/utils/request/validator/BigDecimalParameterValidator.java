@@ -13,13 +13,16 @@ public class BigDecimalParameterValidator implements RequestParameterValidator<B
     private String paramName;
     private BigDecimal value;
     private String errorMessage;
+    private boolean isNullAllowed;
 
-    public BigDecimalParameterValidator(String paramName) {
+    public BigDecimalParameterValidator(String paramName, boolean isNullAllowed) {
         this.paramName = paramName;
+        this.isNullAllowed = isNullAllowed;
     }
 
     @Override
     public boolean validate() {
+        this.errorMessage = null;
         HttpServletRequest request = ServiceManager.getInstance().getSharedResources().getRequest();
 
         try {
@@ -34,11 +37,10 @@ public class BigDecimalParameterValidator implements RequestParameterValidator<B
             return true;
         } catch (ParseException e) {
             this.errorMessage = String.format("Параметр '%s' не является денежным форматом", paramName);
+            return false;
         }  catch (NullPointerException e) {
-            this.errorMessage = String.format("Параметр '%s' отстуствует", paramName);
+            return checkNullPermission(String.format("Параметр '%s' отсутствует", paramName));
         }
-
-        return false;
     }
 
     @Override
@@ -54,5 +56,14 @@ public class BigDecimalParameterValidator implements RequestParameterValidator<B
     @Override
     public BigDecimal getValue() {
         return this.value;
+    }
+
+    private boolean checkNullPermission(String errorMessage){
+        if (isNullAllowed) {
+            this.value = null;
+            return true;
+        }
+        this.errorMessage = errorMessage;
+        return false;
     }
 }

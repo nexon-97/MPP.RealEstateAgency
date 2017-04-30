@@ -19,6 +19,7 @@ public class EnumParameterValidator<T extends Enum<T>> implements RequestParamet
 
     @Override
     public boolean validate() {
+        this.errorMessage = null;
         HttpServletRequest request = ServiceManager.getInstance().getSharedResources().getRequest();
         String paramValue = request.getParameter(this.paramName);
 

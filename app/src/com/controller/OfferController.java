@@ -87,7 +87,7 @@ public class OfferController extends BaseController {
                 return redirect("/offer?id=" + String.valueOf(offer.getId()));
             }
         } else {
-            return showErrorMessage(offerValidationChain.getErrorMessage());
+            return showErrorMessage(offerValidationChain.getErrorMessageMap().getOrDefault("","Some error"));
         }
 
         return showErrorMessage("Не удалось добавить предложение! Проверьте правильность параметров!");
@@ -214,8 +214,8 @@ public class OfferController extends BaseController {
 
     private RequestValidationChain buildOfferValidationChain() {
         return new RequestValidationChain()
-            .addValidator(new BigDecimalParameterValidator("cost"))
-            .addValidator(new IntegerParameterValidator("property"))
+            .addValidator(new BigDecimalParameterValidator("cost", false))
+            .addValidator(new IntegerParameterValidator("property", false))
             .addValidator(new EnumParameterValidator<>(OfferType.class, "offerType"));
     }
 

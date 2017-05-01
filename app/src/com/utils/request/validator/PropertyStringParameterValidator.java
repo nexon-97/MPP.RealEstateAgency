@@ -4,6 +4,8 @@ package com.utils.request.validator;
 import com.services.shared.ServiceManager;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PropertyStringParameterValidator extends StringParameterValidator {
 
@@ -20,7 +22,11 @@ public class PropertyStringParameterValidator extends StringParameterValidator {
             String paramValue = request.getParameter(this.paramName).trim();
             if(paramValue == ""){
                 return checkNullPermission(String.format("Параметр '%s' отсутствует", paramName));
-            } else{
+            } else if (!checkRegularExpression(paramValue)){
+                this.errorMessage = String.format("Параметр '%s' может содержать русские буквы, цифры и символы '-' ''' ' '", paramName);
+                return false;
+            } else {
+                this.value = paramValue;
                 return true;
             }
         }
@@ -36,5 +42,11 @@ public class PropertyStringParameterValidator extends StringParameterValidator {
         }
         this.errorMessage = errorMessage;
         return false;
+    }
+
+    private boolean checkRegularExpression(String value){
+        Pattern pattern = Pattern.compile("^[а-яёА-ЯЁ][а-яёА-ЯЁ\\-'\\s]*$");
+        Matcher matcher = pattern.matcher(value);
+        return matcher.find();
     }
 }

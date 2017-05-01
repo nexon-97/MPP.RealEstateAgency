@@ -22,7 +22,7 @@ public class IntegerParameterValidator implements RequestParameterValidator<Inte
         HttpServletRequest request = ServiceManager.getInstance().getSharedResources().getRequest();
 
         try {
-            this.value = Integer.valueOf(request.getParameter(this.paramName));
+            this.value = Integer.valueOf(getParamValue(request));
             if (this.value > 0) return true;
             else {
                 this.errorMessage = String.format("Параметр '%s' должен быть больше 0", paramName);
@@ -49,6 +49,12 @@ public class IntegerParameterValidator implements RequestParameterValidator<Inte
     @Override
     public Integer getValue() {
         return this.value;
+    }
+
+    private String getParamValue(HttpServletRequest request){
+        String paramValue = request.getParameter(this.paramName).trim();
+        if (paramValue == "") throw new NullPointerException();
+        return paramValue;
     }
 
     private boolean checkNullPermission(String errorMessage) {

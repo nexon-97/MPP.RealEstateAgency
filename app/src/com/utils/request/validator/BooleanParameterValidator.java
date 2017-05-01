@@ -18,11 +18,11 @@ public class BooleanParameterValidator  implements RequestParameterValidator<Boo
         this.errorMessage = null;
         HttpServletRequest request = ServiceManager.getInstance().getSharedResources().getRequest();
         String paramValue = request.getParameter(this.paramName);
-        if(paramValue == "on") {
-            this.value = true;
-            return true;
-        } else if(paramValue == null) {
+        if(paramValue == null) {
             this.value = false;
+            return true;
+        } else if(paramValue.equals("on")) {
+            this.value = true;
             return true;
         } else {
             errorMessage = "Неправильный формат значения!";

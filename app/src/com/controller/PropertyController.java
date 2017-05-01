@@ -72,7 +72,7 @@ public class PropertyController extends BaseController  {
     @RequestMapping(method = RequestMethod.POST, value = "/addProperty")
     public ModelAndView register(HttpServletResponse response) {
         initControllerResources(context, request, response);
-        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
+
         if (ServiceManager.getInstance().getAuthService().getLoggedUser() == null) {
             return buildModelAndView("../unauthorized_view");
         } else {
@@ -80,19 +80,15 @@ public class PropertyController extends BaseController  {
             if (requestValidator.validate()){
                 PropertyService propertyService = ServiceManager.getInstance().getPropertyService();
                 boolean isAdded = propertyService.addProperty(requestValidator);
-                if (isAdded) return redirect("/");
+                if (isAdded) {
+                    return redirect("/");
+                }
                 else {
-                    model.put("add_error", "Ошибка при добавлении собственности");
-                    PropertyType[] types = PropertyType.values();
-                    model.put("types", types);
-                    return buildModelAndView("addProperty");
+                    return getViewWithErrors("addError", "Ошибка при добавлении собственности", requestValidator.getValidatedValues());
                 }
             }
             else {
-                model.put("errors", requestValidator.getErrorMessageMap());
-                PropertyType[] types = PropertyType.values();
-                model.put("types", types);
-                return buildModelAndView("addProperty");
+                return getViewWithErrors("errors", requestValidator.getErrorMessageMap(), requestValidator.getValidatedValues());
             }
         }
     }
@@ -115,6 +111,15 @@ public class PropertyController extends BaseController  {
                 .addValidator(new BooleanParameterValidator("phone"))
                 .addValidator(new BooleanParameterValidator("fridge"))
                 .addValidator(new BooleanParameterValidator("stove"))
-                .addValidator(new PropertyStringParameterValidator("description", true));
+                .addValidator(new PropertyStringParameterValidator("description", false));
+    }
+
+    private ModelAndView getViewWithErrors(String key, Object error, Object values){
+        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
+        PropertyType[] types = PropertyType.values();
+        model.put(key, error);
+        model.put("values", values);
+        model.put("types", types);
+        return buildModelAndView("addProperty");
     }
 }

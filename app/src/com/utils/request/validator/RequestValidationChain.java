@@ -35,8 +35,9 @@ public class RequestValidationChain {
             if (!validator.validate()) {
                 this.errorMessageMap.put(validator.getParameterName(), validator.getErrorMessage());
                 isValidated = false;
+            } else {
+                this.validatedValues.put(validator.getParameterName(), validator.getValue());
             }
-            else this.validatedValues.put(validator.getParameterName(), validator.getValue());
         }
         return isValidated;
     }

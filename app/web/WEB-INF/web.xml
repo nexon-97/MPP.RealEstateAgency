@@ -121,5 +121,19 @@
         <url-pattern>/addDeal.jsp</url-pattern>
         <url-pattern>/addDeal</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UserController</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>/WEB-INF/servlets/userControllerServlet.xml</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserController</servlet-name>
+        <url-pattern>/user_roles.jsp</url-pattern>
+        <url-pattern>/user_roles</url-pattern>
+    </servlet-mapping>
     <!-- Spring controllers -->
 </web-app>

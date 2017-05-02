@@ -6,4 +6,5 @@ public enum  PermissionId {
     EditProperty,
     ViewProperty,
     RemoveProperty,
+    UpdateRole
 }

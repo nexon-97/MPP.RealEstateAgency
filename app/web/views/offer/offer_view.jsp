@@ -9,14 +9,7 @@
 <div class="wrapper">
     <jsp:include page="../header.jsp" />
     <div class="content">
-        <c:choose>
-            <c:when test="${offer != null}">
-                <jsp:include page="offer_form.jsp" />
-            </c:when>
-            <c:otherwise>
-                <h2 style="margin-top: 15px;">Такого предложения не существует!</h2>
-            </c:otherwise>
-        </c:choose>
+        <jsp:include page="offer_form.jsp" />
     </div>
     <jsp:include page="../footer.jsp" />
 </div>

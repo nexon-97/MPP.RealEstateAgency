@@ -9,8 +9,10 @@
                     <div class="propertyDescriptionTableHeader">
                         <h3>Предложение [${offer.id}]</h3>
                         <c:set var="property" value="${offer.property}" />
-                        <c:if test="${property.owner.id == user.id || user.role.id == 0}">
+                        <c:if test="${property.owner.id == user.id}">
                             <a href="/editOffer?id=${offer.id}"><div class="pen-button-full"><img src="/img/pen.png" /></div></a>
+                        </c:if>
+                        <c:if test="${property.owner.id == user.id || user.role.roleId == 'Admin'}">
                             <a href="/deleteOffer?id=${offer.id}"><div class="delete-button-full"><img src="/img/cross.png" /></div></a>
                         </c:if>
                     </div>

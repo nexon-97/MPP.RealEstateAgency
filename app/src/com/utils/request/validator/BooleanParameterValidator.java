@@ -4,7 +4,8 @@ import com.services.shared.ServiceManager;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class BooleanParameterValidator  implements RequestParameterValidator<Boolean>, RequestValueContainer<Boolean>  {
+public class BooleanParameterValidator implements RequestParameterValidator<Boolean>, RequestValueContainer<Boolean>  {
+
     private String paramName;
     private boolean value;
     private String errorMessage;
@@ -18,6 +19,7 @@ public class BooleanParameterValidator  implements RequestParameterValidator<Boo
         this.errorMessage = null;
         HttpServletRequest request = ServiceManager.getInstance().getSharedResources().getRequest();
         String paramValue = request.getParameter(this.paramName);
+
         if(paramValue == null) {
             this.value = false;
             return true;

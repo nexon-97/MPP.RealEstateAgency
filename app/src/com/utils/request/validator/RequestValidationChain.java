@@ -11,6 +11,8 @@ public class RequestValidationChain {
 
     public RequestValidationChain() {
         this.chain = new HashMap<>();
+        this.errorMessageMap = new HashMap<>();
+        this.validatedValues = new HashMap<>();
     }
 
     public RequestValidationChain addValidator(RequestParameterValidator validator) {
@@ -23,13 +25,13 @@ public class RequestValidationChain {
         if (validator != null) {
             return validator.getValue();
         }
-
         return null;
     }
 
     public boolean validate() {
-        this.errorMessageMap = new HashMap<>();
-        this.validatedValues = new HashMap<>();
+        this.errorMessageMap.clear();
+        this.validatedValues.clear();
+
         boolean isValidated = true;
         for (RequestParameterValidator validator : chain.values()) {
             if (!validator.validate()) {
@@ -39,6 +41,7 @@ public class RequestValidationChain {
                 this.validatedValues.put(validator.getParameterName(), validator.getValue());
             }
         }
+
         return isValidated;
     }
 
@@ -46,5 +49,7 @@ public class RequestValidationChain {
         return this.errorMessageMap;
     }
 
-    public Map<String, Object> getValidatedValues() { return this.validatedValues; }
+    public Map<String, Object> getValidatedValues() {
+        return this.validatedValues;
+    }
 }

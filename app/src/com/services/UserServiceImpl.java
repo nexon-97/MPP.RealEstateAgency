@@ -18,4 +18,12 @@ public class UserServiceImpl extends BaseService implements UserService {
         UserDAO userDAO = new UserDAOImpl();
         return userDAO.update(user);
     }
+
+    @Override
+    public User getUserByID(int id) {
+        UserDAO userDAO = new UserDAOImpl();
+        return userDAO.getById(id);
+    }
+
+
 }

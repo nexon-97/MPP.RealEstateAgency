@@ -1,10 +1,5 @@
 package com.utils.request.validator;
 
-
-import com.services.shared.ServiceManager;
-
-import javax.servlet.http.HttpServletRequest;
-
 public abstract class StringParameterValidator implements RequestParameterValidator<String>, RequestValueContainer<String>  {
     protected String paramName;
     protected String value;

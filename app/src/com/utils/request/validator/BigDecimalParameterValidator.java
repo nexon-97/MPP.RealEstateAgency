@@ -25,6 +25,11 @@ public class BigDecimalParameterValidator implements RequestParameterValidator<B
         this.errorMessage = null;
         HttpServletRequest request = ServiceManager.getInstance().getSharedResources().getRequest();
 
+        String paramValue = request.getParameter(this.paramName);
+        if ((paramValue == null || "".equals(paramValue)) && this.isNullAllowed) {
+            return true;
+        }
+
         try {
             DecimalFormatSymbols symbols = new DecimalFormatSymbols();
             symbols.setDecimalSeparator('.');
@@ -35,11 +40,12 @@ public class BigDecimalParameterValidator implements RequestParameterValidator<B
             this.value = (BigDecimal) decimalFormat.parse(request.getParameter(this.paramName));
 
             return true;
+        } catch (NullPointerException e) {
+            this.errorMessage = String.format("Параметр '%s' отсутствует", paramName);
+            return false;
         } catch (ParseException e) {
             this.errorMessage = String.format("Параметр '%s' не является денежным форматом", paramName);
             return false;
-        }  catch (NullPointerException e) {
-            return checkNullPermission(String.format("Параметр '%s' отсутствует", paramName));
         }
     }
 
@@ -56,14 +62,5 @@ public class BigDecimalParameterValidator implements RequestParameterValidator<B
     @Override
     public BigDecimal getValue() {
         return this.value;
-    }
-
-    private boolean checkNullPermission(String errorMessage){
-        if (isNullAllowed) {
-            this.value = null;
-            return true;
-        }
-        this.errorMessage = errorMessage;
-        return false;
     }
 }

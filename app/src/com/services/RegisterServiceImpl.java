@@ -3,6 +3,7 @@ package com.services;
 import com.dao.UserDAO;
 import com.dao.UserDAOImpl;
 import com.model.Role;
+import com.model.RoleId;
 import com.model.User;
 
 import java.nio.charset.Charset;
@@ -39,7 +40,7 @@ public class RegisterServiceImpl extends BaseService implements RegisterService 
         user.setPatronymic(params.get("patronymic")[0]);
         user.setPhone(params.get("phone")[0]);
         Role userRole = new Role();
-        userRole.setId(3);
+        userRole.setId(RoleId.User.ordinal());
         userRole.setName("User");
         user.setRole(userRole);
 

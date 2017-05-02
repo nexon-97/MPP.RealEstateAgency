@@ -42,6 +42,7 @@ public class RequestValidationChain {
                 this.validatedValues.put(validator.getParameterName(), validator.getValue());
             }
         }
+
         return isValidated;
     }
 

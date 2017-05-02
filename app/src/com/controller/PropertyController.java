@@ -84,7 +84,7 @@ public class PropertyController extends BaseController  {
 
     private RequestValidationChain buildPropertyValidationChain() {
         return new RequestValidationChain()
-            .addValidator(new EnumParameterValidator<>(PropertyType.class, "type"))
+            .addValidator(new EnumParameterValidator<>(PropertyType.class, "type", false))
             .addValidator(new PropertyStringParameterValidator("city",  false))
             .addValidator(new PropertyStringParameterValidator("street", false))
             .addValidator(new IntegerParameterValidator("houseNumber", false))

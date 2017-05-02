@@ -10,17 +10,10 @@ import com.services.shared.BaseService;
 import com.services.shared.ServiceId;
 import com.services.shared.ServiceManager;
 import com.services.shared.ServiceSharedResources;
-import com.utils.request.FilterParameter;
-import com.utils.request.PropertyFilterParamId;
 import com.utils.request.validator.RequestValidationChain;
-import org.springframework.context.ApplicationContext;
 
-import javax.servlet.http.HttpServletRequest;
-import java.security.Provider;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class PropertyServiceImpl extends BaseService implements PropertyService {
     public PropertyServiceImpl(ServiceSharedResources sharedResources) {

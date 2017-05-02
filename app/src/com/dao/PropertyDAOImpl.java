@@ -2,18 +2,13 @@ package com.dao;
 
 import com.model.Property;
 import com.model.User;
-import com.utils.request.FilterParameter;
-import com.utils.request.PropertyFilterParamId;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class PropertyDAOImpl extends BaseDAO implements PropertyDAO {
 

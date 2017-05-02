@@ -34,6 +34,16 @@
                                                value="<c:out value="${filterParams['areaMax']}"/>" placeholder="До" />
                                     </div>
                                 </div>
+								<div class="criteriaBlock">
+									<div class="criteriaLabel">Тип сделки</div>
+									<div class="criteriaRangeWrapper">
+										<select class="filter-criteria-select" name="offerType">
+											<c:forEach var="offerType" items="${offerTypes}" varStatus="i">
+                                                <option<c:if test="${offerType == filterParams['offerType']}"> selected</c:if>>${offerType}</option>
+											</c:forEach>
+										</select>
+									</div>
+								</div>
                                 <div class="criteriaBlock">
                                     <div class="criteriaLabel">Количество комнат</div>
                                     <div class="criteriaRangeWrapper">

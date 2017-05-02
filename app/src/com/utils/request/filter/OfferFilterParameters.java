@@ -48,6 +48,7 @@ public class OfferFilterParameters {
 
         filterParametersAll.add(new BigDecimalRangeParameter(Offer.class, "cost",
                 (BigDecimal) validatorChain.getValue("costMin"), (BigDecimal) validatorChain.getValue("costMax")));
+        filterParametersAll.add(new EnumParameter<>("offer_type_id", (OfferType) validatorChain.getValue("offerType")));
         filterParametersAll.add(new IntegerRangeParameter(Property.class, "area",
                 (Integer) validatorChain.getValue("areaMin"), (Integer) validatorChain.getValue("areaMax")));
         filterParametersAll.add(new IntegerRangeParameter(Property.class, "room_count",

@@ -172,6 +172,8 @@ public class OfferController extends BaseController {
     public ModelAndView showOfferFilter(HttpServletResponse response) {
         initControllerResources(response);
 
+        addOfferTypeValuesModel();
+
         return buildModelAndView("offer_filter");
     }
 
@@ -190,6 +192,8 @@ public class OfferController extends BaseController {
             Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
             model.put("offers", filteredOffers);
             model.put("filterParams", filterParameters.getParamsMap());
+
+            addOfferTypeValuesModel();
         }
 
         return buildModelAndView("offer_filter");
@@ -217,5 +221,10 @@ public class OfferController extends BaseController {
         }
 
         return null;
+    }
+
+    private void addOfferTypeValuesModel() {
+        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
+        model.put("offerTypes", OfferType.values());
     }
 }

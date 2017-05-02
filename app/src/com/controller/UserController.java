@@ -20,7 +20,7 @@ public class UserController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/user_roles")
     public ModelAndView visitRegistrationForm(HttpServletResponse response) {
-        initControllerResources(context, request, response);
+        initControllerResources(response);
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
         ServiceManager serviceManager = ServiceManager.getInstance();
 

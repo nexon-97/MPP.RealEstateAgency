@@ -21,7 +21,7 @@ public class DealController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/deals")
     public ModelAndView showAllDeals(HttpServletResponse response) {
-        initControllerResources(context, request, response);
+        initControllerResources(response);
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
 
         if (!hasAdminRights()) {
@@ -38,7 +38,7 @@ public class DealController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/deal")
     public ModelAndView showDeal(HttpServletResponse response) {
-        initControllerResources(context, request, response);
+        initControllerResources(response);
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
 
         if (!hasAdminRights()) {

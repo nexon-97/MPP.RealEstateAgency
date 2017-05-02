@@ -44,7 +44,7 @@ public class PropertyStringParameterValidator extends RegexParameterValidator {
     }
 
     @Override
-    private boolean checkRegularExpression(String value) {
+    public boolean checkRegularExpression(String value) {
         Pattern pattern = Pattern.compile("^[а-яёА-ЯЁ][а-яёА-ЯЁ\\-'\\s]*$");
         Matcher matcher = pattern.matcher(value);
         return matcher.find();

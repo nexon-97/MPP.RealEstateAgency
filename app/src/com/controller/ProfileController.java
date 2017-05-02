@@ -21,7 +21,7 @@ public class ProfileController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/profile")
     public ModelAndView showProfile(HttpServletResponse response) {
-        initControllerResources(context, request, response);
+        initControllerResources(response);
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
         ServiceManager serviceManager = ServiceManager.getInstance();
         User loggedUser = serviceManager.getAuthService().getLoggedUser();
@@ -38,13 +38,13 @@ public class ProfileController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/profileEdit")
     public ModelAndView showProfileEditorPage(HttpServletResponse response) {
-        initControllerResources(context, request, response);
+        initControllerResources(response);
         return buildModelAndView("edit_profile");
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/profileEdit")
     public ModelAndView commitProfileEditionPage(HttpServletResponse response) {
-        initControllerResources(context, request, response);
+        initControllerResources(response);
         RequestValidationChain requestValidationChain = buildProfileEditDataValidator();
 
         if (requestValidationChain.validate()){
@@ -59,7 +59,7 @@ public class ProfileController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/user")
     public ModelAndView showUserProfilePage(HttpServletResponse response) {
-        initControllerResources(context, request, response);
+        initControllerResources(response);
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
         RequestValidationChain requestValidationChain = buildUserProfileDataValidator();
         if (requestValidationChain.validate()){

@@ -18,7 +18,7 @@ public class PropertyController extends BaseController  {
 
     @RequestMapping(method = RequestMethod.GET, value = "/property")
     public ModelAndView showPropertyInfo(HttpServletResponse response) {
-        initControllerResources(context, request, response);
+        initControllerResources(response);
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
 
         // Retrieve property id from request
@@ -46,7 +46,7 @@ public class PropertyController extends BaseController  {
 
     @RequestMapping(method = RequestMethod.GET, value = "/addProperty")
     public ModelAndView visitAddPropertyForm(HttpServletResponse response) {
-        initControllerResources(context, request, response);
+        initControllerResources(response);
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
 
         if (ServiceManager.getInstance().getAuthService().getLoggedUser() != null) {
@@ -62,7 +62,7 @@ public class PropertyController extends BaseController  {
 
     @RequestMapping(method = RequestMethod.POST, value = "/addProperty")
     public ModelAndView register(HttpServletResponse response) {
-        initControllerResources(context, request, response);
+        initControllerResources(response);
 
         if (ServiceManager.getInstance().getAuthService().getLoggedUser() == null) {
             return buildModelAndView("../unauthorized_view");
@@ -84,7 +84,7 @@ public class PropertyController extends BaseController  {
 
     private RequestValidationChain buildPropertyValidationChain() {
         return new RequestValidationChain()
-                .addValidator(new EnumParameterValidator<>(PropertyType.class, "type"))
+                .addValidator(new EnumParameterValidator<>(PropertyType.class, "type", false))
                 .addValidator(new PropertyStringParameterValidator("city",  false))
                 .addValidator(new PropertyStringParameterValidator("street", false))
                 .addValidator(new IntegerParameterValidator("houseNumber", false))

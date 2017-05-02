@@ -24,7 +24,7 @@ public class BaseController {
     @Autowired
     protected HttpServletRequest request;
 
-    protected void initControllerResources(ApplicationContext context, HttpServletRequest request, HttpServletResponse response) {
+    protected void initControllerResources(HttpServletResponse response) {
         ServiceManager.build(context, request, response);
 
         try {

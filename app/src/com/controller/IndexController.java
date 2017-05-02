@@ -21,7 +21,7 @@ public class IndexController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/")
     public ModelAndView navigateToIndex(HttpServletResponse response) {
-        initControllerResources(context, request, response);
+        initControllerResources(response);
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
 
         OfferService offerService = ServiceManager.getInstance().getOfferService();

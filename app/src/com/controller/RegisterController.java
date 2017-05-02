@@ -17,7 +17,7 @@ public class RegisterController extends BaseController{
 
     @RequestMapping(method = RequestMethod.GET, value = "/register")
     public ModelAndView visitRegistrationForm(HttpServletResponse response) {
-        initControllerResources(context, request, response);
+        initControllerResources(response);
         if (ServiceManager.getInstance().getAuthService().getLoggedUser() != null){
             return buildModelAndView("register/register_logged");
         }
@@ -28,7 +28,7 @@ public class RegisterController extends BaseController{
 
     @RequestMapping(method = RequestMethod.POST, value = "/register")
     public ModelAndView register(HttpServletResponse response) {
-        initControllerResources(context, request, response);
+        initControllerResources(response);
         RegisterService registerService = ServiceManager.getInstance().getRegisterService();
         RequestValidationChain requestValidator = buildRegisterDataValidator();
         if (requestValidator.validate()){

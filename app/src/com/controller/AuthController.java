@@ -15,7 +15,7 @@ public class AuthController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/auth")
     public ModelAndView visitAuthorizationForm(HttpServletResponse response) {
-        initControllerResources(context, request, response);
+        initControllerResources(response);
 
         AuthService authService = ServiceManager.getInstance().getAuthService();
         if (authService.getLoggedUser() != null) {
@@ -27,7 +27,7 @@ public class AuthController extends BaseController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/auth")
     public ModelAndView authorize(HttpServletResponse response) {
-        initControllerResources(context, request, response);
+        initControllerResources(response);
 
         String login = request.getParameter("login");
         String password = request.getParameter("password");
@@ -42,7 +42,7 @@ public class AuthController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/logout")
     public ModelAndView logout(HttpServletResponse response) {
-        initControllerResources(context, request, response);
+        initControllerResources(response);
 
         ServiceManager.getInstance().getAuthService().logout();
 

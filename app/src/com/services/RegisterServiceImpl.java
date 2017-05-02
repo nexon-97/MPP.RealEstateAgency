@@ -31,57 +31,7 @@ public class RegisterServiceImpl extends BaseService implements RegisterService 
         User user = new User();
         UserDAO userDAO = new UserDAOImpl();
 
-            return false;
-        }
-        boolean isCorrectFields = true;
-
-        user.setLogin( params.get("login")[0]);
-        user.setEmail(params.get("email")[0]);
-        user.setName(params.get("name")[0]);
-        user.setSurname(params.get("surname")[0]);
-        user.setPatronymic(params.get("patronymic")[0]);
-        user.setPhone(params.get("phone")[0]);
         user.setRoleId(RoleId.User);
-
-        if (checkPassword(params.get("password")[0])){
-            user.setPasswordHash(getPasswordHash(params.get("password")[0]));
-        }
-        else {
-            user.setPasswordHash(null);
-            isCorrectFields = false;
-        }
-
-        if (!checkLogin(user.getLogin())){
-            user.setLogin(null);
-            isCorrectFields = false;
-        }
-
-        if (!checkPersonData(user.getName())){
-            user.setName(null);
-            isCorrectFields = false;
-        }
-
-        if (!checkPersonData(user.getSurname())){
-            user.setSurname(null);
-            isCorrectFields = false;
-        }
-
-        if (!checkPersonData(user.getPatronymic())){
-            user.setPatronymic(null);
-            isCorrectFields = false;
-        }
-
-        if (!checkEmail(user.getEmail())){
-            user.setEmail(null);
-            isCorrectFields = false;
-        }
-
-        if (!checkPhone(user.getPhone())){
-            user.setPhone(null);
-            isCorrectFields = false;
-        }
-
-        user.setRole(userRole);
         user.setLogin((String) requestValidationChain.getValue("login"));
         user.setPasswordHash( getPasswordHash((String) requestValidationChain.getValue("password")) );
         user.setEmail((String) requestValidationChain.getValue("email"));
@@ -101,7 +51,6 @@ public class RegisterServiceImpl extends BaseService implements RegisterService 
         UserDAO userDAO = new UserDAOImpl();
         return userDAO.getByLogin(login) == null;
     }
-
 
     private String getPasswordHash(String password){
         String passwordHash = "";

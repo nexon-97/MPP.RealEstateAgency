@@ -1,4 +1,4 @@
-package com.controller;
+package com.helper;
 
 public abstract class SystemMessages {
 

@@ -1,5 +1,6 @@
 package com.controller;
 
+import com.helper.SystemMessages;
 import com.model.*;
 import com.services.OfferService;
 import com.services.PropertyService;
@@ -30,7 +31,7 @@ public class OfferController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/offer")
     public ModelAndView showOffer(HttpServletResponse response) {
-        initControllerResources(context, request, response);
+        initControllerResources(response);
 
         Integer id = getIdFromRequest();
         if (id != null) {
@@ -49,7 +50,7 @@ public class OfferController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/addOffer")
     public ModelAndView showAddOfferView(HttpServletResponse response) {
-        initControllerResources(context, request, response);
+        initControllerResources(response);
         ServiceManager serviceManager = ServiceManager.getInstance();
 
         User loggedUser = serviceManager.getAuthService().getLoggedUser();
@@ -75,7 +76,7 @@ public class OfferController extends BaseController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/addOffer")
     public ModelAndView addOfferAction(HttpServletResponse response) {
-        initControllerResources(context, request, response);
+        initControllerResources(response);
 
         Offer offer = constructOfferFromRequest();
         if (offer != null) {
@@ -92,7 +93,7 @@ public class OfferController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/editOffer")
     public ModelAndView showEditOfferView(HttpServletResponse response) {
-        initControllerResources(context, request, response);
+        initControllerResources(response);
         ServiceManager serviceManager = ServiceManager.getInstance();
 
         if (!serviceManager.getAuthService().isUserLoggedIn()) {
@@ -130,7 +131,7 @@ public class OfferController extends BaseController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/editOffer")
     public ModelAndView editOfferAction(HttpServletResponse response) {
-        initControllerResources(context, request, response);
+        initControllerResources(response);
 
         Offer offer = constructOfferFromRequest();
         if (offer != null) {
@@ -147,7 +148,7 @@ public class OfferController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/deleteOffer")
     public ModelAndView deleteOfferAction(HttpServletResponse response) {
-        initControllerResources(context, request, response);
+        initControllerResources(response);
 
         Integer offerId = getIdFromRequest();
         if (offerId != null) {
@@ -169,14 +170,14 @@ public class OfferController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/offerFilter")
     public ModelAndView showOfferFilter(HttpServletResponse response) {
-        initControllerResources(context, request, response);
+        initControllerResources(response);
 
         return buildModelAndView("offer_filter");
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/offerFilter")
     public ModelAndView filterOffers(HttpServletResponse response) {
-        initControllerResources(context, request, response);
+        initControllerResources(response);
 
         OfferFilterParameters filterParameters = new OfferFilterParameters();
         boolean paramsValid = filterParameters.validate();

@@ -3,6 +3,7 @@ package com.services;
 import com.dao.UserDAO;
 import com.dao.UserDAOImpl;
 import com.model.Role;
+import com.model.RoleId;
 import com.model.User;
 
 import java.nio.charset.Charset;
@@ -38,10 +39,7 @@ public class RegisterServiceImpl extends BaseService implements RegisterService 
         user.setSurname(params.get("surname")[0]);
         user.setPatronymic(params.get("patronymic")[0]);
         user.setPhone(params.get("phone")[0]);
-        Role userRole = new Role();
-        userRole.setId(3);
-        userRole.setName("User");
-        user.setRole(userRole);
+        user.setRoleId(RoleId.User);
 
         if (checkPassword(params.get("password")[0])){
             user.setPasswordHash(getPasswordHash(params.get("password")[0]));

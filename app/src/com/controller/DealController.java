@@ -67,7 +67,7 @@ public class DealController extends BaseController {
 
     private boolean hasAdminRights() {
         User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
-        return loggedUser != null && loggedUser.getRole().getRoleId().equals(RoleId.Admin);
+        return loggedUser != null && loggedUser.getRoleId().equals(RoleId.Admin);
     }
 
     private ModelAndView showInsufficientRightsMessage() {

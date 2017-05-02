@@ -1,5 +1,6 @@
 package com.dao;
 
+import com.model.RoleId;
 import com.model.User;
 import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;

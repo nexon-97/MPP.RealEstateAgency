@@ -16,7 +16,7 @@
                     <div class="personalAreaLabel">Личный кабинет</div>
                     <div class="personalInfoBlockWrapper">
                         <div class="personalInfoBlock">
-                            <div class="profileLogin">${user.login} [${user.role.name}]</div>
+                            <div class="profileLogin">${user.login} [${user.roleId}]</div>
                             <div>${user.surname} ${user.name} ${user.patronymic}</div>
                             <div class="contactInfoBlock">
                                 <div>

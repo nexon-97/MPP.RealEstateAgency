@@ -111,7 +111,7 @@ public class PropertyController extends BaseController  {
                 .addValidator(new BooleanParameterValidator("phone"))
                 .addValidator(new BooleanParameterValidator("fridge"))
                 .addValidator(new BooleanParameterValidator("stove"))
-                .addValidator(new PropertyStringParameterValidator("description", false));
+                .addValidator(new DescriptionStringParameterValidator("description", false));
     }
 
     private ModelAndView getViewWithErrors(String key, Object error, Object values){

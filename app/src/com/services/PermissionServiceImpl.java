@@ -1,5 +1,7 @@
 package com.services;
 
+import com.dao.RoleDAO;
+import com.dao.RoleDAOImpl;
 import com.model.*;
 import com.services.shared.*;
 
@@ -26,7 +28,8 @@ public class PermissionServiceImpl extends BaseService implements PermissionServ
     }
 
     @Override
-    public boolean hasPermission(Role role, Permission permission) {
+    public boolean hasPermission(RoleId roleId, Permission permission) {
+        Role role = getRoleById(roleId);
         Set<Permission> permissions = role.getPermissions();
         for (Permission p : permissions) {
             if (p.equals(permission)) {
@@ -38,12 +41,12 @@ public class PermissionServiceImpl extends BaseService implements PermissionServ
     }
 
     @Override
-    public boolean grantPermission(Role role, Permission permission) {
+    public boolean grantPermission(RoleId roleId, Permission permission) {
         return false;
     }
 
     @Override
-    public boolean removePermission(Role role, Permission permission) {
+    public boolean removePermission(RoleId roleId, Permission permission) {
         return false;
     }
 
@@ -69,7 +72,7 @@ public class PermissionServiceImpl extends BaseService implements PermissionServ
 
     private boolean isLoggedUserAdmin() {
         User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
-        return (loggedUser != null && loggedUser.getRole().getRoleId().equals(RoleId.Admin));
+        return (loggedUser != null && loggedUser.getRoleId().equals(RoleId.Admin));
     }
 
     private void initIdMapping() {
@@ -80,5 +83,11 @@ public class PermissionServiceImpl extends BaseService implements PermissionServ
         permissionIdMapping.put(PermissionId.EditProperty, 3);
         permissionIdMapping.put(PermissionId.ViewProperty, 4);
         permissionIdMapping.put(PermissionId.RemoveProperty, 5);
+    }
+
+    private Role getRoleById(RoleId roleId){
+        RoleDAO roleDAO = new RoleDAOImpl();
+        int id = roleId.ordinal();
+        return roleDAO.getById(id);
     }
 }

@@ -125,7 +125,8 @@ public class AuthServiceImpl extends BaseService implements AuthService {
         if (user != null)
         {
             PermissionService permissionService = ServiceManager.getInstance().getPermissionService();
-            hasAdminBarPermission = permissionService.hasPermission(user.getRole(), permissionService.getPermissionById(PermissionId.DisplayAdminbar));
+
+            hasAdminBarPermission = permissionService.hasPermission(user.getRoleId(), permissionService.getPermissionById(PermissionId.DisplayAdminbar));
         }
 
         model.put("hasAdminBarPermission", hasAdminBarPermission);

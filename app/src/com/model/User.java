@@ -3,7 +3,7 @@ package com.model;
 public class User {
     private int id;
 
-    private Role role;
+    private RoleId roleId;
 
     private String login;
 
@@ -25,8 +25,8 @@ public class User {
         this.id = id;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoleId(RoleId roleId) {
+        this.roleId = roleId;
     }
 
     public void setLogin(String login) {
@@ -65,8 +65,8 @@ public class User {
         return this.id;
     }
 
-    public Role getRole() {
-        return this.role;
+    public RoleId getRoleId() {
+        return this.roleId;
     }
 
     public String getLogin() {

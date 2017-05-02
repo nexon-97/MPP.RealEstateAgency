@@ -2,7 +2,9 @@ package com.services;
 
 import com.dao.UserDAO;
 import com.dao.UserDAOImpl;
+
 import com.model.Role;
+import com.model.RoleId;
 import com.model.User;
 
 import java.nio.charset.Charset;
@@ -14,7 +16,9 @@ import java.util.regex.Pattern;
 
 import com.services.shared.BaseService;
 import com.services.shared.ServiceId;
+import com.services.shared.ServiceManager;
 import com.services.shared.ServiceSharedResources;
+import com.utils.request.validator.RequestValidationChain;
 
 public class RegisterServiceImpl extends BaseService implements RegisterService {
 
@@ -23,114 +27,35 @@ public class RegisterServiceImpl extends BaseService implements RegisterService 
     }
 
     @Override
-    public boolean register(Map<String, String[]> params) {
+    public boolean register(RequestValidationChain requestValidationChain) {
         User user = new User();
         UserDAO userDAO = new UserDAOImpl();
-        if (userDAO.getByLogin( params.get("login")[0]) != null){
 
+        Role userRole = new Role();
+        userRole.setId(RoleId.User.ordinal());
+        userRole.setName("User");
+
+        user.setRole(userRole);
+        user.setLogin((String) requestValidationChain.getValue("login"));
+        user.setPasswordHash( getPasswordHash((String) requestValidationChain.getValue("password")) );
+        user.setEmail((String) requestValidationChain.getValue("email"));
+        user.setName((String) requestValidationChain.getValue("name"));
+        user.setSurname((String) requestValidationChain.getValue("surname"));
+        user.setPatronymic((String) requestValidationChain.getValue("patronymic"));
+        user.setPhone((String) requestValidationChain.getValue("phone"));
+
+        if (userDAO.getByLogin(user.getLogin()) != null){
             return false;
         }
-        boolean isCorrectFields = true;
-
-        user.setLogin( params.get("login")[0]);
-        user.setEmail(params.get("email")[0]);
-        user.setName(params.get("name")[0]);
-        user.setSurname(params.get("surname")[0]);
-        user.setPatronymic(params.get("patronymic")[0]);
-        user.setPhone(params.get("phone")[0]);
-        Role userRole = new Role();
-        userRole.setId(3);
-        userRole.setName("User");
-        user.setRole(userRole);
-
-        if (checkPassword(params.get("password")[0])){
-            user.setPasswordHash(getPasswordHash(params.get("password")[0]));
-        }
-        else {
-            user.setPasswordHash(null);
-            isCorrectFields = false;
-        }
-
-        if (!checkLogin(user.getLogin())){
-            user.setLogin(null);
-            isCorrectFields = false;
-        }
-
-        if (!checkPersonData(user.getName())){
-            user.setName(null);
-            isCorrectFields = false;
-        }
-
-        if (!checkPersonData(user.getSurname())){
-            user.setSurname(null);
-            isCorrectFields = false;
-        }
-
-        if (!checkPersonData(user.getPatronymic())){
-            user.setPatronymic(null);
-            isCorrectFields = false;
-        }
-
-        if (!checkEmail(user.getEmail())){
-            user.setEmail(null);
-            isCorrectFields = false;
-        }
-
-        if (!checkPhone(user.getPhone())){
-            user.setPhone(null);
-            isCorrectFields = false;
-        }
-
-        Map<String, Object> model = getSharedResources().getModel();
-        model.put("registerUser", user);
-        if (isCorrectFields){
-            userDAO.save(user);
-        }
-        return isCorrectFields;
+        return userDAO.save(user);
     }
 
-    private boolean checkPassword(String password) {
-        return checkDataLength(password, 5, 20);
+    @Override
+    public boolean checkEmptyLogin(String login) {
+        UserDAO userDAO = new UserDAOImpl();
+        return userDAO.getByLogin(login) == null;
     }
 
-    private static boolean checkDataLength(String data, int minLength, int maxLength) {
-        return (data.length() >= minLength) && (data.length() <= maxLength);
-    }
-
-
-    private  boolean checkPersonData(String data) {
-        return checkDataLength(data, 2, 30) && checkPersonDataContent(data);
-    }
-
-    private boolean checkPersonDataContent(String data) {
-        Pattern pattern = Pattern.compile("[a-zA-Zа-яёА-ЯЁ][a-zA-Zа-яёА-ЯЁ\\-'\\s]*");
-        Matcher matcher = pattern.matcher(data);
-        return matcher.find() && matcher.group(0).length() == data.length();
-
-    }
-
-    private  boolean checkLogin(String data) {
-        return checkDataLength(data, 3, 20) && checkLoginContent(data);
-    }
-
-    private boolean checkLoginContent(String data) {
-        Pattern pattern = Pattern.compile("[a-zA-Z(\\d)][a-zA-Z(\\d)_]*");
-        Matcher matcher = pattern.matcher(data);
-        return matcher.find() && matcher.group(0).length() == data.length();
-    }
-
-    private  boolean checkEmail(String email) {
-        Pattern pattern = Pattern.compile(".+@.+\\..+");
-        Matcher matcher = pattern.matcher(email);
-        return matcher.find() && matcher.group(0).length() == email.length();
-
-    }
-
-    private static boolean checkPhone(String phone) {
-        Pattern pattern = Pattern.compile("^(\\+375|80)(29|25|44|33)(\\d{3})(\\d{2})(\\d{2})$");
-        Matcher matcher = pattern.matcher(phone);
-        return matcher.find();
-    }
 
     private String getPasswordHash(String password){
         String passwordHash = "";

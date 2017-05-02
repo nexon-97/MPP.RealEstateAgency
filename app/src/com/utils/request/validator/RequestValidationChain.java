@@ -23,7 +23,6 @@ public class RequestValidationChain {
         if (validator != null) {
             return validator.getValue();
         }
-
         return null;
     }
 

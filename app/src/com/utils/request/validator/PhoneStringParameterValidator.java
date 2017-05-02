@@ -1,16 +1,14 @@
 package com.utils.request.validator;
 
-
 import com.services.shared.ServiceManager;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PropertyStringParameterValidator extends RegexParameterValidator {
+public class PhoneStringParameterValidator extends RegexParameterValidator {
 
-    public PropertyStringParameterValidator(String paramName, boolean isNullAllowed){
+    public PhoneStringParameterValidator(String paramName, boolean isNullAllowed) {
         super(paramName, isNullAllowed);
     }
 
@@ -20,10 +18,10 @@ public class PropertyStringParameterValidator extends RegexParameterValidator {
         try {
             HttpServletRequest request = ServiceManager.getInstance().getSharedResources().getRequest();
             String paramValue = request.getParameter(this.paramName).trim();
-            if (Objects.equals(paramValue, "")){
-                return checkNullPermission(String.format("Параметр '%s' отсутствует", paramName));
-            } else if (!checkRegularExpression(paramValue)){
-                this.errorMessage = String.format("Параметр '%s' может содержать русские буквы, цифры и символы '-' ''' ' '", paramName);
+            if ("".equals(paramValue)){
+                return checkNullPermission("Номер телефона отсутствует");
+            } else if (! checkRegularExpression(paramValue)){
+                this.errorMessage = "Номер телефона должен быт формата +375ххХХХХХХХХ или 80ххХХХХХХХ";
                 return false;
             } else {
                 this.value = paramValue;
@@ -31,7 +29,7 @@ public class PropertyStringParameterValidator extends RegexParameterValidator {
             }
         }
         catch(NullPointerException e){
-            return checkNullPermission(String.format("Параметр '%s' отсутствует", paramName));
+            return checkNullPermission("Номер телефона отсутствует");
         }
     }
 
@@ -43,10 +41,13 @@ public class PropertyStringParameterValidator extends RegexParameterValidator {
         this.errorMessage = errorMessage;
         return false;
     }
+
     @Override
-    boolean checkRegularExpression(String checkedString){
-        Pattern pattern = Pattern.compile("^[а-яёА-ЯЁ][а-яёА-ЯЁ\\-'\\s]*$");
-        Matcher matcher = pattern.matcher(value);
+    boolean checkRegularExpression(String checkedString) {
+        Pattern pattern = Pattern.compile("^(\\+375|80)(29|25|44|33)(\\d{3})(\\d{2})(\\d{2})$");
+        Matcher matcher = pattern.matcher(checkedString);
         return matcher.find();
     }
+
+
 }

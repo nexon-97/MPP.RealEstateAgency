@@ -12,34 +12,34 @@
     <div class="content">
         <div class="profileViewContent">
             <c:choose>
-                <c:when test="${user != null}">
+                <c:when test="${profileOwner != null}">
                     <div class="personalAreaLabel">Личный кабинет</div>
                     <div class="personalInfoBlockWrapper">
                         <div class="personalInfoBlock">
-                            <div class="profileLogin">${user.login} [${user.role.name}]</div>
-                            <div>${user.surname} ${user.name} ${user.patronymic}</div>
+                            <div class="profileLogin">${profileOwner.login} [${profileOwner.role.name}]</div>
+                            <div>${profileOwner.surname} ${profileOwner.name} ${profileOwner.patronymic}</div>
                             <div class="contactInfoBlock">
                                 <div>
                                     <span class="contactInfoBlockName">E-mail</span>
-                                    <span>${user.email}</span>
+                                    <span>${profileOwner.email}</span>
                                 </div>
-                                <c:if test="${user.phone != null and fn:length(user.phone) > 0}">
+                                <c:if test="${profileOwner.phone != null and fn:length(profileOwner.phone) > 0}">
                                     <div>
                                         <span class="contactInfoBlockName">Телефон</span>
-                                        <span>${user.phone}</span>
+                                        <span>${profileOwner.phone}</span>
                                     </div>
                                 </c:if>
                             </div>
-                            <c:if test="${user.info != null and fn:length(user.info) > 0}">
+                            <c:if test="${profileOwner.info != null and fn:length(profileOwner.info) > 0}">
                             <div>О себе:</div>
-                            <div class="personalInfoField">${user.info}</div>
+                            <div class="personalInfoField">${profileOwner.info}</div>
                             </c:if>
                         </div>
                     </div>
                     <div>
-                        <form method="get" action="/profileEdit">
+                        <c:if test="${ownProfile != null}"><form method="get" action="/profileEdit">
                             <input type="submit" value="Изменить" class="buttonSimple" />
-                        </form>
+                        </form></c:if>
                     </div>
                     <div class="personalAreaLabel" style="margin-top: 15px">Собственность</div>
                     <c:forEach var="property" items="${userProperties}">
@@ -47,11 +47,12 @@
                             <a href="/property?id=${property.id}">Собственность [${property.id}]</a>
                         </div>
                     </c:forEach>
-                    <div>
+                    <c:if test="${ownProfile != null}"><div>
                         <div class="buttonSimple" style="margin-top: 10px;">
                             <a href="/addProperty">Добавить</a>
                         </div>
-                    </div>
+                    </div></c:if>
+
                     <div class="personalAreaLabel" style="margin-top: 15px">Предложения</div>
                     <c:choose>
                         <c:when test="${fn:length(userProperties) > 0}">
@@ -61,11 +62,11 @@
                                      <jsp:include page="../offer/offer_compact_view.jsp" />
                                  </c:forEach>
                             </div>
-                            <div>
+                            <c:if test="${ownProfile != null}"><div>
                                 <div class="buttonSimple">
                                     <a href="/addOffer">Добавить</a>
                                 </div>
-                            </div>
+                            </div></c:if>
                         </c:when>
                         <c:otherwise>
                             Добавьте собственность, прежде чем добавлять предложения!

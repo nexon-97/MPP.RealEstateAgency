@@ -9,29 +9,35 @@ import java.util.List;
 public class UserDAOImpl extends BaseDAO implements UserDAO {
     @Override
     public User getById(int id) {
+        User user = null;
         Session session = getSessionFactory().openSession();
-        session.beginTransaction();
 
-        User user = (User)session.get(User.class, id);
-
-        session.getTransaction().commit();
-        session.close();
-
+        if (session != null) {
+            try {
+                Transaction tx = session.beginTransaction();
+                user = (User) session.get(User.class, id);
+                tx.commit();
+            } catch (HibernateException e) {
+                e.printStackTrace();
+                return null;
+            } finally {
+                session.close();
+            }
+        }
         return user;
     }
+
+
 
     @Override
     public User getByLogin(String login) {
         Session session = openSession();
         User user = null;
-
         try {
             Transaction tx = session.beginTransaction();
-
             Criteria criteria = session.createCriteria(User.class);
             criteria.add(Restrictions.eq("login", login));
             user = (User) criteria.uniqueResult();
-
             tx.commit();
         } catch (HibernateException e) {
             e.printStackTrace();

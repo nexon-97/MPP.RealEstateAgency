@@ -19,6 +19,10 @@
         <property name="patronymic" column="patronymic" type="string"/>
         <property name="phone" column="phone" type="string" not-null="false"/>
         <property name="info" column="info" type="string" not-null="false"/>
-        <many-to-one name="role" column="role_id" class="com.model.Role" not-null="true" lazy="false" foreign-key="fk_role"/>
+        <property name="roleId" column="role_id">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">com.model.RoleId</param>
+            </type>
+        </property>
     </class>
 </hibernate-mapping>

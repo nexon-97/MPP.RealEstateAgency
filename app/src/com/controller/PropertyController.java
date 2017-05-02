@@ -84,23 +84,23 @@ public class PropertyController extends BaseController  {
 
     private RequestValidationChain buildPropertyValidationChain() {
         return new RequestValidationChain()
-            .addValidator(new EnumParameterValidator<>(PropertyType.class, "type", false))
-            .addValidator(new PropertyStringParameterValidator("city",  false))
-            .addValidator(new PropertyStringParameterValidator("street", false))
-            .addValidator(new IntegerParameterValidator("houseNumber", false))
-            .addValidator(new IntegerParameterValidator("blockNumber", true))
-            .addValidator(new IntegerParameterValidator("flatNumber", true))
-            .addValidator(new IntegerParameterValidator("roomsCount", true))
-            .addValidator(new IntegerParameterValidator("area", false))
-            .addValidator(new IntegerParameterValidator("subway", true))
-            .addValidator(new IntegerParameterValidator("bus",true))
-            .addValidator(new BooleanParameterValidator("furniture"))
-            .addValidator(new BooleanParameterValidator("internet"))
-            .addValidator(new BooleanParameterValidator("tv"))
-            .addValidator(new BooleanParameterValidator("phone"))
-            .addValidator(new BooleanParameterValidator("fridge"))
-            .addValidator(new BooleanParameterValidator("stove"))
-            .addValidator(new PropertyStringParameterValidator("description", false));
+                .addValidator(new EnumParameterValidator<>(PropertyType.class, "type"))
+                .addValidator(new PropertyStringParameterValidator("city",  false))
+                .addValidator(new PropertyStringParameterValidator("street", false))
+                .addValidator(new IntegerParameterValidator("houseNumber", false))
+                .addValidator(new IntegerParameterValidator("blockNumber", true))
+                .addValidator(new IntegerParameterValidator("flatNumber", true))
+                .addValidator(new IntegerParameterValidator("roomsCount", true))
+                .addValidator(new IntegerParameterValidator("area", false))
+                .addValidator(new IntegerParameterValidator("subway", true))
+                .addValidator(new IntegerParameterValidator("bus",true))
+                .addValidator(new BooleanParameterValidator("furniture"))
+                .addValidator(new BooleanParameterValidator("internet"))
+                .addValidator(new BooleanParameterValidator("tv"))
+                .addValidator(new BooleanParameterValidator("phone"))
+                .addValidator(new BooleanParameterValidator("fridge"))
+                .addValidator(new BooleanParameterValidator("stove"))
+                .addValidator(new DescriptionStringParameterValidator("description", false));
     }
 
     private ModelAndView getViewWithErrors(String key, Object error, Object values) {

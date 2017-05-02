@@ -1,4 +1,4 @@
-package com.utils.request;
+package com.utils.request.filter;
 
 public interface Verifiable {
     boolean verify();

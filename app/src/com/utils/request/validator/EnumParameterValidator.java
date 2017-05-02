@@ -11,10 +11,12 @@ public class EnumParameterValidator<T extends Enum<T>> implements RequestParamet
     private String paramName;
     private T value;
     private String errorMessage;
+    private boolean isNullAllowed;
 
-    public EnumParameterValidator(Class<T> enumClass, String paramName) {
+    public EnumParameterValidator(Class<T> enumClass, String paramName, boolean isNullAllowed) {
         this.enumClass = enumClass;
         this.paramName = paramName;
+        this.isNullAllowed = isNullAllowed;
     }
 
     @Override
@@ -32,6 +34,8 @@ public class EnumParameterValidator<T extends Enum<T>> implements RequestParamet
             } else {
                 return tryLoadFromString(paramValue);
             }
+        } else if (this.isNullAllowed) {
+            return true;
         }
 
         this.errorMessage = String.format("Не удалось преобразовать параметр '%s' к типу '%s'", this.paramName, this.enumClass.getName());

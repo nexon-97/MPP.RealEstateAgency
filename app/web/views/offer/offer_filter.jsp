@@ -67,7 +67,7 @@
 										<label>
 											<div class="criteriaLabel">Мебель</div>
                                         	<div class="criteriaValue">
-												<input type="checkbox" name="comforts" value="furniture" class="property-form-checkbox" <c:if test="${comfortsParams['furniture']}">checked</c:if> />
+												<input type="checkbox" name="comforts" value="furniture" class="property-form-checkbox" <c:if test="${filterParams['furniture']}">checked</c:if> />
 												<span class="property-form-checkbox-custom"></span>
 											</div>
 										</label>
@@ -76,7 +76,7 @@
 										<label>
 											<div class="criteriaLabel">Телевизор</div>
 											<div class="criteriaValue">
-												<input type="checkbox" name="comforts" value="tv" class="property-form-checkbox" <c:if test="${comfortsParams['tv']}">checked</c:if> />
+												<input type="checkbox" name="comforts" value="tv" class="property-form-checkbox" <c:if test="${filterParams['tv']}">checked</c:if> />
 												<span class="property-form-checkbox-custom"></span>
 											</div>
 										</label>
@@ -85,7 +85,7 @@
 										<label>
 											<div class="criteriaLabel">Интернет</div>
 											<div class="criteriaValue">
-												<input type="checkbox" name="comforts" value="internet" class="property-form-checkbox" <c:if test="${comfortsParams['internet']}">checked</c:if> />
+												<input type="checkbox" name="comforts" value="internet" class="property-form-checkbox" <c:if test="${filterParams['internet']}">checked</c:if> />
 												<span class="property-form-checkbox-custom"></span>
 											</div>
 										</label>
@@ -94,7 +94,7 @@
 										<label>
 											<div class="criteriaLabel">Холодильник</div>
 											<div class="criteriaValue">
-												<input type="checkbox" name="comforts" value="fridge" class="property-form-checkbox" <c:if test="${comfortsParams['fridge']}">checked</c:if> />
+												<input type="checkbox" name="comforts" value="fridge" class="property-form-checkbox" <c:if test="${filterParams['fridge']}">checked</c:if> />
 												<span class="property-form-checkbox-custom"></span>
 											</div>
 										</label>
@@ -103,7 +103,7 @@
 										<label>
 											<div class="criteriaLabel">Телефон</div>
 											<div class="criteriaValue">
-												<input type="checkbox" name="comforts" value="phone" class="property-form-checkbox" <c:if test="${comfortsParams['phone']}">checked</c:if> />
+												<input type="checkbox" name="comforts" value="phone" class="property-form-checkbox" <c:if test="${filterParams['phone']}">checked</c:if> />
 												<span class="property-form-checkbox-custom"></span>
 											</div>
 										</label>
@@ -112,23 +112,22 @@
 										<label>
 											<div class="criteriaLabel">Кухонная плита</div>
 											<div class="criteriaValue">
-												<input type="checkbox" name="comforts" value="stove" class="property-form-checkbox" <c:if test="${comfortsParams['stove']}">checked</c:if> />
+												<input type="checkbox" name="comforts" value="stove" class="property-form-checkbox" <c:if test="${filterParams['stove']}">checked</c:if> />
 												<span class="property-form-checkbox-custom"></span>
 											</div>
 										</label>
                                     </div>
-                                </div>
-                                <input type="submit" value="Найти" class="buttonSimple" />
-                            </form>
+                                    <input type="submit" value="Найти" class="buttonSimple" />
+                                </form>
+                            </div>
                         </div>
                     </div>
 					<div class="filterResultWrapper">
 						<h2>Результаты поиска</h2>
-						<h3>Matches: ${fn:length(offers)}</h3>
+						<h3 style="padding-bottom: 25px;">Количество совпадений: ${fn:length(offers)}</h3>
                         <c:forEach var="offer" items="${offers}">
-                            <div>
-                                <a href="/offer?id=${offer.id}">Предложение [${offer.id}]</a>
-                            </div>
+                            <c:set var="offer" value="${offer}" scope="request" />
+                            <jsp:include page="offer_compact_view.jsp" />
                         </c:forEach>
 					</div>
 				</div>

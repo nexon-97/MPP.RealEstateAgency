@@ -16,27 +16,20 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `document`
+-- Table structure for table `deal`
 --
 
-DROP TABLE IF EXISTS `document`;
+DROP TABLE IF EXISTS `deal`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `document` (
-  `document_id` int(11) NOT NULL AUTO_INCREMENT,
-  `document_type_id` int(11) NOT NULL,
-  `date_confirm` date NOT NULL,
-  `date_graduation` date NOT NULL,
-  `seller_id` int(11) unsigned NOT NULL,
-  `buyer_id` int(11) unsigned NOT NULL,
-  `offer_id` int(11) NOT NULL,
-  PRIMARY KEY (`document_id`),
-  UNIQUE KEY `seller_id_UNIQUE` (`seller_id`),
-  UNIQUE KEY `buyer_id_UNIQUE` (`buyer_id`),
-  KEY `offer_id_fk_idx` (`offer_id`),
-  CONSTRAINT `buyer_id_fk` FOREIGN KEY (`buyer_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `offer_id_fk` FOREIGN KEY (`offer_id`) REFERENCES `offer` (`offer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `seller_id_fk` FOREIGN KEY (`seller_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+CREATE TABLE `deal` (
+  `deal_id` int(11) NOT NULL,
+  `offer_id` int(11) DEFAULT NULL,
+  `buyer_id` int(11) DEFAULT NULL,
+  `realtor_id` int(11) DEFAULT NULL,
+  `broker_id` int(11) DEFAULT NULL,
+  `validated` tinyint(1) NOT NULL,
+  PRIMARY KEY (`deal_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

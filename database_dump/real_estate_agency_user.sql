@@ -39,18 +39,8 @@ CREATE TABLE `user` (
   UNIQUE KEY `email_UNIQUE` (`email`),
   KEY `fk_role_idx` (`role_id`),
   CONSTRAINT `fk_role` FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `user`
---
-
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,0,'Nexon','qwerty','nexons.97@gmail.com','Денис','Поняков','Сергеевич','+375291901254','Нормальный такой чувак'),(2,7,'MakeevAlex','iamgod','makeev.alex@mai.ru','Алексей','Макеев','Павлович',NULL,'Это наш начальник'),(3,2,'Maleika','446','maleika@mail.ru','Александр','Малей','Викторович',NULL,'Ровный поц'),(4,2,'Resik','lolkek','resik@bubble.com','Аурелиюс','Гурявичюс','Сигитасович',NULL,'Литовец, просто литовец.');
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -61,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-04-28  4:27:41
+-- Dump completed on 2017-05-03  3:47:05

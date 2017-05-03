@@ -28,8 +28,6 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
         return user;
     }
 
-
-
     @Override
     public User getByLogin(String login) {
         Session session = openSession();
@@ -96,12 +94,12 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
     @Override
     public List<User> list() {
         Session session = openSession();
-        List<User> users = null;
-
         try {
             Transaction tx = session.beginTransaction();
-            users = (List<User>) session.createQuery("FROM User").list();
+            List<User> users = session.createCriteria(User.class).list();
             tx.commit();
+
+            return users;
         } catch (HibernateException e) {
             if (session.getTransaction() != null) session.getTransaction().rollback();
             e.printStackTrace();
@@ -109,6 +107,6 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
             session.close();
         }
 
-        return users;
+        return null;
     }
 }

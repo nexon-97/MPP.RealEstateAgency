@@ -64,6 +64,7 @@ footer
     display: inline-block;
     border-width: 0;
     font-size: 20px;
+    cursor: pointer;
 }
 
 .buttonSimple a
@@ -606,4 +607,53 @@ footer
     position: absolute;
     right: 32px;
     top: 0px;
+}
+
+.broker-view-wrapper
+{
+    margin: 20px;
+    padding: 10px;
+    background-color: #c5d8f5;
+    border-radius: 10px;
+    text-align: left;
+}
+
+.deal-short-view
+{
+    background-color: lightsalmon;
+    margin: 3px 0px;
+    border: 1px solid crimson;
+    padding: 3px 5px;
+    font-size: 16px;
+}
+
+.deal-short-view-header
+{
+    font-weight: bold;
+    padding-bottom: 4px;
+}
+
+.deal-short-view-info
+{
+    padding-left: 10px;
+}
+
+.deal-short-view-property-name
+{
+    font-weight: bold;
+    padding-right: 25px;
+}
+
+.deal-short-view-property-value
+{
+
+}
+
+.deal-broker-confirm-button
+{
+    background-color: #d32f08;
+    font-size: 16px;
+    color: white;
+    padding: 4px 8px;
+    font-weight: bold;
 }

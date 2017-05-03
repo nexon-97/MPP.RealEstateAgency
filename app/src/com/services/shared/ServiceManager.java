@@ -27,6 +27,7 @@ public class ServiceManager {
         servicesMap.put(ServiceId.UserService, new UserServiceImpl(sharedResources));
         servicesMap.put(ServiceId.OfferService, new OfferServiceImpl(sharedResources));
         servicesMap.put(ServiceId.TransactionService, new TransactionServiceImpl(sharedResources));
+        servicesMap.put(ServiceId.DealService, new DealServiceImpl(sharedResources));
     }
 
     public BaseService getServiceById(ServiceId id) {
@@ -59,6 +60,10 @@ public class ServiceManager {
   
     public TransactionService getTransactionService() {
         return (TransactionService) getServiceById(ServiceId.TransactionService);
+    }
+
+    public DealService getDealService() {
+        return (DealService) getServiceById(ServiceId.DealService);
     }
 
     public ServiceSharedResources getSharedResources() {

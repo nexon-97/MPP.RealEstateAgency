@@ -135,5 +135,23 @@
         <url-pattern>/user_roles.jsp</url-pattern>
         <url-pattern>/user_roles</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AdministrativeController</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>/WEB-INF/servlets/administrativeControllerServlet.xml</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdministrativeController</servlet-name>
+        <url-pattern>/broker.jsp</url-pattern>
+        <url-pattern>/broker</url-pattern>
+        <url-pattern>/confirmDealBroker</url-pattern>
+        <url-pattern>/realtor.jsp</url-pattern>
+        <url-pattern>/realtor</url-pattern>
+        confirmDealBroker
+    </servlet-mapping>
     <!-- Spring controllers -->
 </web-app>

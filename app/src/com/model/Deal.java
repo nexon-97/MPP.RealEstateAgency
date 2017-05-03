@@ -6,6 +6,7 @@ public class Deal {
     private User buyer;
     private User realtor;
     private User broker;
+    private boolean validated;
 
     public int getId() {
         return id;
@@ -45,5 +46,13 @@ public class Deal {
 
     public void setBroker(User broker) {
         this.broker = broker;
+    }
+
+    public boolean getValidated() {
+        return this.validated;
+    }
+
+    public void setValidated(boolean validated) {
+        this.validated = validated;
     }
 }

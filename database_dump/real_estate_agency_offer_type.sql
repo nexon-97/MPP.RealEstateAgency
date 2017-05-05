@@ -26,18 +26,8 @@ CREATE TABLE `offer_type` (
   `offer_type_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   PRIMARY KEY (`offer_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `offer_type`
---
-
-LOCK TABLES `offer_type` WRITE;
-/*!40000 ALTER TABLE `offer_type` DISABLE KEYS */;
-INSERT INTO `offer_type` VALUES (0,'sale'),(1,'lease');
-/*!40000 ALTER TABLE `offer_type` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -48,4 +38,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-04-28  4:27:41
+-- Dump completed on 2017-05-03  3:47:05

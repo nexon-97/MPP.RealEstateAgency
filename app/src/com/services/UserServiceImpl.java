@@ -22,6 +22,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
+
     public User getUserByLogin(String login){
         UserDAO userDAO = new UserDAOImpl();
         return userDAO.getByLogin(login);
@@ -31,5 +32,10 @@ public class UserServiceImpl extends BaseService implements UserService {
     public List<User> getSeveralUsers(int from, int count){
         UserDAO userDAO = new UserDAOImpl();
         return userDAO.getSeveralUsers(from, count);
+    }
+
+    public User getUserByID(int id) {
+        UserDAO userDAO = new UserDAOImpl();
+        return userDAO.getById(id);
     }
 }

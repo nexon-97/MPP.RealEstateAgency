@@ -3,7 +3,9 @@ package com.controller;
 import com.model.Offer;
 import com.model.Property;
 import com.model.User;
+import com.services.UserServiceImpl;
 import com.services.shared.ServiceManager;
+import com.utils.request.validator.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,84 +15,110 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.StringJoiner;
 
 @Controller
 public class ProfileController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/profile")
     public ModelAndView showProfile(HttpServletResponse response) {
-        initControllerResources(context, request, response);
+        initControllerResources(response);
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
         ServiceManager serviceManager = ServiceManager.getInstance();
-
         User loggedUser = serviceManager.getAuthService().getLoggedUser();
         if (loggedUser != null) {
             List<Property> userProperties = serviceManager.getPropertyService().getPropertiesOwnedByUser(loggedUser);
             List<Offer> userOffers = serviceManager.getOfferService().getUserOffers(loggedUser);
-
+            model.put("profileOwner", loggedUser);
+            model.put("ownProfile", true);
             model.put("userProperties", userProperties);
             model.put("userOffers", userOffers);
         }
-
         return buildModelAndView("profile");
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/profileEdit")
     public ModelAndView showProfileEditorPage(HttpServletResponse response) {
-        initControllerResources(context, request, response);
-
+        initControllerResources(response);
         return buildModelAndView("edit_profile");
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/profileEdit")
     public ModelAndView commitProfileEditionPage(HttpServletResponse response) {
-        initControllerResources(context, request, response);
+        initControllerResources(response);
+        RequestValidationChain requestValidationChain = buildProfileEditDataValidator();
 
-        Map<String, String[]> parameters = request.getParameterMap();
-        String[] parametersToFetch = new String[] { "surname", "name", "patronymic", "email", "phone", "info" };
-
-        Map<String, String> parsedRequestParams = new HashMap<>();
-        boolean parsingSucceeded = true;
-        for (String param : parametersToFetch) {
-            if (!validateRequestParameter(parameters, parsedRequestParams, param)) {
-                parsingSucceeded = false;
-                break;
-            }
-        }
-
-        if (parsingSucceeded) {
-            User updatedUser = refreshUserData(parsedRequestParams);
+        if (requestValidationChain.validate()){
+            User updatedUser = refreshUserData(requestValidationChain.getValidatedValues());
             ServiceManager.getInstance().getUserService().updateUser(updatedUser);
         } else {
             ServiceManager.getInstance().getSharedResources().getModel().put("msg", "Broken profile edition request");
             return buildModelAndView("../error_message");
         }
-
         return buildModelAndView("profile");
     }
 
-    private boolean validateRequestParameter(Map<String, String[]> parameters, Map<String, String> parsedParams, String paramName) {
-        String[] value = parameters.getOrDefault(paramName, null);
-        if (value != null) {
-            parsedParams.put(paramName, value[0]);
-            return true;
+    @RequestMapping(method = RequestMethod.GET, value = "/user")
+    public ModelAndView showUserProfilePage(HttpServletResponse response) {
+        initControllerResources(response);
+        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
+        RequestValidationChain requestValidationChain = buildUserProfileDataValidator();
+        if (requestValidationChain.validate()){
+
+            UserServiceImpl userService = new UserServiceImpl(ServiceManager.getInstance().getSharedResources());
+            User requestedUser = userService.getUserByID((Integer) requestValidationChain.getValue("id"));
+            if (requestedUser == null){
+                ServiceManager.getInstance().getSharedResources().getModel().put("msg", "Пользователя с таким id не существует");
+                return buildModelAndView("../error_message");
+            }
+            User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
+            List<Property> userProperties;
+            List<Offer> userOffers;
+            if ((loggedUser != null) && loggedUser.getId() == requestedUser.getId()){
+                model.put("profileOwner", loggedUser);
+                model.put("ownProfile", true);
+                userProperties = ServiceManager.getInstance().getPropertyService().getPropertiesOwnedByUser(loggedUser);
+                userOffers = ServiceManager.getInstance().getOfferService().getUserOffers(loggedUser);
+            } else {
+                model.put("profileOwner", requestedUser);
+                userProperties = ServiceManager.getInstance().getPropertyService().getPropertiesOwnedByUser(requestedUser);
+                userOffers = ServiceManager.getInstance().getOfferService().getUserOffers(requestedUser);
+            }
+            model.put("userProperties", userProperties);
+            model.put("userOffers", userOffers);
+            return buildModelAndView("profile");
+        } else {
+            ServiceManager.getInstance().getSharedResources().getModel().put("msg", "Некорректный id.");
+            return buildModelAndView("../error_message");
         }
 
-        return false;
     }
 
-    private User refreshUserData(Map<String, String> dataMap) {
+    private RequestValidationChain buildUserProfileDataValidator(){
+        return new RequestValidationChain()
+                .addValidator(new IntegerParameterValidator("id", false));
+    }
+
+    private RequestValidationChain buildProfileEditDataValidator(){
+        return new RequestValidationChain()
+                .addValidator(new FullNameStringParameterValidator("name", false))
+                .addValidator(new FullNameStringParameterValidator("surname", false))
+                .addValidator(new FullNameStringParameterValidator("patronymic", false))
+                .addValidator(new EmailStringParameterValidator("email", false))
+                .addValidator(new PhoneStringParameterValidator("phone", false))
+                .addValidator(new DescriptionStringParameterValidator("info", false));
+
+    }
+
+    private User refreshUserData(Map<String, Object> dataMap) {
         User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
         if (loggedUser != null) {
-            loggedUser.setSurname(dataMap.get("surname"));
-            loggedUser.setName(dataMap.get("name"));
-            loggedUser.setPatronymic(dataMap.get("patronymic"));
-            loggedUser.setEmail(dataMap.get("email"));
-            loggedUser.setPhone(dataMap.get("phone").length() > 0 ? dataMap.get("phone") : null);
-            loggedUser.setInfo(dataMap.get("info").length() > 0 ? dataMap.get("info") : null);
+            loggedUser.setSurname((String)dataMap.get("surname"));
+            loggedUser.setName((String)dataMap.get("name"));
+            loggedUser.setPatronymic((String)dataMap.get("patronymic"));
+            loggedUser.setEmail((String)dataMap.get("email"));
+            loggedUser.setPhone(((String)dataMap.get("phone")).length() > 0 ? (String)dataMap.get("phone") : null);
+            loggedUser.setInfo(((String)dataMap.get("info")).length() > 0 ? (String)dataMap.get("info") : null);
         }
-
         return loggedUser;
     }
 }

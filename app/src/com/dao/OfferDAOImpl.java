@@ -3,11 +3,8 @@ package com.dao;
 import com.model.Offer;
 import com.model.Property;
 import com.model.User;
-import com.utils.request.FilterParameter;
-import com.utils.request.PropertyFilterParamId;
+import com.utils.request.filter.FilterParameter;
 import org.hibernate.*;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Restrictions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,25 +13,12 @@ import java.util.Map;
 
 public class OfferDAOImpl extends BaseDAO implements OfferDAO {
 
-    private Map<PropertyFilterParamId, String> offerColumnMapping;
-    private Map<PropertyFilterParamId, String> propertyColumnMapping;
+    Map<Class<?>, String> classNames;
 
     public OfferDAOImpl() {
-        offerColumnMapping = new HashMap<>();
-        propertyColumnMapping = new HashMap<>();
-
-        offerColumnMapping.put(PropertyFilterParamId.Cost, "cost");
-        offerColumnMapping.put(PropertyFilterParamId.OfferType, "offer_type_id");
-        propertyColumnMapping.put(PropertyFilterParamId.Area, "area");
-        propertyColumnMapping.put(PropertyFilterParamId.RoomCount, "room_count");
-        propertyColumnMapping.put(PropertyFilterParamId.DistanceToSubway, "distance_to_subway");
-        propertyColumnMapping.put(PropertyFilterParamId.DistanceToTransportStop, "distance_to_transport_stop");
-        propertyColumnMapping.put(PropertyFilterParamId.HasFurniture, "has_furniture");
-        propertyColumnMapping.put(PropertyFilterParamId.HasInternet, "has_internet");
-        propertyColumnMapping.put(PropertyFilterParamId.HasTv, "has_phone");
-        propertyColumnMapping.put(PropertyFilterParamId.HasPhone, "has_tv");
-        propertyColumnMapping.put(PropertyFilterParamId.HasFridge, "has_fridge");
-        propertyColumnMapping.put(PropertyFilterParamId.HasStove, "has_stove");
+        classNames = new HashMap<>();
+        classNames.put(Offer.class, "o");
+        classNames.put(Property.class, "p");
     }
 
     @Override
@@ -171,17 +155,23 @@ public class OfferDAOImpl extends BaseDAO implements OfferDAO {
     }
 
     @Override
-    public List<Offer> filter(Map<PropertyFilterParamId, FilterParameter> filterParams) {
+    public List<Offer> filter(List<FilterParameter> filterParams) {
         Session session = openSession();
         if (session != null) {
             try {
                 Transaction tx = session.beginTransaction();
 
                 String queryStr = constructFilterQuery(filterParams);
-                SQLQuery query = session.createSQLQuery(queryStr)
-                        .addEntity("o", Offer.class)
-                        .addJoin("p", "o.property");
-                List rows = query.list();
+                Query safeQuery = session.createSQLQuery(queryStr)
+                        .addEntity(classNames.get(Offer.class), Offer.class)
+                        .addJoin(classNames.get(Property.class), String.format("%s.property", classNames.get(Offer.class)));
+
+                // Insert query values
+                for (FilterParameter param : filterParams) {
+                    param.fillQuery(safeQuery);
+                }
+
+                List rows = safeQuery.list();
 
                 List<Offer> filteredOffers = new ArrayList<>();
                 for (Object row : rows) {
@@ -202,35 +192,23 @@ public class OfferDAOImpl extends BaseDAO implements OfferDAO {
         return null;
     }
 
-    private String constructFilterQuery(Map<PropertyFilterParamId, FilterParameter> filterParams) {
-        String query = "SELECT {o.*}, {p.*} FROM Offer o JOIN Property p ON o.property_id = p.property_id";
+    private String constructFilterQuery(List<FilterParameter> filterParams) {
+        String o = classNames.get(Offer.class);
+        String p = classNames.get(Property.class);
+        String query = String.format("SELECT {%s.*}, {%s.*} FROM Offer %s JOIN Property %s ON %s.property_id = %s.property_id", o, p, o, p, o, p);
 
         boolean isFirst = true;
-        for (FilterParameter param : filterParams.values()) {
-            if (param.verify()) {
-                String column = offerColumnMapping.getOrDefault(param.getParamId(), null);
-                if (column != null) {
-                    if (!isFirst) {
-                        query = query + " and ";
-                    } else {
-                        query = query + " WHERE ";
-                    }
-
-                    query = query + param.getFilterQuery("o", column);
-                    isFirst = false;
+        for (FilterParameter param : filterParams) {
+            if (param.isActive()) {
+                if (isFirst) {
+                    query = query + " WHERE ";
+                } else {
+                    query = query + " and ";
                 }
 
-                column = propertyColumnMapping.getOrDefault(param.getParamId(), null);
-                if (column != null) {
-                    if (!isFirst) {
-                        query = query + " and ";
-                    } else {
-                        query = query + " WHERE ";
-                    }
-
-                    query = query + param.getFilterQuery("p", column);
-                    isFirst = false;
-                }
+                String entityName = classNames.get(param.getParamClass());
+                query = query + param.getFilterQuery(entityName);
+                isFirst = false;
             }
         }
 

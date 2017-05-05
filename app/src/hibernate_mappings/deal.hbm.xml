@@ -11,9 +11,10 @@
         <id name="id" type="int" column="deal_id">
             <generator class="increment"/>
         </id>
-        <many-to-one name="realtor" column="realtor_id" class="com.model.User" not-null="true" lazy="false" />
-        <many-to-one name="buyer" column="buyer_id" class="com.model.User" not-null="true" lazy="false" />
-        <many-to-one name="broker" column="broker_id" class="com.model.User" not-null="true" lazy="false" />
-        <many-to-one name="offer" column="offer_id" class="com.model.Offer" not-null="true" lazy="false" />
+        <many-to-one name="realtor" column="realtor_id" class="com.model.User" not-null="false" lazy="false" />
+        <many-to-one name="buyer" column="buyer_id" class="com.model.User" not-null="false" lazy="false" />
+        <many-to-one name="broker" column="broker_id" class="com.model.User" not-null="false" lazy="false" />
+        <many-to-one name="offer" column="offer_id" class="com.model.Offer" not-null="false" lazy="false" />
+        <property name="validated" column="validated" type="boolean"/>
     </class>
 </hibernate-mapping>

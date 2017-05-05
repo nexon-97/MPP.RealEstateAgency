@@ -1,7 +1,10 @@
 package com.services;
 
-import java.util.Map;
+import com.utils.request.validator.RequestValidationChain;
+
 
 public interface RegisterService {
-    boolean register(Map<String, String[]> params);
+    boolean register(RequestValidationChain requestValidationChain);
+
+    boolean checkEmptyLogin(String login);
 }

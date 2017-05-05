@@ -64,6 +64,7 @@ footer
     display: inline-block;
     border-width: 0;
     font-size: 20px;
+    cursor: pointer;
 }
 
 .buttonSimple a
@@ -392,13 +393,13 @@ footer
 
 .criteriaRangeInputLeft
 {
-    width: 120px;
+    width: 140px;
     margin-right: 2px;
 }
 
 .criteriaRangeInputRight
 {
-    width: 120px;
+    width: 140px;
     margin-left: 2px;
 }
 
@@ -409,6 +410,17 @@ footer
 	font-size: 16px;
     padding: 3px 5px;
     display: inline-block;
+}
+
+.filter-criteria-select
+{
+    border-radius: 4px;
+    font-size: 16px;
+    color: black;
+    padding: 2px 4px;
+    margin: 2px 0px;
+    border: 1px solid #003a98;
+    width: 100%;
 }
 
 .property-form-wrapper
@@ -597,7 +609,6 @@ footer
     top: 0px;
 }
 
-
 .user-short-info-block
 {
     background-color: #90c9ff;
@@ -648,4 +659,53 @@ footer
     color: white;
     margin-top: 10px;
     font-size: 16px;
+}
+  
+.broker-view-wrapper
+{
+    margin: 20px;
+    padding: 10px;
+    background-color: #c5d8f5;
+    border-radius: 10px;
+    text-align: left;
+}
+
+.deal-short-view
+{
+    background-color: lightsalmon;
+    margin: 3px 0px;
+    border: 1px solid crimson;
+    padding: 3px 5px;
+    font-size: 16px;
+}
+
+.deal-short-view-header
+{
+    font-weight: bold;
+    padding-bottom: 4px;
+}
+
+.deal-short-view-info
+{
+    padding-left: 10px;
+}
+
+.deal-short-view-property-name
+{
+    font-weight: bold;
+    padding-right: 25px;
+}
+
+.deal-short-view-property-value
+{
+
+}
+
+.deal-broker-confirm-button
+{
+    background-color: #d32f08;
+    font-size: 16px;
+    color: white;
+    padding: 4px 8px;
+    font-weight: bold;
 }

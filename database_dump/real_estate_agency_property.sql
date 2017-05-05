@@ -45,18 +45,8 @@ CREATE TABLE `property` (
   PRIMARY KEY (`property_id`),
   KEY `fk_property_type_idx` (`property_type_id`),
   CONSTRAINT `fk_property_type` FOREIGN KEY (`property_type_id`) REFERENCES `property_type` (`property_type_id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `property`
---
-
-LOCK TABLES `property` WRITE;
-/*!40000 ALTER TABLE `property` DISABLE KEYS */;
-INSERT INTO `property` VALUES (1,1,1,'Минск','Ленина',6,NULL,104,5,105,150,120,1,1,1,1,1,1,'Уютный загородный дом'),(2,0,1,'Лида','Советская',14,NULL,NULL,9,120,40,30,1,1,0,0,0,1,'Крутой офис'),(3,2,1,'Минск','Гайа',104,NULL,17,2,40,NULL,NULL,1,1,1,0,0,0,'Новостройка, огонь'),(4,2,2,'Барановичи','Зеленый луг',35,NULL,26,3,74,NULL,NULL,1,1,1,1,0,1,'Эта квартира осталась от бабушки, срочно нужно продать'),(5,3,4,'Минск','Сосновый бор',84,NULL,NULL,NULL,150,1045,50,0,1,1,0,0,0,'Отличное место, чтобы построить многофункциональный торговый комплекс!'),(6,1,1,'Lida','Gastello',47,NULL,36,3,40,NULL,50,0,0,1,1,0,0,'hkjhjkhkj'),(7,1,1,'Lida','Gastello',47,NULL,36,3,40,NULL,50,0,0,1,1,0,0,'hkjhjkhkj'),(8,0,1,'Лида','Гастелло',47,4,36,3,50,NULL,200,1,1,1,1,1,1,'Ну бывает собственность такая');
-/*!40000 ALTER TABLE `property` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -67,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-04-28 13:34:26
+-- Dump completed on 2017-05-03  3:47:05

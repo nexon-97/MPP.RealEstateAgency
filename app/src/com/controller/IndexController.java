@@ -1,10 +1,6 @@
 package com.controller;
 
 import com.model.Offer;
-import com.model.RoleId;
-import com.model.User;
-import com.services.AuthService;
-import com.services.AuthServiceImpl;
 import com.services.OfferService;
 import com.services.shared.ServiceManager;
 import org.springframework.stereotype.Controller;
@@ -21,13 +17,13 @@ public class IndexController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/")
     public ModelAndView navigateToIndex(HttpServletResponse response) {
-        initControllerResources(context, request, response);
+        initControllerResources(response);
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
 
         OfferService offerService = ServiceManager.getInstance().getOfferService();
         List<Offer> offers = offerService.listAllOffers();
         model.put("offers", offers);
-        System.out.println();
+
         return buildModelAndView("index");
     }
 }

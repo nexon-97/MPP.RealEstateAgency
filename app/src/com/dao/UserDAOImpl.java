@@ -9,14 +9,21 @@ import java.util.List;
 public class UserDAOImpl extends BaseDAO implements UserDAO {
     @Override
     public User getById(int id) {
+        User user = null;
         Session session = getSessionFactory().openSession();
-        session.beginTransaction();
 
-        User user = (User)session.get(User.class, id);
-
-        session.getTransaction().commit();
-        session.close();
-
+        if (session != null) {
+            try {
+                Transaction tx = session.beginTransaction();
+                user = (User) session.get(User.class, id);
+                tx.commit();
+            } catch (HibernateException e) {
+                e.printStackTrace();
+                return null;
+            } finally {
+                session.close();
+            }
+        }
         return user;
     }
 
@@ -24,14 +31,11 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
     public User getByLogin(String login) {
         Session session = openSession();
         User user = null;
-
         try {
             Transaction tx = session.beginTransaction();
-
             Criteria criteria = session.createCriteria(User.class);
             criteria.add(Restrictions.eq("login", login));
             user = (User) criteria.uniqueResult();
-
             tx.commit();
         } catch (HibernateException e) {
             e.printStackTrace();
@@ -109,12 +113,12 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
     @Override
     public List<User> list() {
         Session session = openSession();
-        List<User> users = null;
-
         try {
             Transaction tx = session.beginTransaction();
-            users = session.createCriteria(User.class).list();
+            List<User> users = session.createCriteria(User.class).list();
             tx.commit();
+
+            return users;
         } catch (HibernateException e) {
             if (session.getTransaction() != null) session.getTransaction().rollback();
             e.printStackTrace();
@@ -122,6 +126,6 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
             session.close();
         }
 
-        return users;
+        return null;
     }
 }

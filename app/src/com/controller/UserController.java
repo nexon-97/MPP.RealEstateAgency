@@ -28,7 +28,6 @@ public class UserController extends BaseController {
         initControllerResources(response);
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
         ServiceManager serviceManager = ServiceManager.getInstance();
-        Map<String, String[]> map = request.getParameterMap();
 
         User loggedUser = serviceManager.getAuthService().getLoggedUser();
         if (loggedUser != null) {
@@ -50,7 +49,7 @@ public class UserController extends BaseController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/user_roles")
     public ModelAndView changeUserRole(HttpServletResponse response) {
-        initControllerResources(context, request, response);
+        initControllerResources(response);
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
         ServiceManager serviceManager = ServiceManager.getInstance();
         HttpServletRequest request = ServiceManager.getInstance().getSharedResources().getRequest();
@@ -95,7 +94,7 @@ public class UserController extends BaseController {
 
     private RequestValidationChain buildRoleValidationChain(){
         return new RequestValidationChain()
-                .addValidator(new EnumParameterValidator<>(RoleId.class, "user_role"))
+                .addValidator(new EnumParameterValidator<>(RoleId.class, "user_role", false))
                 .addValidator(new LoginStringParameterValidator("user_login", false));
     }
 }

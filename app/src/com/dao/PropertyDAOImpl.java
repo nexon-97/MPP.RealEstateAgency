@@ -102,6 +102,18 @@ public class PropertyDAOImpl extends BaseDAO implements PropertyDAO {
 
     @Override
     public List<Property> list() {
+        Session session = openSession();
+        try {
+            Transaction tx = session.beginTransaction();
+            List<Property> properties = session.createCriteria(Property.class).list();
+            tx.commit();
+            return properties;
+        } catch (HibernateException e) {
+            if (session.getTransaction() != null) session.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
         return null;
     }
 }

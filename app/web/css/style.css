@@ -721,3 +721,27 @@ footer
     padding: 4px 8px;
     font-weight: bold;
 }
+
+
+.admin-data-table
+{
+    border-collapse: initial;
+    border: 1px solid black;
+}
+
+.admin-data-column-name
+{
+    border-collapse: initial;
+    border: 1px solid black;
+    text-align: center;
+    font-weight: bold;
+    background-color: #0094ff;
+}
+
+.admin-data-column-field
+{
+    border-collapse: initial;
+    border: 1px solid black;
+    text-align: center;
+    background-color: #90c9ff;
+}

@@ -70,6 +70,11 @@ public class PropertyServiceImpl extends BaseService implements PropertyService 
         return propertyDAO.getPropertiesOwnedByUser(user);
     }
 
+    @Override
+    public List<Property> getList() {
+        PropertyDAO propertyDAO = new PropertyDAOImpl();
+        return propertyDAO.list();
+    }
 
     private boolean checkNotNullNumber(Integer data) {
         return data>0;

@@ -12,4 +12,5 @@ public interface PropertyService {
     boolean addProperty(RequestValidationChain requestValidationChain);
     boolean updateProperty(Map<String, String[]> params);
     List<Property> getPropertiesOwnedByUser(User user);
+    List<Property> getList();
 }

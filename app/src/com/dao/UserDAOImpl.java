@@ -1,6 +1,5 @@
 package com.dao;
 
-import com.model.RoleId;
 import com.model.User;
 import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
@@ -111,6 +110,29 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
         }
 
         return false;
+    }
+
+    public List<User> getSeveralUsers(int from, int count){
+        Session session = openSession();
+        List<User> users = null;
+
+        try {
+            Transaction tx = session.beginTransaction();
+
+            Criteria filterCriteria = session.createCriteria(User.class)
+                            .setFirstResult(from)
+                            .setMaxResults(count);
+            users = (List<User>)filterCriteria.list();
+
+            tx.commit();
+        } catch (HibernateException e) {
+            if (session.getTransaction() != null) session.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return users;
     }
 
     @Override

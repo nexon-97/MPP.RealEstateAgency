@@ -11,5 +11,6 @@ public interface UserDAO {
     List<User> getUsersByRole(RoleId roleId);
     boolean save(User user);
     boolean update(User user);
+    List<User> getSeveralUsers(int from, int count);
     List<User> list();
 }

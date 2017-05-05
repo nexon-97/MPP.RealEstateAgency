@@ -83,6 +83,7 @@ public class PermissionServiceImpl extends BaseService implements PermissionServ
         permissionIdMapping.put(PermissionId.EditProperty, 3);
         permissionIdMapping.put(PermissionId.ViewProperty, 4);
         permissionIdMapping.put(PermissionId.RemoveProperty, 5);
+        permissionIdMapping.put(PermissionId.UpdateRole, 6);
     }
 
     private Role getRoleById(RoleId roleId){

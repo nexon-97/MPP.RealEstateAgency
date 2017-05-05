@@ -6,10 +6,17 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DescriptionStringParameterValidator extends StringParameterValidator {
+public class DescriptionStringParameterValidator extends RegexParameterValidator {
 
     public DescriptionStringParameterValidator(String paramName, boolean isNullAllowed){
         super(paramName, isNullAllowed);
+    }
+
+    @Override
+    boolean checkRegularExpression(String checkedString) {
+        Pattern pattern = Pattern.compile("[a-zA-Zа-яёА-ЯЁ0-9\\.,\\-\\?\\!\\s]+");
+        Matcher matcher = pattern.matcher(checkedString);
+        return matcher.find() && matcher.group(0).length() == checkedString.length();
     }
 
     @Override
@@ -18,8 +25,11 @@ public class DescriptionStringParameterValidator extends StringParameterValidato
         try{
             HttpServletRequest request = ServiceManager.getInstance().getSharedResources().getRequest();
             String paramValue = request.getParameter(this.paramName).trim();
-            if(paramValue == ""){
+            if("".equals(paramValue)){
                 return checkNullPermission(String.format("Параметр '%s' отсутствует", paramName));
+            } else if (!checkRegularExpression(paramValue)){
+                this.errorMessage = "Описание может содержать русские и английские символы, '.', ',', '?', '!', '-', ' '.";
+                return false;
             } else {
                 this.value = paramValue;
                 return true;
@@ -28,6 +38,7 @@ public class DescriptionStringParameterValidator extends StringParameterValidato
             return checkNullPermission(String.format("Параметр '%s' отсутствует", paramName));
         }
     }
+
 
     private boolean checkNullPermission(String errorMessage){
         if (isNullAllowed) {

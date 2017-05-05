@@ -84,7 +84,6 @@ public class ProfileController extends BaseController {
             List<Property> userProperties;
             List<Offer> userOffers;
             if ((loggedUser != null) && loggedUser.getId() == requestedUser.getId()){
-                model.put("profileOwner", loggedUser);
                 model.put("ownProfile", true);
                 userProperties = ServiceManager.getInstance().getPropertyService().getPropertiesOwnedByUser(loggedUser);
                 userOffers = ServiceManager.getInstance().getOfferService().getUserOffers(loggedUser);

@@ -31,17 +31,16 @@ public class UserController extends BaseController {
 
         User loggedUser = serviceManager.getAuthService().getLoggedUser();
         if (loggedUser != null) {
-
-            PermissionService permissionService = ServiceManager.getInstance().getPermissionService();
-            if (permissionService.hasPermission(loggedUser.getRoleId(), permissionService.getPermissionById(PermissionId.UpdateRole))){
+            if (loggedUser.getRoleId().equals(RoleId.Admin)){
                 int minUserId = getMinUserIdFromRequest();
                 List<User> users = ServiceManager.getInstance().getUserService().getSeveralUsers( minUserId, 30);
                 RoleId[] roles = RoleId.values();
                 model.put("roles", roles);
 
                 model.put("userList", users);
+            } else {
+                return showErrorMessage("Вы не администратор!");
             }
-
         }
 
         return buildModelAndView("user_roles");
@@ -56,23 +55,26 @@ public class UserController extends BaseController {
 
         User loggedUser = serviceManager.getAuthService().getLoggedUser();
         if (loggedUser != null) {
-
-            PermissionService permissionService = ServiceManager.getInstance().getPermissionService();
-            if (permissionService.hasPermission(loggedUser.getRoleId(), permissionService.getPermissionById(PermissionId.UpdateRole))){
+            if (loggedUser.getRoleId().equals(RoleId.Admin)){
 
                 RequestValidationChain roleValidationChain = buildRoleValidationChain();
                 if (roleValidationChain.validate()){
                     UserService userService = ServiceManager.getInstance().getUserService();
                     User user = userService.getUserByLogin((String)roleValidationChain.getValue("user_login"));
                     user.setRoleId((RoleId)roleValidationChain.getValue("user_role"));
-                    userService.updateUser(user);
+                    if (!user.equals(loggedUser)) {
+                        userService.updateUser(user);
+                    }
                 }
+
 
                 int minUserId = getMinUserIdFromRequest();
                 List<User> users = ServiceManager.getInstance().getUserService().getSeveralUsers( minUserId, 30);
                 RoleId[] roles = RoleId.values();
                 model.put("roles", roles);
                 model.put("userList", users);
+            } else {
+                return showErrorMessage("Вы не администратор!");
             }
         }
 

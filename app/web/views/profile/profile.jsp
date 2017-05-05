@@ -12,27 +12,27 @@
     <div class="content">
         <div class="profileViewContent">
             <c:choose>
-                <c:when test="${profileOwner != null}">
+                <c:when test="${user != null}">
                     <div class="personalAreaLabel">Личный кабинет</div>
                     <div class="personalInfoBlockWrapper">
                         <div class="personalInfoBlock">
-                            <div class="profileLogin">${profileOwner.login} [${profileOwner.roleId}]</div>
-                            <div>${profileOwner.surname} ${profileOwner.name} ${profileOwner.patronymic}</div>
+                            <div class="profileLogin">${user.login} [${user.roleId}]</div>
+                            <div>${user.surname} ${user.name} ${user.patronymic}</div>
                             <div class="contactInfoBlock">
                                 <div>
                                     <span class="contactInfoBlockName">E-mail</span>
-                                    <span>${profileOwner.email}</span>
+                                    <span>${user.email}</span>
                                 </div>
-                                <c:if test="${profileOwner.phone != null and fn:length(profileOwner.phone) > 0}">
+                                <c:if test="${user.phone != null and fn:length(user.phone) > 0}">
                                     <div>
                                         <span class="contactInfoBlockName">Телефон</span>
-                                        <span>${profileOwner.phone}</span>
+                                        <span>${user.phone}</span>
                                     </div>
                                 </c:if>
                             </div>
-                            <c:if test="${profileOwner.info != null and fn:length(profileOwner.info) > 0}">
+                            <c:if test="${user.info != null and fn:length(user.info) > 0}">
                             <div>О себе:</div>
-                            <div class="personalInfoField">${profileOwner.info}</div>
+                            <div class="personalInfoField">${user.info}</div>
                             </c:if>
                         </div>
                     </div>

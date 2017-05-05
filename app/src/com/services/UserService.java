@@ -9,4 +9,5 @@ public interface UserService {
     boolean updateUser(User user);
     User getUserByLogin(String login);
     List<User> getSeveralUsers(int from, int count);
+    List<User> getList();
 }

@@ -151,6 +151,7 @@
         <url-pattern>/confirmDealBroker</url-pattern>
         <url-pattern>/realtor.jsp</url-pattern>
         <url-pattern>/realtor</url-pattern>
+        <url-pattern>/admin_data</url-pattern>
         confirmDealBroker
     </servlet-mapping>
     <!-- Spring controllers -->

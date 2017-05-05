@@ -8,7 +8,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.JstlView;
-import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -52,6 +51,14 @@ public class BaseController {
         model.put("msg", message);
 
         JstlView view = new JstlView("views/error_message.jsp");
+        return new ModelAndView(view, model);
+    }
+
+    protected ModelAndView showSuccessMessage(String message) {
+        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
+        model.put("msg", message);
+
+        JstlView view = new JstlView("views/success_message.jsp");
         return new ModelAndView(view, model);
     }
 

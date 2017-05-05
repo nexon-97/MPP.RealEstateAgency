@@ -48,10 +48,32 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
     }
 
     @Override
+    public List<User> getUsersByRole(RoleId roleId) {
+        Session session = openSession();
+        try {
+            Transaction tx = session.beginTransaction();
+            Criteria roleCriteria = session.createCriteria(User.class)
+                    .add(Restrictions.eq("roleId", roleId));
+            List<User> users = roleCriteria.list();
+            tx.commit();
+
+            return users;
+        } catch (HibernateException e) {
+            if (session.getTransaction() != null) session.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return null;
+    }
+
+    @Override
     public boolean save(User user) {
-        if (getByLogin(user.getLogin()) != null){
+        if (getByLogin(user.getLogin()) != null) {
             return false;
         }
+
         Session  session = getSessionFactory().openSession();
         if (session != null) {
             try {

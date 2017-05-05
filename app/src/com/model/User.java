@@ -100,4 +100,14 @@ public class User {
     public String getInfo() {
         return this.info;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other instanceof User) {
+            User otherUser = (User)other;
+            return otherUser.getId() == getId();
+        }
+
+        return false;
+    }
 }

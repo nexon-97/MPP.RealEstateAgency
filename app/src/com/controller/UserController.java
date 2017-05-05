@@ -67,13 +67,13 @@ public class UserController extends BaseController {
                     User user = userService.getUserByLogin((String)roleValidationChain.getValue("user_login"));
                     user.setRoleId((RoleId)roleValidationChain.getValue("user_role"));
                     userService.updateUser(user);
-
-                    int minUserId = getMinUserIdFromRequest();
-                    List<User> users = ServiceManager.getInstance().getUserService().getSeveralUsers( minUserId, 30);
-                    RoleId[] roles = RoleId.values();
-                    model.put("roles", roles);
-                    model.put("userList", users);
                 }
+
+                int minUserId = getMinUserIdFromRequest();
+                List<User> users = ServiceManager.getInstance().getUserService().getSeveralUsers( minUserId, 30);
+                RoleId[] roles = RoleId.values();
+                model.put("roles", roles);
+                model.put("userList", users);
             }
         }
 

@@ -9,5 +9,6 @@ public interface UserDAO {
     User getByLogin(String login);
     boolean save(User user);
     boolean update(User user);
+    List<User> getSeveralUsers(int from, int count);
     List<User> list();
 }

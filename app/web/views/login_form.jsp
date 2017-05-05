@@ -17,4 +17,9 @@
             </tr>
         </table>
     </form>
+
+    <!--div class="restore-pass-btn">
+        <a href="/restorePassword">Восстановить пароль</a>
+    </div-->
+
 </div>

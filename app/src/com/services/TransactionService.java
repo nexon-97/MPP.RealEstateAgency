@@ -10,4 +10,5 @@ public interface TransactionService {
     Transaction getTransactionById(int id);
     List<Transaction> getOutgoingTransactions(User user);
     List<Transaction> getIncomingTransactions(User user);
+    List<Transaction> getTransactionsList();
 }

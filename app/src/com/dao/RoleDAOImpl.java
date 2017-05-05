@@ -1,12 +1,9 @@
 package com.dao;
 
 import com.model.Role;
-import com.model.RoleId;
 import org.hibernate.Session;
 
-/**
- * Created by MakerS MS on 02.05.2017.
- */
+
 public class RoleDAOImpl extends BaseDAO implements RoleDAO {
 
     @Override

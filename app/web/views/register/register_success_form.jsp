@@ -1,2 +1,2 @@
-<div>Register is successfull!</div>
-<div>Please, login.</div>
+<div>Регистрация прошла успешно</div>
+<div>Пожалуйста, авторизируйтесь</div>

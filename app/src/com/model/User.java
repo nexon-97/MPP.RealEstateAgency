@@ -21,6 +21,9 @@ public class User {
 
     private String info;
 
+    private String restorePasswordKey;
+
+
     public void setId(int id) {
         this.id = id;
     }
@@ -101,6 +104,14 @@ public class User {
         return this.info;
     }
 
+    public String getRestorePasswordKey() {
+        return restorePasswordKey;
+    }
+
+    public void setRestorePasswordKey(String restorePasswordKey) {
+        this.restorePasswordKey = restorePasswordKey;
+    }
+  
     @Override
     public boolean equals(Object other) {
         if (other instanceof User) {

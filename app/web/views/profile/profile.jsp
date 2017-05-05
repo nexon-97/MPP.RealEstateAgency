@@ -3,7 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
-    <title>User profile</title>
+    <title>Страница пользователя</title>
     <jsp:include page="../html_head_common.jsp" />
 </head>
 <body>
@@ -16,8 +16,8 @@
                     <div class="personalAreaLabel">Личный кабинет</div>
                     <div class="personalInfoBlockWrapper">
                         <div class="personalInfoBlock">
-                            <div class="profileLogin">${user.login} [${user.roleId}]</div>
-                            <div>${user.surname} ${user.name} ${user.patronymic}</div>
+                            <div class="profileLogin">${profileOwner.login} [${profileOwner.roleId}]</div>
+                            <div>${profileOwner.surname} ${profileOwner.name} ${profileOwner.patronymic}</div>
                             <div class="contactInfoBlock">
                                 <div>
                                     <span class="contactInfoBlockName">E-mail</span>
@@ -94,6 +94,9 @@
                                 </div>
                             </c:forEach>
                         </c:when>
+                        <c:otherwise>
+                            <c:if test="${ownProfile != null}">Добавьте собственность, прежде чем добавлять предложения!</c:if>
+                        </c:otherwise>
                     </c:choose>
                 </c:when>
                 <c:otherwise>

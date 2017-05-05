@@ -3,6 +3,8 @@ package com.controller;
 import com.helper.SystemMessages;
 import com.model.*;
 import com.services.DealService;
+import com.services.TransactionService;
+import com.services.TransactionServiceImpl;
 import com.services.shared.ServiceManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -102,4 +105,30 @@ public class AdministrativeController extends BaseController {
         User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
         return (loggedUser != null && loggedUser.getRoleId().equals(roleId));
     }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/companyWork")
+    public ModelAndView getCompanyWorkReport(HttpServletResponse response) {
+        initControllerResources(response);
+        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
+        User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
+
+        if (loggedUser != null && loggedUser.getRoleId().equals(RoleId.Admin)){
+            TransactionService transactionService = ServiceManager.getInstance().getTransactionService();
+            List<Transaction> transactions = transactionService.getTransactionsList();
+            model.put("transactions", transactions);
+            BigDecimal sumCompanyFine = BigDecimal.ZERO;
+            for (Transaction transaction : transactions){
+                sumCompanyFine = sumCompanyFine.add(transaction.getCompanyFine());
+            }
+            model.put("totalFine", sumCompanyFine);
+            return buildModelAndView("../company_work");
+        }
+
+        String msgError = "У вас нет прав для просмотра этой страницы!";
+        model.put("msg", msgError);
+
+        return buildModelAndView("../error_message");
+
+    }
+
 }

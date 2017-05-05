@@ -1,6 +1,5 @@
 package com.controller;
 
-import com.model.PropertyType;
 import com.services.RegisterService;
 import com.services.shared.ServiceManager;
 import com.utils.request.validator.*;

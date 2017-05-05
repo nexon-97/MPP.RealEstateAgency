@@ -722,6 +722,43 @@ footer
     font-weight: bold;
 }
 
+.restore-pass-btn
+{
+    background-color: #a3b3ff;
+    border-width: 0px;
+    border-radius: 7px;
+    padding: 4px 15px;
+    color: white;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.company-report-table
+{
+    border: 1px solid  black;
+}
+
+.elem-work-report-td
+{
+    border: 1px solid black;
+    align-content: center;
+}
+
+.elem-work-report-tr:hover
+{
+    background-color: #f5f5f5;
+}
+
+.sum-report-fine
+{
+    display: inline-block;
+    text-align: left;
+    font-size: 18px;
+    margin: 15px 20px;
+    padding: 15px;
+    background-color: #9dbed3;
+    border-radius: 10px;
+}
 
 .admin-data-table
 {

@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Real estate agency - register</title>
+    <title>Real estate agency - регистрация</title>
     <jsp:include page="../html_head_common.jsp" />
 </head>
 <body>

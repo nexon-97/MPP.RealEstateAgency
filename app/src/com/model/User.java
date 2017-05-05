@@ -21,6 +21,9 @@ public class User {
 
     private String info;
 
+    private String restorePasswordKey;
+
+
     public void setId(int id) {
         this.id = id;
     }
@@ -99,5 +102,13 @@ public class User {
 
     public String getInfo() {
         return this.info;
+    }
+
+    public String getRestorePasswordKey() {
+        return restorePasswordKey;
+    }
+
+    public void setRestorePasswordKey(String restorePasswordKey) {
+        this.restorePasswordKey = restorePasswordKey;
     }
 }

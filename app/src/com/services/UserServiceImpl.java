@@ -25,5 +25,11 @@ public class UserServiceImpl extends BaseService implements UserService {
         return userDAO.getById(id);
     }
 
+    @Override
+    public User getUserByLogin(String login) {
+        UserDAO userDAO = new UserDAOImpl();
+        return userDAO.getByLogin(login);
+    }
+
 
 }

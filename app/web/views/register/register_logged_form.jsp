@@ -1,5 +1,5 @@
-<div>Register is unavailable when you logged in!</div>
-<div>Please, logout to register.</div>
+<div>Регистрация невозможна пока вы авторизированны</div>
+<div>Пожалуйста, выйдите из аккаунта</div>
 <div class="buttonSimple">
     <a href="/logout">Logout</a>
 </div>

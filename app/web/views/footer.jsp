@@ -5,7 +5,7 @@
     </div>
     <div class="headerRightBlockWrapper">
         <div class="headerRightBlock">
-        <a href="/team"><span class="buttonSimple grayHeaderButton">Агенты</span></a>
+            <a href="/team"><span class="buttonSimple grayHeaderButton">Агенты</span></a>
         </div>
     </div>
 </footer>

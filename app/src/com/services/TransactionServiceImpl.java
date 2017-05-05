@@ -55,4 +55,10 @@ public class TransactionServiceImpl extends BaseService implements TransactionSe
         TransactionDAO transactionDAO = new TransactionDAOImpl();
         return transactionDAO.getOutgoingList(user);
     }
+
+    @Override
+    public List<Transaction> getTransactionsList(){
+        TransactionDAO transactionDAO = new TransactionDAOImpl();
+        return transactionDAO.list();
+    }
 }

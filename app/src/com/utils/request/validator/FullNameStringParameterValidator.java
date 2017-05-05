@@ -28,8 +28,8 @@ public class FullNameStringParameterValidator extends RegexParameterValidator{
             }
             if ("".equals(paramValue)){
                 return checkNullPermission(String.format("%s отсутствует", paramRusName));
-            } else if (! (checkDataLength(paramValue, 3, 40) && checkRegularExpression(paramValue))){
-                this.errorMessage = String.format("%s может содержать русские буквы, пробелы и символы '-'", paramRusName);
+            } else if (!checkRegularExpression(paramValue)){
+                this.errorMessage = String.format("%s может содержать русские буквы, пробелы и символы '-', длина 3-40 символов", paramRusName);
                 return false;
             } else {
                 this.value = paramValue;
@@ -57,7 +57,4 @@ public class FullNameStringParameterValidator extends RegexParameterValidator{
         return matcher.find() && matcher.group(0).length() == checkedString.length();
     }
 
-    private static boolean checkDataLength(String data, int minLength, int maxLength) {
-        return (data.length() >= minLength) && (data.length() <= maxLength);
-    }
 }

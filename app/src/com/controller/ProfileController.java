@@ -61,11 +61,11 @@ public class ProfileController extends BaseController {
     public ModelAndView showUserProfilePage(HttpServletResponse response) {
         initControllerResources(response);
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
-        RequestValidationChain requestValidationChain = buildUserProfileDataValidator();
-        if (requestValidationChain.validate()){
+        Integer idFromRequest = getIdFromRequest();
+        if (idFromRequest != null){
 
             UserServiceImpl userService = new UserServiceImpl(ServiceManager.getInstance().getSharedResources());
-            User requestedUser = userService.getUserByID((Integer) requestValidationChain.getValue("id"));
+            User requestedUser = userService.getUserByID(idFromRequest);
             if (requestedUser == null){
                 ServiceManager.getInstance().getSharedResources().getModel().put("msg", "Пользователя с таким id не существует");
                 return buildModelAndView("../error_message");
@@ -93,10 +93,6 @@ public class ProfileController extends BaseController {
 
     }
 
-    private RequestValidationChain buildUserProfileDataValidator(){
-        return new RequestValidationChain()
-                .addValidator(new IntegerParameterValidator("id", false));
-    }
 
     private RequestValidationChain buildProfileEditDataValidator(){
         return new RequestValidationChain()

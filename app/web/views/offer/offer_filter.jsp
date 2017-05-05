@@ -3,7 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 	<head>
-		<title>Real estate agency - index</title>
+		<title>Real estate agency - Предложения</title>
 		<jsp:include page="../html_head_common.jsp" />
 	</head>
 	<body>

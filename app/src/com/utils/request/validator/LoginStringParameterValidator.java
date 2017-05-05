@@ -20,7 +20,7 @@ public class LoginStringParameterValidator extends RegexParameterValidator {
             if ("".equals(paramValue)){
                 return checkNullPermission("Логин отсутствует");
             } else if ( !(checkDataLength(paramValue, 5, 20) && checkRegularExpression(paramValue)) ){
-                this.errorMessage = "Логин может содержать английские буквы, цифры и символы '_'";
+                this.errorMessage = "Логин может содержать английские буквы, цифры и символы '_', длина 5-20 символов";
                 return false;
             } else {
                 this.value = paramValue;

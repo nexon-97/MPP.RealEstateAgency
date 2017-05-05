@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Real estate agency - index</title>
+    <title>Real estate agency - Сделки</title>
     <jsp:include page="../html_head_common.jsp" />
 </head>
 <body>

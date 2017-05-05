@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
     <head>
-        <title>Real estate agency - register</title>
+        <title>Real estate agency -регистрация</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <jsp:include page="../html_head_common.jsp" />
         <script type="text/javascript" src="${pageContext.request.contextPath}scripts/validateData.js" ></script>

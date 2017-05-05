@@ -80,6 +80,7 @@
         <url-pattern>/profile</url-pattern>
         <url-pattern>/profileEdit.jsp</url-pattern>
         <url-pattern>/profileEdit</url-pattern>
+        <url-pattern>/user</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -120,6 +121,12 @@
         <url-pattern>/deal</url-pattern>
         <url-pattern>/addDeal.jsp</url-pattern>
         <url-pattern>/addDeal</url-pattern>
+        <url-pattern>/addDealRequest.jsp</url-pattern>
+        <url-pattern>/addDealRequest</url-pattern>
+        <url-pattern>/confirmDealRealtor.jsp</url-pattern>
+        <url-pattern>/confirmDealRealtor</url-pattern>
+        <url-pattern>/confirmDealSeller.jsp</url-pattern>
+        <url-pattern>/confirmDealSeller</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -151,6 +158,7 @@
         <url-pattern>/confirmDealBroker</url-pattern>
         <url-pattern>/realtor.jsp</url-pattern>
         <url-pattern>/realtor</url-pattern>
+        <url-pattern>/admin_data</url-pattern>
         confirmDealBroker
     </servlet-mapping>
     <!-- Spring controllers -->

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.model.DealRequest" table="deal_request">
+        <id name="id" type="int" column="request_id">
+            <generator class="increment"/>
+        </id>
+        <many-to-one name="offer" column="offer_id" class="com.model.Offer" lazy="false" />
+        <many-to-one name="buyer" column="buyer_id" class="com.model.User" lazy="false" />
+        <many-to-one name="realtor" column="realtor_id" class="com.model.User" not-null="false" lazy="false" />
+        <property name="buyerValidation" column="buyer_confirm" type="boolean"/>
+        <property name="sellerValidation" column="seller_confirm" type="boolean"/>
+        <property name="realtorValidation" column="realtor_confirm" type="boolean" not-null="false" />
+    </class>
+</hibernate-mapping>

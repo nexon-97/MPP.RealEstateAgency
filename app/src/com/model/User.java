@@ -111,4 +111,14 @@ public class User {
     public void setRestorePasswordKey(String restorePasswordKey) {
         this.restorePasswordKey = restorePasswordKey;
     }
+  
+    @Override
+    public boolean equals(Object other) {
+        if (other instanceof User) {
+            User otherUser = (User)other;
+            return otherUser.getId() == getId();
+        }
+
+        return false;
+    }
 }

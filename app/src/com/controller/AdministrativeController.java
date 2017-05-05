@@ -1,10 +1,7 @@
 package com.controller;
 
 import com.helper.SystemMessages;
-import com.model.Deal;
-import com.model.RoleId;
-import com.model.Transaction;
-import com.model.User;
+import com.model.*;
 import com.services.DealService;
 import com.services.TransactionService;
 import com.services.TransactionServiceImpl;
@@ -81,6 +78,27 @@ public class AdministrativeController extends BaseController {
         }
 
         return buildModelAndView("realtor_view");
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/admin_data")
+    public ModelAndView visitAdminData(HttpServletResponse response) {
+        initControllerResources(response);
+        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
+
+        if (!checkRights(RoleId.Admin)) {
+            return showErrorMessage(SystemMessages.InsufficientRightsMessage);
+        }
+
+        List<User> users = ServiceManager.getInstance().getUserService().getList();
+        List<Property> properties = ServiceManager.getInstance().getPropertyService().getList();
+        List<Offer> offers = ServiceManager.getInstance().getOfferService().listAllOffers();
+        List<Deal> deals = ServiceManager.getInstance().getDealService().list();
+        model.put("userList", users);
+        model.put("propertyList", properties);
+        model.put("offerList", offers);
+        model.put("dealList", deals);
+
+        return buildModelAndView("admin_data");
     }
 
     boolean checkRights(RoleId roleId) {

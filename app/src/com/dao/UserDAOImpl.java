@@ -1,6 +1,5 @@
 package com.dao;
 
-import com.model.RoleId;
 import com.model.User;
 import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
@@ -48,6 +47,27 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
     }
 
     @Override
+    public List<User> getUsersByRole(RoleId roleId) {
+        Session session = openSession();
+        try {
+            Transaction tx = session.beginTransaction();
+            Criteria roleCriteria = session.createCriteria(User.class)
+                    .add(Restrictions.eq("roleId", roleId));
+            List<User> users = roleCriteria.list();
+            tx.commit();
+
+            return users;
+        } catch (HibernateException e) {
+            if (session.getTransaction() != null) session.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return null;
+    }
+
+    @Override
     public boolean save(User user) {
         Session  session = getSessionFactory().openSession();
         if (session != null) {
@@ -86,6 +106,29 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
         }
 
         return false;
+    }
+
+    public List<User> getSeveralUsers(int from, int count){
+        Session session = openSession();
+        List<User> users = null;
+
+        try {
+            Transaction tx = session.beginTransaction();
+
+            Criteria filterCriteria = session.createCriteria(User.class)
+                            .setFirstResult(from)
+                            .setMaxResults(count);
+            users = (List<User>)filterCriteria.list();
+
+            tx.commit();
+        } catch (HibernateException e) {
+            if (session.getTransaction() != null) session.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return users;
     }
 
     @Override

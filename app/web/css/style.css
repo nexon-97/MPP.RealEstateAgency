@@ -85,6 +85,18 @@ footer
     border-radius: 5px;
 }
 
+.success-message
+{
+    background-color: #4e964e;
+    text-align: center;
+    color: white;
+    font-size: 20px;
+    display: inline-block;
+    margin: 10px;
+    padding: 5px 20px;
+    border-radius: 5px;
+}
+
 .content
 {
     text-align: center;
@@ -609,6 +621,58 @@ footer
     top: 0px;
 }
 
+.user-short-info-block
+{
+    background-color: #90c9ff;
+    border: 1px solid dimgray;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+}
+
+.user-short-info-login{
+    border-width: 0;
+    background: #90c9ff;
+    width: 100%;
+    text-align: center;
+    font-weight: bolder;
+    font-size: 15px;
+}
+
+.user-short-info-login:read-only{
+    color: black;
+}
+
+.user-short-info-select{
+    border-radius: 4px;
+    font-size: 16px;
+    color: black;
+    padding: 2px 4px;
+    margin: 2px 0px;
+    border: 1px solid #AAA;
+    width: 50%;
+}
+
+.user-short-info-button{
+    background-color: #0094ff;
+    border-width: 0px;
+    border-radius: 7px;
+    padding: 4px 15px;
+    color: white;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.user-short-info-button:disabled{
+    background-color: #AFAFAF;
+    border-width: 0px;
+    border-radius: 7px;
+    padding: 4px 15px;
+    color: white;
+    margin-top: 10px;
+    font-size: 16px;
+}
+  
 .broker-view-wrapper
 {
     margin: 20px;
@@ -657,6 +721,7 @@ footer
     padding: 4px 8px;
     font-weight: bold;
 }
+
 .restore-pass-btn
 {
     background-color: #a3b3ff;
@@ -693,4 +758,27 @@ footer
     padding: 15px;
     background-color: #9dbed3;
     border-radius: 10px;
+}
+
+.admin-data-table
+{
+    border-collapse: initial;
+    border: 1px solid black;
+}
+
+.admin-data-column-name
+{
+    border-collapse: initial;
+    border: 1px solid black;
+    text-align: center;
+    font-weight: bold;
+    background-color: #0094ff;
+}
+
+.admin-data-column-field
+{
+    border-collapse: initial;
+    border: 1px solid black;
+    text-align: center;
+    background-color: #90c9ff;
 }

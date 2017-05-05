@@ -1,6 +1,7 @@
 package com.services;
 
 import com.model.Deal;
+import com.model.DealRequest;
 import com.model.User;
 
 import java.util.List;
@@ -16,4 +17,11 @@ public interface DealService {
     List<Deal> listValidatedBrokerDeals(User user);
     List<Deal> listUpcomingBrokerDeals(User user);
     List<Deal> listValidatedRealtorDeals(User user);
+    boolean addDealRequest(DealRequest request);
+    boolean isDealRequestRegistered(DealRequest request);
+    List<DealRequest> listUncommittedRealtorRequests(User realtor);
+    List<DealRequest> listUncommittedBuyerRequests(User realtor);
+    List<DealRequest> listUncommittedSellerRequests(User realtor);
+    DealRequest getDealRequestById(int id);
+    boolean updateDealRequest(DealRequest request);
 }

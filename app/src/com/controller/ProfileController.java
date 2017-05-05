@@ -1,8 +1,7 @@
 package com.controller;
 
-import com.model.Offer;
-import com.model.Property;
-import com.model.User;
+import com.model.*;
+import com.services.DealService;
 import com.services.UserServiceImpl;
 import com.services.shared.ServiceManager;
 import com.utils.request.validator.*;
@@ -24,6 +23,7 @@ public class ProfileController extends BaseController {
         initControllerResources(response);
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
         ServiceManager serviceManager = ServiceManager.getInstance();
+
         User loggedUser = serviceManager.getAuthService().getLoggedUser();
         if (loggedUser != null) {
             List<Property> userProperties = serviceManager.getPropertyService().getPropertiesOwnedByUser(loggedUser);
@@ -32,7 +32,17 @@ public class ProfileController extends BaseController {
             model.put("ownProfile", true);
             model.put("userProperties", userProperties);
             model.put("userOffers", userOffers);
+
+            DealService dealService = serviceManager.getDealService();
+            if (loggedUser.getRoleId().equals(RoleId.Rieltor)) {
+                List<DealRequest> uncommitedRequests = dealService.listUncommittedRealtorRequests(loggedUser);
+                model.put("uncommittedRealtorRequests", uncommitedRequests);
+            } else if (loggedUser.getRoleId().equals(RoleId.User)) {
+                List<DealRequest> uncommitedRequests = dealService.listUncommittedSellerRequests(loggedUser);
+                model.put("uncommittedRealtorRequests", uncommitedRequests);
+            }
         }
+
         return buildModelAndView("profile");
     }
 
@@ -90,7 +100,6 @@ public class ProfileController extends BaseController {
             ServiceManager.getInstance().getSharedResources().getModel().put("msg", "Некорректный id.");
             return buildModelAndView("../error_message");
         }
-
     }
 
     private RequestValidationChain buildUserProfileDataValidator(){

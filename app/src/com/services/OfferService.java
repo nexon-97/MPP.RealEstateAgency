@@ -1,11 +1,11 @@
 package com.services;
 
+import com.model.DealRequest;
 import com.model.Offer;
 import com.model.User;
 import com.utils.request.filter.FilterParameter;
 
 import java.util.List;
-import java.util.Map;
 
 public interface OfferService {
     List<Offer> getUserOffers(User user);

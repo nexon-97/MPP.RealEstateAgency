@@ -96,5 +96,8 @@
                 </td>
             </tr>
         </table>
+        <div style="padding: 15px">
+           <a href="/addDealRequest?id=${offer.id}&amp;buyer=${user.id}"><div class="buttonSimple">Откликнуться</div></a>
+        </div>
     </div>
 </div>

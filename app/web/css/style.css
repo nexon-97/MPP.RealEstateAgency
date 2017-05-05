@@ -85,6 +85,18 @@ footer
     border-radius: 5px;
 }
 
+.success-message
+{
+    background-color: #4e964e;
+    text-align: center;
+    color: white;
+    font-size: 20px;
+    display: inline-block;
+    margin: 10px;
+    padding: 5px 20px;
+    border-radius: 5px;
+}
+
 .content
 {
     text-align: center;

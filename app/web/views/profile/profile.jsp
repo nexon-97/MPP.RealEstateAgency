@@ -41,36 +41,59 @@
                             <input type="submit" value="Изменить" class="buttonSimple" />
                         </form></c:if>
                     </div>
-                    <div class="personalAreaLabel" style="margin-top: 15px">Собственность</div>
-                    <c:forEach var="property" items="${userProperties}">
-                        <div>
-                            <a href="/property?id=${property.id}">Собственность [${property.id}]</a>
-                        </div>
-                    </c:forEach>
-                    <c:if test="${ownProfile != null}"><div>
-                        <div class="buttonSimple" style="margin-top: 10px;">
-                            <a href="/addProperty">Добавить</a>
-                        </div>
-                    </div></c:if>
-
-                    <div class="personalAreaLabel" style="margin-top: 15px">Предложения</div>
                     <c:choose>
-                        <c:when test="${fn:length(userProperties) > 0}">
-                            <div class="offers-container">
-                                 <c:forEach var="offer" items="${userOffers}">
-                                     <c:set var="offer" value="${offer}" scope="request" />
-                                     <jsp:include page="../offer/offer_compact_view.jsp" />
-                                 </c:forEach>
-                            </div>
+                        <c:when test="${user.roleId == 'User'}">
+                            <div class="personalAreaLabel" style="margin-top: 15px">Собственность</div>
+                            <c:forEach var="property" items="${userProperties}">
+                                <div>
+                                    <a href="/property?id=${property.id}">Собственность [${property.id}]</a>
+                                </div>
+                            </c:forEach>
                             <c:if test="${ownProfile != null}"><div>
-                                <div class="buttonSimple">
-                                    <a href="/addOffer">Добавить</a>
+                                <div class="buttonSimple" style="margin-top: 10px;">
+                                    <a href="/addProperty">Добавить</a>
                                 </div>
                             </div></c:if>
+
+                            <div class="personalAreaLabel" style="margin-top: 15px">Предложения</div>
+                            <c:choose>
+                                <c:when test="${fn:length(userProperties) > 0}">
+                                    <div class="offers-container">
+                                         <c:forEach var="offer" items="${userOffers}">
+                                             <c:set var="offer" value="${offer}" scope="request" />
+                                             <jsp:include page="../offer/offer_compact_view.jsp" />
+                                         </c:forEach>
+                                    </div>
+                                    <c:if test="${ownProfile != null}"><div>
+                                        <div class="buttonSimple">
+                                            <a href="/addOffer">Добавить</a>
+                                        </div>
+                                    </div></c:if>
+                                    <div class="personalAreaLabel" style="margin-top: 15px">Отклики на предложения</div>
+                                    <c:forEach var="dealRequest" items="${uncommittedRealtorRequests}">
+                                        <div>
+                                            <span>Отклик на сделку [${dealRequest.id}]</span>
+                                            <a href="/confirmDealSeller?id=${dealRequest.id}&amp;seller=${user.id}"><span><b>[Подтвердить продажу]</b></span></a>
+                                        </div>
+                                    </c:forEach>
+                                </c:when>
+                                <c:otherwise>
+                                    Добавьте собственность, прежде чем добавлять предложения!
+                                </c:otherwise>
+                            </c:choose>
                         </c:when>
-                        <c:otherwise>
-                            Добавьте собственность, прежде чем добавлять предложения!
-                        </c:otherwise>
+                        <c:when test="${user.roleId == 'Broker'}">
+                            <div class="personalAreaLabel" style="margin-top: 15px">Сделки, ожидающие регистрации</div>
+                        </c:when>
+                        <c:when test="${user.roleId == 'Rieltor'}">
+                            <div class="personalAreaLabel" style="margin-top: 15px">Неподтвержденные предложения сделок</div>
+                            <c:forEach var="dealRequest" items="${uncommittedRealtorRequests}">
+                                <div>
+                                    <span>Отклик на сделку [${dealRequest.id}]</span>
+                                    <a href="/confirmDealRealtor?id=${dealRequest.id}&amp;realtor=${user.id}"><span><b>[Подтвердить участие]</b></span></a>
+                                </div>
+                            </c:forEach>
+                        </c:when>
                     </c:choose>
                 </c:when>
                 <c:otherwise>

@@ -13,4 +13,9 @@ public abstract class SystemMessages {
     public static final String FailedToConfirmBrokerMessage = "Не удалось заверить сделку!";
     public static final String NoDealIdProvidedMessage = "Не удается получить сделку для изменения!";
     public static final String NoSuchDealMessage = "Такой сделки не существует!";
+    public static final String InvalidDealRequestBuyerAssigned = "В отклике на предложение неверно указан покупатель!";
+    public static final String FailedToAddRealtorToDealRequest = "Не удалось добавить риэлтора к отклику на предложение!";
+    public static final String FailedToAddDealRequest = "Не удалось добавить отклик на предложение!";
+    public static final String DealRequestHasBeenRegistered = "Отклик на предложение был успешно зарегистрирован в системе!";
+    public static final String SuchDealRequestAlreadyRegistered = "Отклик на эту сделку уже зарегистрирован!";
 }

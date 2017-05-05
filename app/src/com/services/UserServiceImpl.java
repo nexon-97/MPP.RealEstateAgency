@@ -2,6 +2,7 @@ package com.services;
 
 import com.dao.UserDAO;
 import com.dao.UserDAOImpl;
+import com.model.RoleId;
 import com.model.User;
 import com.services.shared.BaseService;
 import com.services.shared.ServiceId;
@@ -22,13 +23,19 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
-    public User getUserByLogin(String login){
+    public User getUserByLogin(String login) {
         UserDAO userDAO = new UserDAOImpl();
         return userDAO.getByLogin(login);
     }
 
     @Override
-    public List<User> getSeveralUsers(int from, int count){
+    public List<User> getUsersByRole(RoleId roleId) {
+        UserDAO userDAO = new UserDAOImpl();
+        return userDAO.getUsersByRole(roleId);
+    }    
+
+    @Override
+    public List<User> getSeveralUsers(int from, int count) {
         UserDAO userDAO = new UserDAOImpl();
         return userDAO.getSeveralUsers(from, count);
     }

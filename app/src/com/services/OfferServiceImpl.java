@@ -1,7 +1,10 @@
 package com.services;
 
+import com.dao.DealDAO;
+import com.dao.DealDAOImpl;
 import com.dao.OfferDAO;
 import com.dao.OfferDAOImpl;
+import com.model.DealRequest;
 import com.model.Offer;
 import com.model.User;
 import com.services.shared.*;
@@ -9,7 +12,6 @@ import com.utils.request.filter.FilterParameter;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 public class OfferServiceImpl extends BaseService implements OfferService {
 

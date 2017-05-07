@@ -1,17 +1,17 @@
 package com.services;
 
-import com.dao.DealDAO;
-import com.dao.DealDAOImpl;
 import com.dao.OfferDAO;
 import com.dao.OfferDAOImpl;
-import com.model.DealRequest;
+import com.helper.SystemMessages;
 import com.model.Offer;
 import com.model.User;
 import com.services.shared.*;
 import com.utils.request.filter.FilterParameter;
 
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 
 public class OfferServiceImpl extends BaseService implements OfferService {
 
@@ -42,11 +42,17 @@ public class OfferServiceImpl extends BaseService implements OfferService {
 
     @Override
     public boolean addOffer(Offer offer) {
-        User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
+        if (isValid(offer)) {
+            User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
 
-        if (loggedUser != null && isValid(offer)) {
-            OfferDAO offerDAO = new OfferDAOImpl();
-            return offerDAO.addOffer(offer);
+            if (Objects.equals(loggedUser, offer.getProperty().getOwner())) {
+                OfferDAO offerDAO = new OfferDAOImpl();
+                return offerDAO.addOffer(offer);
+            } else {
+                setErrorInfo(HttpServletResponse.SC_FORBIDDEN, SystemMessages.UserIsNotOfferOwnerMessage);
+            }
+        } else {
+            setErrorInfo(HttpServletResponse.SC_BAD_REQUEST, SystemMessages.UnacceptableOfferParams);
         }
 
         return false;

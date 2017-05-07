@@ -23,7 +23,7 @@
                 <div>
                     <select class="property-form-input" name="offerType">
                         <c:forEach var="offerType" items="${offerTypes}">
-                            <option<c:if test="${currentOfferType == offerType}"> selected="selected"</c:if>>${offerType}</option>
+                            <option<c:if test="${offer.offerType == offerType}"> selected="selected"</c:if>>${offerType}</option>
                         </c:forEach>
                     </select>
                 </div>

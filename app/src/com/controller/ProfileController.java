@@ -2,6 +2,7 @@ package com.controller;
 
 import com.model.*;
 import com.services.DealService;
+import com.services.UserService;
 import com.services.UserServiceImpl;
 import com.services.shared.ServiceManager;
 import com.utils.request.validator.*;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Controller
 public class ProfileController extends BaseController {
@@ -41,9 +43,11 @@ public class ProfileController extends BaseController {
                 List<DealRequest> uncommitedRequests = dealService.listUncommittedSellerRequests(loggedUser);
                 model.put("uncommittedRealtorRequests", uncommitedRequests);
             }
+
+            return buildModelAndView("profile");
         }
 
-        return buildModelAndView("profile");
+        return showUnauthorizedMessageView();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/profileEdit")
@@ -64,41 +68,8 @@ public class ProfileController extends BaseController {
             ServiceManager.getInstance().getSharedResources().getModel().put("msg", "Broken profile edition request");
             return buildModelAndView("../error_message");
         }
+
         return buildModelAndView("profile");
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/user")
-    public ModelAndView showUserProfilePage(HttpServletResponse response) {
-        initControllerResources(response);
-        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
-        Integer idFromRequest = getIdFromRequest();
-        if (idFromRequest != null){
-
-            UserServiceImpl userService = new UserServiceImpl(ServiceManager.getInstance().getSharedResources());
-            User requestedUser = userService.getUserByID(idFromRequest);
-            if (requestedUser == null){
-                ServiceManager.getInstance().getSharedResources().getModel().put("msg", "Пользователя с таким id не существует");
-                return buildModelAndView("../error_message");
-            }
-            User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
-            List<Property> userProperties;
-            List<Offer> userOffers;
-            if ((loggedUser != null) && loggedUser.getId() == requestedUser.getId()){
-                model.put("ownProfile", true);
-                userProperties = ServiceManager.getInstance().getPropertyService().getPropertiesOwnedByUser(loggedUser);
-                userOffers = ServiceManager.getInstance().getOfferService().getUserOffers(loggedUser);
-            } else {
-                model.put("profileOwner", requestedUser);
-                userProperties = ServiceManager.getInstance().getPropertyService().getPropertiesOwnedByUser(requestedUser);
-                userOffers = ServiceManager.getInstance().getOfferService().getUserOffers(requestedUser);
-            }
-            model.put("userProperties", userProperties);
-            model.put("userOffers", userOffers);
-            return buildModelAndView("profile");
-        } else {
-            ServiceManager.getInstance().getSharedResources().getModel().put("msg", "Некорректный id.");
-            return buildModelAndView("../error_message");
-        }
     }
 
 
@@ -109,7 +80,7 @@ public class ProfileController extends BaseController {
                 .addValidator(new FullNameStringParameterValidator("patronymic", false))
                 .addValidator(new EmailStringParameterValidator("email", false))
                 .addValidator(new PhoneStringParameterValidator("phone", false))
-                .addValidator(new DescriptionStringParameterValidator("info", false));
+                .addValidator(new StringParameterValidator("info", true));
 
     }
 

@@ -1,18 +1,28 @@
 package com.utils.request.validator;
 
-public abstract class StringParameterValidator implements RequestParameterValidator<String>, RequestValueContainer<String>  {
+import com.services.shared.ServiceManager;
+import org.springframework.web.util.HtmlUtils;
+
+import javax.servlet.http.HttpServletRequest;
+
+public class StringParameterValidator implements RequestParameterValidator<String>, RequestValueContainer<String>  {
     protected String paramName;
     protected String value;
     protected String errorMessage;
     protected boolean isNullAllowed;
 
-    public StringParameterValidator(String paramName, boolean isNullAllowed){
+    public StringParameterValidator(String paramName, boolean isNullAllowed) {
         this.paramName = paramName;
         this.isNullAllowed = isNullAllowed;
     }
 
     @Override
-    abstract public boolean validate();
+    public boolean validate() {
+        HttpServletRequest request = ServiceManager.getInstance().getSharedResources().getRequest();
+        this.value = request.getParameter(this.paramName);
+
+        return this.value != null;
+    }
 
     @Override
     public String getErrorMessage() {
@@ -26,6 +36,10 @@ public abstract class StringParameterValidator implements RequestParameterValida
 
     @Override
     public String getValue() {
-        return this.value;
+        if (this.value != null) {
+            return HtmlUtils.htmlEscape(this.value);
+        }
+
+        return null;
     }
 }

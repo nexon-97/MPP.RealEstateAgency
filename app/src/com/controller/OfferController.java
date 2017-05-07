@@ -47,7 +47,7 @@ public class OfferController extends BaseController {
             }
         }
 
-        return showErrorMessage(SystemMessages.NoSuchOfferMessage);
+        return showErrorMessage(HttpServletResponse.SC_NOT_FOUND, SystemMessages.NoSuchOfferMessage);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/addOffer")
@@ -61,10 +61,8 @@ public class OfferController extends BaseController {
             List<Property> userProperties = propertyService.getPropertiesOwnedByUser(loggedUser);
 
             if (userProperties.size() > 0) {
-                OfferType[] offerTypes = OfferType.values();
-
                 Map<String, Object> model = serviceManager.getSharedResources().getModel();
-                model.put("offerTypes", offerTypes);
+                addOfferTypeValuesModel();
                 model.put("userProperties", userProperties);
 
                 return buildModelAndView("add_offer_view");
@@ -85,22 +83,18 @@ public class OfferController extends BaseController {
             OfferService offerService = ServiceManager.getInstance().getOfferService();
             if (offerService.addOffer(offer)) {
                 return redirect("/offer?id=" + String.valueOf(offer.getId()));
+            } else {
+                return showErrorMessage(offerService.getErrorCode(), offerService.getErrorMessage());
             }
-        } else {
-            return showErrorMessage(SystemMessages.AddOfferRequestBrokenMessage);
         }
 
-        return showErrorMessage(SystemMessages.AddOfferFailedMessage);
+        return showBadRequestView(SystemMessages.AddOfferFailedMessage);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/editOffer")
     public ModelAndView showEditOfferView(HttpServletResponse response) {
         initControllerResources(response);
         ServiceManager serviceManager = ServiceManager.getInstance();
-
-        if (!serviceManager.getAuthService().isUserLoggedIn()) {
-            return showUnauthorizedMessageView();
-        }
 
         Integer offerId = getIdFromRequest();
         if (offerId != null) {
@@ -110,25 +104,22 @@ public class OfferController extends BaseController {
                 User loggedUser = serviceManager.getAuthService().getLoggedUser();
 
                 if (serviceManager.getPermissionService().canEditOffer(loggedUser, offer)) {
-                    Map<String, Object> model = serviceManager.getSharedResources().getModel();
-                    model.put("offer", offer);
-
                     PropertyService propertyService = serviceManager.getPropertyService();
                     List<Property> userProperties = propertyService.getPropertiesOwnedByUser(loggedUser);
-                    model.put("userProperties", userProperties);
 
-                    OfferType[] offerTypes = OfferType.values();
-                    model.put("offerTypes", offerTypes);
-                    model.put("currentOfferType", String.valueOf(offer.getOfferType()));
+                    Map<String, Object> model = serviceManager.getSharedResources().getModel();
+                    addOfferTypeValuesModel();
+                    model.put("offer", offer);
+                    model.put("userProperties", userProperties);
 
                     return buildModelAndView("edit_offer_view");
                 } else {
-                    return showErrorMessage(SystemMessages.EditOfferInsufficientRightsMessage);
+                    return showErrorMessage(HttpServletResponse.SC_FORBIDDEN, SystemMessages.EditOfferInsufficientRightsMessage);
                 }
             }
         }
 
-        return showErrorMessage(SystemMessages.NoSuchOfferMessage);
+        return showErrorMessage(HttpServletResponse.SC_NOT_FOUND, SystemMessages.NoSuchOfferMessage);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/editOffer")

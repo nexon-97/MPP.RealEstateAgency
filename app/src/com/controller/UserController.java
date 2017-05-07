@@ -5,7 +5,6 @@ import com.model.Property;
 import com.model.RoleId;
 import com.model.User;
 import com.services.*;
-import com.services.shared.PermissionId;
 import com.services.shared.ServiceManager;
 import com.utils.request.validator.EnumParameterValidator;
 import com.utils.request.validator.LoginStringParameterValidator;
@@ -19,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Controller
 public class UserController extends BaseController {
@@ -79,6 +79,38 @@ public class UserController extends BaseController {
         }
 
         return buildModelAndView("user_roles");
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/user")
+    public ModelAndView showUserProfilePage(HttpServletResponse response) {
+        initControllerResources(response);
+
+        Integer userId = getIdFromRequest();
+        if (userId != null) {
+            UserService userService = ServiceManager.getInstance().getUserService();
+            User requestedUser = userService.getUserByID(userId);
+
+            if (requestedUser != null) {
+                User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
+
+                if (Objects.equals(loggedUser, requestedUser)) {
+                    return redirect("/profile");
+                } else {
+                    ServiceManager serviceManager = ServiceManager.getInstance();
+                    List<Property> userProperties = serviceManager.getPropertyService().getPropertiesOwnedByUser(requestedUser);
+                    List<Offer> userOffers = serviceManager.getOfferService().getUserOffers(requestedUser);
+
+                    Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
+                    model.put("selectedUser", requestedUser);
+                    model.put("userProperties", userProperties);
+                    model.put("userOffers", userOffers);
+
+                    return buildModelAndView("user");
+                }
+            }
+        }
+
+        return showBadRequestView("Такого пользователя не существует!");
     }
 
     private int getMinUserIdFromRequest(){

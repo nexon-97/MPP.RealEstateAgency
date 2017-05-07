@@ -80,7 +80,6 @@
         <url-pattern>/profile</url-pattern>
         <url-pattern>/profileEdit.jsp</url-pattern>
         <url-pattern>/profileEdit</url-pattern>
-        <url-pattern>/user</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -141,6 +140,8 @@
         <servlet-name>UserController</servlet-name>
         <url-pattern>/user_roles.jsp</url-pattern>
         <url-pattern>/user_roles</url-pattern>
+        <url-pattern>/user.jsp</url-pattern>
+        <url-pattern>/user</url-pattern>
     </servlet-mapping>
 
     <servlet>

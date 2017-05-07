@@ -23,8 +23,11 @@ public class BaseController {
     @Autowired
     protected HttpServletRequest request;
 
+    protected HttpServletResponse response;
+
     protected void initControllerResources(HttpServletResponse response) {
         ServiceManager.build(context, request, response);
+        this.response = response;
 
         try {
             request.setCharacterEncoding("UTF-8");
@@ -42,8 +45,19 @@ public class BaseController {
     }
 
     protected ModelAndView showUnauthorizedMessageView() {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         JstlView view = new JstlView("views/unauthorized_view.jsp");
         return new ModelAndView(view, ServiceManager.getInstance().getSharedResources().getModel());
+    }
+
+    protected ModelAndView showBadRequestView(String message) {
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        return showErrorMessage(message);
+    }
+
+    protected ModelAndView showErrorMessage(int responseCode, String message) {
+        response.setStatus(responseCode);
+        return showErrorMessage(message);
     }
 
     protected ModelAndView showErrorMessage(String message) {

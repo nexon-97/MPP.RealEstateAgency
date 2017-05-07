@@ -1,13 +1,13 @@
 package com.services;
 
-import com.model.DealRequest;
 import com.model.Offer;
 import com.model.User;
+import com.utils.request.ErrorRegistry;
 import com.utils.request.filter.FilterParameter;
 
 import java.util.List;
 
-public interface OfferService {
+public interface OfferService extends ErrorRegistry {
     List<Offer> getUserOffers(User user);
     List<Offer> listAllOffers();
     Offer getOfferById(int id);

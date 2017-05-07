@@ -18,4 +18,6 @@ public abstract class SystemMessages {
     public static final String FailedToAddDealRequest = "Не удалось добавить отклик на предложение!";
     public static final String DealRequestHasBeenRegistered = "Отклик на предложение был успешно зарегистрирован в системе!";
     public static final String SuchDealRequestAlreadyRegistered = "Отклик на эту сделку уже зарегистрирован!";
+    public static final String UnacceptableOfferParams = "Недопустимые параметры предложения!";
+    public static final String UserIsNotOfferOwnerMessage = "Вы не владелец предложения!";
 }

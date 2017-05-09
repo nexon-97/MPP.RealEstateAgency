@@ -30,7 +30,7 @@
                 </tr>
             </c:forEach>
         </table>
-        <div class="sum-report-fine">Общая прибыль компании: ${totalFine}</div>
+        <div class="sum-report-fine">Общая прибыль компании: ${totalFine} у.е.</div>
     </div>
 </div>
 

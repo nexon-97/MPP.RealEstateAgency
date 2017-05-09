@@ -163,7 +163,7 @@
         <url-pattern>/realtor.jsp</url-pattern>
         <url-pattern>/realtor</url-pattern>
         <url-pattern>/admin_data</url-pattern>
-        confirmDealBroker
+        <url-pattern>/companyWork</url-pattern>
     </servlet-mapping>
     <!-- Spring controllers -->
 </web-app>

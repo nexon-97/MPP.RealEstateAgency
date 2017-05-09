@@ -3,17 +3,11 @@ package com.controller;
 import com.helper.SystemMessages;
 import com.model.*;
 import com.services.OfferService;
-import com.services.PropertyService;
-import com.services.UserService;
 import com.services.shared.ServiceManager;
-import com.utils.request.ParseUtils;
 import com.utils.request.constructor.OfferConstructor;
 import com.utils.request.filter.FilterParameter;
 import com.utils.request.filter.OfferFilterParameters;
-import com.utils.request.validator.BigDecimalParameterValidator;
-import com.utils.request.validator.EnumParameterValidator;
-import com.utils.request.validator.IntegerParameterValidator;
-import com.utils.request.validator.RequestValidationChain;
+import com.utils.request.validator.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -57,17 +51,19 @@ public class OfferController extends BaseController {
 
         User loggedUser = serviceManager.getAuthService().getLoggedUser();
         if (loggedUser != null) {
-            PropertyService propertyService = serviceManager.getPropertyService();
-            List<Property> userProperties = propertyService.getPropertiesOwnedByUser(loggedUser);
+            if (serviceManager.getPermissionService().canAddOffers(loggedUser)) {
+                addCurrentUserPropertiesModel();
+                List<Property> userProperties = (List<Property>) serviceManager.getSharedResources().getModel().get("userProperties");
 
-            if (userProperties.size() > 0) {
-                Map<String, Object> model = serviceManager.getSharedResources().getModel();
-                addOfferTypeValuesModel();
-                model.put("userProperties", userProperties);
+                if (userProperties.size() > 0) {
+                    addOfferTypeValuesModel();
 
-                return buildModelAndView("add_offer_view");
+                    return buildModelAndView("add_offer_view");
+                } else {
+                    return showErrorMessage(SystemMessages.NoPropertyMessage);
+                }
             } else {
-                return showErrorMessage(SystemMessages.NoPropertyMessage);
+                return showErrorMessage(HttpServletResponse.SC_FORBIDDEN, "Вы не можете добавлять предложения!");
             }
         }
 
@@ -78,9 +74,18 @@ public class OfferController extends BaseController {
     public ModelAndView addOfferAction(HttpServletResponse response) {
         initControllerResources(response);
 
+        User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
+        if (loggedUser == null) {
+            return showUnauthorizedMessageView();
+        } else if (loggedUser.getRoleId() != RoleId.User) {
+            return showErrorMessage(HttpServletResponse.SC_FORBIDDEN, "Вы не можете добавлять предложения!");
+        }
+
+        boolean offerValid = offerValidationChain.validate();
         Offer offer = constructOfferFromRequest();
-        if (offer != null) {
+        if (offerValid) {
             OfferService offerService = ServiceManager.getInstance().getOfferService();
+
             if (offerService.addOffer(offer)) {
                 return redirect("/profile");
             } else {
@@ -88,7 +93,14 @@ public class OfferController extends BaseController {
             }
         }
 
-        return showBadRequestView(SystemMessages.AddOfferFailedMessage);
+        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
+        model.put("errors", offerValidationChain.getErrorMessageMap());
+        model.put("offer", offer);
+        addOfferTypeValuesModel();
+        addCurrentUserPropertiesModel();
+
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        return buildModelAndView("/add_offer_view");
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/editOffer")
@@ -104,13 +116,10 @@ public class OfferController extends BaseController {
                 User loggedUser = serviceManager.getAuthService().getLoggedUser();
 
                 if (serviceManager.getPermissionService().canEditOffer(loggedUser, offer)) {
-                    PropertyService propertyService = serviceManager.getPropertyService();
-                    List<Property> userProperties = propertyService.getPropertiesOwnedByUser(loggedUser);
-
                     Map<String, Object> model = serviceManager.getSharedResources().getModel();
-                    addOfferTypeValuesModel();
                     model.put("offer", offer);
-                    model.put("userProperties", userProperties);
+                    addOfferTypeValuesModel();
+                    addCurrentUserPropertiesModel();
 
                     return buildModelAndView("edit_offer_view");
                 } else {
@@ -126,17 +135,31 @@ public class OfferController extends BaseController {
     public ModelAndView editOfferAction(HttpServletResponse response) {
         initControllerResources(response);
 
+        boolean offerValid = offerValidationChain.validate();
         Offer offer = constructOfferFromRequest();
-        if (offer != null) {
+        if (offerValid) {
             OfferService offerService = ServiceManager.getInstance().getOfferService();
-            boolean updateSuccess = offerService.updateOffer(offer);
 
-            if (updateSuccess) {
-                return redirect("/offer?id=" + String.valueOf(offer.getId()));
+            User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
+            if (ServiceManager.getInstance().getPermissionService().canEditOffer(loggedUser, offer)) {
+                if (offerService.updateOffer(offer)) {
+                    return redirect("/offer?id=" + String.valueOf(offer.getId()));
+                } else {
+                    return showErrorMessage(offerService.getErrorCode(), offerService.getErrorMessage());
+                }
+            } else {
+                return showErrorMessage(HttpServletResponse.SC_FORBIDDEN, SystemMessages.UserIsNotOfferOwnerMessage);
             }
         }
 
-        return showErrorMessage(SystemMessages.FailedToEditOfferMessage);
+        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
+        model.put("errors", offerValidationChain.getErrorMessageMap());
+        model.put("offer", offer);
+        addOfferTypeValuesModel();
+        addCurrentUserPropertiesModel();
+
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        return buildModelAndView("/edit_offer_view");
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/deleteOffer")
@@ -194,30 +217,33 @@ public class OfferController extends BaseController {
 
     private RequestValidationChain buildOfferValidationChain() {
         return new RequestValidationChain()
-            .addValidator(new BigDecimalParameterValidator("cost", false))
-            .addValidator(new IntegerParameterValidator("property", false))
+            .addValidator(new CostParameterValidator("cost", false))
+            .addValidator(new PropertyParameterValidator("property", false))
             .addValidator(new EnumParameterValidator<>(OfferType.class, "offerType", false));
     }
 
     private Offer constructOfferFromRequest() {
-        boolean offerValid = offerValidationChain.validate();
-        if (offerValid) {
-            OfferConstructor constructor = new OfferConstructor();
-            Offer offer = constructor.construct(offerValidationChain.getValidatedValues());
+        OfferConstructor constructor = new OfferConstructor();
+        Offer offer = constructor.construct(offerValidationChain.getValidatedValues());
 
-            Integer id = getIdFromRequest();
-            if (id != null) {
-                offer.setId(id);
-            }
-
-            return offer;
+        Integer id = getIdFromRequest();
+        if (id != null) {
+            offer.setId(id);
         }
 
-        return null;
+        return offer;
     }
 
     private void addOfferTypeValuesModel() {
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
         model.put("offerTypes", OfferType.values());
+    }
+
+    private void addCurrentUserPropertiesModel() {
+        User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
+        List<Property> userProperties = ServiceManager.getInstance().getPropertyService().getPropertiesOwnedByUser(loggedUser);
+
+        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
+        model.put("userProperties", userProperties);
     }
 }

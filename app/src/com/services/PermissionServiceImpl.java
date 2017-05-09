@@ -41,16 +41,6 @@ public class PermissionServiceImpl extends BaseService implements PermissionServ
     }
 
     @Override
-    public boolean grantPermission(RoleId roleId, Permission permission) {
-        return false;
-    }
-
-    @Override
-    public boolean removePermission(RoleId roleId, Permission permission) {
-        return false;
-    }
-
-    @Override
     public boolean canEditOffer(User user, Offer offer) {
         if (offer != null && user != null) {
             boolean isOwner = (user.getId() == offer.getProperty().getOwner().getId());
@@ -68,6 +58,11 @@ public class PermissionServiceImpl extends BaseService implements PermissionServ
         }
 
         return false;
+    }
+
+    @Override
+    public boolean canAddOffers(User user) {
+        return user.getRoleId().equals(RoleId.User);
     }
 
     private boolean isLoggedUserAdmin() {

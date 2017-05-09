@@ -15,8 +15,7 @@ public class OfferConstructor implements EntityConstructor<Offer> {
         Offer offer = new Offer();
 
         OfferType offerType = (OfferType)values.getOrDefault("offerType", null);
-        Integer propertyId = (Integer)values.getOrDefault("property", null);
-        Property property = ServiceManager.getInstance().getPropertyService().getPropertyById(propertyId);
+        Property property = (Property)values.getOrDefault("property", null);
         BigDecimal cost = (BigDecimal)values.getOrDefault("cost", null);
 
         offer.setOfferType(offerType);

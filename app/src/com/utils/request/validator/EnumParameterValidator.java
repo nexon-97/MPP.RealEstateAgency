@@ -32,7 +32,9 @@ public class EnumParameterValidator<T extends Enum<T>> implements RequestParamet
                     return true;
                 }
             } else {
-                return tryLoadFromString(paramValue);
+                if (tryLoadFromString(paramValue)) {
+                    return true;
+                }
             }
         } else if (this.isNullAllowed) {
             return true;

@@ -12,7 +12,7 @@ public class BigDecimalParameterValidator implements RequestParameterValidator<B
 
     private String paramName;
     private BigDecimal value;
-    private String errorMessage;
+    protected String errorMessage;
     private boolean isNullAllowed;
 
     public BigDecimalParameterValidator(String paramName, boolean isNullAllowed) {
@@ -33,7 +33,7 @@ public class BigDecimalParameterValidator implements RequestParameterValidator<B
         try {
             DecimalFormatSymbols symbols = new DecimalFormatSymbols();
             symbols.setDecimalSeparator('.');
-            String pattern = "#0.0#";
+            String pattern = "0.0";
             DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
             decimalFormat.setParseBigDecimal(true);
 
@@ -41,10 +41,10 @@ public class BigDecimalParameterValidator implements RequestParameterValidator<B
 
             return true;
         } catch (NullPointerException e) {
-            this.errorMessage = String.format("Параметр '%s' отсутствует", paramName);
+            this.errorMessage = String.format("Параметр '%s' отсутствует!", paramName);
             return false;
         } catch (ParseException e) {
-            this.errorMessage = String.format("Параметр '%s' не является денежным форматом", paramName);
+            this.errorMessage = String.format("Неверный денежный формат! Введите число в формате XX.XX", paramName);
             return false;
         }
     }

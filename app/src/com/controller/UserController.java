@@ -36,7 +36,6 @@ public class UserController extends BaseController {
                 List<User> users = ServiceManager.getInstance().getUserService().getSeveralUsers( minUserId, 30);
                 RoleId[] roles = RoleId.values();
                 model.put("roles", roles);
-
                 model.put("userList", users);
             } else {
                 return showErrorMessage("Вы не администратор!");
@@ -61,9 +60,16 @@ public class UserController extends BaseController {
                 if (roleValidationChain.validate()){
                     UserService userService = ServiceManager.getInstance().getUserService();
                     User user = userService.getUserByLogin((String)roleValidationChain.getValue("user_login"));
+                    RoleId oldRole = user.getRoleId();
                     user.setRoleId((RoleId)roleValidationChain.getValue("user_role"));
                     if (!user.equals(loggedUser)) {
-                        userService.updateUser(user);
+                        if (userService.updateUser(user)){
+                            model.put("success", "Роль пользователя "+user.getLogin()+" сменилась с "+oldRole+" на "+user.getRoleId());
+                        } else {
+                            model.put("error", "Произошла ошибка при изменении роли пользователя "+user.getLogin());
+                        }
+                    } else {
+                        model.put("error", "Вы не можете изменить роль самому себе!");
                     }
                 }
 
@@ -111,6 +117,23 @@ public class UserController extends BaseController {
         }
 
         return showBadRequestView("Такого пользователя не существует!");
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/team")
+    public ModelAndView showTeamPage(HttpServletResponse response) {
+        initControllerResources(response);
+
+        UserService userService = ServiceManager.getInstance().getUserService();
+        List<User> adminsList = userService.getUsersByRole(RoleId.Admin);
+        List<User> realtorsList = userService.getUsersByRole(RoleId.Rieltor);
+        List<User> brokersList = userService.getUsersByRole(RoleId.Broker);
+
+        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
+        model.put("adminsList", adminsList);
+        model.put("realtorsList", realtorsList);
+        model.put("brokersList", brokersList);
+
+        return buildModelAndView("team");
     }
 
     private int getMinUserIdFromRequest(){

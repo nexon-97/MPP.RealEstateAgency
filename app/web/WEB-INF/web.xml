@@ -64,6 +64,7 @@
         <url-pattern>/property.html</url-pattern>
         <url-pattern>/property</url-pattern>
         <url-pattern>/addProperty</url-pattern>
+        <url-pattern>/deleteProperty</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -142,6 +143,8 @@
         <url-pattern>/user_roles</url-pattern>
         <url-pattern>/user.jsp</url-pattern>
         <url-pattern>/user</url-pattern>
+        <url-pattern>/team.jsp</url-pattern>
+        <url-pattern>/team</url-pattern>
     </servlet-mapping>
 
     <servlet>

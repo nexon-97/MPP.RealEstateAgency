@@ -53,7 +53,13 @@ public class ProfileController extends BaseController {
     @RequestMapping(method = RequestMethod.GET, value = "/profileEdit")
     public ModelAndView showProfileEditorPage(HttpServletResponse response) {
         initControllerResources(response);
-        return buildModelAndView("edit_profile");
+
+        if (!ServiceManager.getInstance().getAuthService().isUserLoggedIn())
+        {
+            return buildModelAndView("edit_profile");
+        }
+
+        return showUnauthorizedMessageView();
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/profileEdit")
@@ -69,7 +75,7 @@ public class ProfileController extends BaseController {
             return buildModelAndView("../error_message");
         }
 
-        return buildModelAndView("profile");
+        return redirect("/profile");
     }
 
 

@@ -70,6 +70,16 @@ public class PermissionServiceImpl extends BaseService implements PermissionServ
         return false;
     }
 
+    @Override
+    public boolean canDeleteProperty(User user, Property property) {
+        if (property != null && user != null) {
+            boolean isOwner = (user.getId() == property.getOwner().getId());
+            return isOwner || isLoggedUserAdmin();
+        }
+
+        return false;
+    }
+
     private boolean isLoggedUserAdmin() {
         User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
         return (loggedUser != null && loggedUser.getRoleId().equals(RoleId.Admin));

@@ -3,6 +3,7 @@ package com.controller;
 import com.helper.SystemMessages;
 import com.model.*;
 import com.services.DealService;
+import com.services.OfferService;
 import com.services.TransactionService;
 import com.services.TransactionServiceImpl;
 import com.services.shared.ServiceManager;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -93,10 +95,15 @@ public class AdministrativeController extends BaseController {
         List<Property> properties = ServiceManager.getInstance().getPropertyService().getList();
         List<Offer> offers = ServiceManager.getInstance().getOfferService().listAllOffers();
         List<Deal> deals = ServiceManager.getInstance().getDealService().list();
+        Map<Property, Boolean> hasOfferMap = getHasOfferMap(properties);
+        Map<Offer, Boolean> hasDealMap = getHasDealMap(offers);
+
         model.put("userList", users);
         model.put("propertyList", properties);
         model.put("offerList", offers);
         model.put("dealList", deals);
+        model.put("hasOffer", hasOfferMap);
+        model.put("hasDeal", hasDealMap);
 
         return buildModelAndView("admin_data");
     }
@@ -131,4 +138,23 @@ public class AdministrativeController extends BaseController {
 
     }
 
+    private Map<Property, Boolean> getHasOfferMap(List<Property> properties){
+        OfferService offerService = ServiceManager.getInstance().getOfferService();
+        Map<Property, Boolean> hasOfferMap = new HashMap<>();
+        for(Property property: properties){
+            boolean bool = offerService.hasOfferOnProperty(property);
+            hasOfferMap.put(property, bool);
+        }
+        return hasOfferMap;
+    }
+
+    private Map<Offer, Boolean> getHasDealMap(List<Offer> offers){
+        DealService dealService = ServiceManager.getInstance().getDealService();
+        Map<Offer, Boolean> hasDealMap = new HashMap<>();
+        for(Offer offer: offers){
+            boolean bool = dealService.hasDealOnOffer(offer);
+            hasDealMap.put(offer, bool);
+        }
+        return hasDealMap;
+    }
 }

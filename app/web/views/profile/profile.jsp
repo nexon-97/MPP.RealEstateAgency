@@ -44,7 +44,9 @@
                     <div class="personalAreaLabel" style="margin-top: 15px">Собственность</div>
                     <c:forEach var="property" items="${userProperties}">
                         <div>
-                            <a href="/property?id=${property.id}">Собственность [${property.id}]</a>
+                            <a href="/property?id=${property.id}">Собственность [${property.id}] - ${property.city}, ${property.street}, д. ${property.houseNumber}
+                                <c:if test="${property.blockNumber != null}">, корп. ${property.blockNumber}</c:if>
+                                <c:if test="${property.flatNumber != null}">, кв. ${property.flatNumber}</c:if></a>
                         </div>
                     </c:forEach>
                     <c:if test="${ownProfile != null}"><div>

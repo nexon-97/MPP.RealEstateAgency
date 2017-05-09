@@ -82,7 +82,7 @@ public class OfferController extends BaseController {
         if (offer != null) {
             OfferService offerService = ServiceManager.getInstance().getOfferService();
             if (offerService.addOffer(offer)) {
-                return redirect("/offer?id=" + String.valueOf(offer.getId()));
+                return redirect("/profile");
             } else {
                 return showErrorMessage(offerService.getErrorCode(), offerService.getErrorMessage());
             }
@@ -151,7 +151,7 @@ public class OfferController extends BaseController {
             if (offer != null) {
                 boolean deletionSuccess = offerService.deleteOffer(offer);
                 if (deletionSuccess) {
-                    return redirect("/profile");
+                    return redirectToReferer();
                 } else {
                     return showErrorMessage(SystemMessages.FailedToDeleteOfferMessage);
                 }

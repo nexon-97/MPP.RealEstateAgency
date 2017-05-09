@@ -64,6 +64,19 @@ public class PropertyServiceImpl extends BaseService implements PropertyService 
     }
 
     @Override
+    public boolean deleteProperty(Property property) {
+        User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
+        boolean hasPermission = ServiceManager.getInstance().getPermissionService().canDeleteProperty(loggedUser, property);
+
+        if (hasPermission) {
+            PropertyDAO propertyDAO = new PropertyDAOImpl();
+            return propertyDAO.deleteProperty(property);
+        }
+
+        return false;
+    }
+
+    @Override
     public List<Property> getPropertiesOwnedByUser(User user) {
         PropertyDAO propertyDAO = new PropertyDAOImpl();
 

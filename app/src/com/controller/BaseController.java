@@ -44,6 +44,15 @@ public class BaseController {
         return new ModelAndView("redirect:" + path);
     }
 
+    protected ModelAndView redirectToReferer() {
+        String referer = request.getHeader("Referer");
+        if (referer != null) {
+            return redirect(referer);
+        } else {
+            return redirect("/");
+        }
+    }
+
     protected ModelAndView showUnauthorizedMessageView() {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         JstlView view = new JstlView("views/unauthorized_view.jsp");

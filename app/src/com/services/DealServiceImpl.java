@@ -180,6 +180,14 @@ public class DealServiceImpl extends BaseService implements DealService {
         }
     }
 
+    @Override
+    public boolean hasDealOnOffer(Offer offer){
+        DealDAO dealDAO = new DealDAOImpl();
+        List<Deal> deals = dealDAO.listOfferDeals(offer);
+        if(deals.size()!=0) return true;
+        return false;
+    }
+
     private boolean isDealValidated(Deal deal) {
         return  ((deal.getBroker() != null) &&
                 (deal.getRealtor() != null) &&

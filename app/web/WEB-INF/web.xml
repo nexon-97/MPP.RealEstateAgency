@@ -142,6 +142,8 @@
         <url-pattern>/user_roles</url-pattern>
         <url-pattern>/user.jsp</url-pattern>
         <url-pattern>/user</url-pattern>
+        <url-pattern>/team.jsp</url-pattern>
+        <url-pattern>/team</url-pattern>
     </servlet-mapping>
 
     <servlet>

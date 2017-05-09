@@ -113,6 +113,23 @@ public class UserController extends BaseController {
         return showBadRequestView("Такого пользователя не существует!");
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/team")
+    public ModelAndView showTeamPage(HttpServletResponse response) {
+        initControllerResources(response);
+
+        UserService userService = ServiceManager.getInstance().getUserService();
+        List<User> adminsList = userService.getUsersByRole(RoleId.Admin);
+        List<User> realtorsList = userService.getUsersByRole(RoleId.Rieltor);
+        List<User> brokersList = userService.getUsersByRole(RoleId.Broker);
+
+        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
+        model.put("adminsList", adminsList);
+        model.put("realtorsList", realtorsList);
+        model.put("brokersList", brokersList);
+
+        return buildModelAndView("team");
+    }
+
     private int getMinUserIdFromRequest(){
         int userId;
         try {

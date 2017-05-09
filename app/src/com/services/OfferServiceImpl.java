@@ -4,6 +4,7 @@ import com.dao.OfferDAO;
 import com.dao.OfferDAOImpl;
 import com.helper.SystemMessages;
 import com.model.Offer;
+import com.model.Property;
 import com.model.User;
 import com.services.shared.*;
 import com.utils.request.filter.FilterParameter;
@@ -97,5 +98,13 @@ public class OfferServiceImpl extends BaseService implements OfferService {
         boolean offerTypeNotNull = offer.getOfferType() != null;
 
         return costPositive && propertyExists && offerTypeNotNull;
+    }
+
+    @Override
+    public boolean hasOfferOnProperty(Property property){
+        OfferDAO offerDAO = new OfferDAOImpl();
+        List<Offer> offers = offerDAO.listPropertyOffers(property);
+        if(offers.size()!=0) return true;
+        return false;
     }
 }

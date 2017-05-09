@@ -168,4 +168,12 @@ public class Property {
     public String getDescription() {
         return this.description;
     }
+
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (!this.getClass().equals(obj.getClass())) return false;
+
+        Property obj2 = (Property)obj;
+        return ((this.id == obj2.getId()));
+    }
 }

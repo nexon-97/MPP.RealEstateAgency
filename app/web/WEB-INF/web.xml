@@ -64,6 +64,7 @@
         <url-pattern>/property.html</url-pattern>
         <url-pattern>/property</url-pattern>
         <url-pattern>/addProperty</url-pattern>
+        <url-pattern>/deleteProperty</url-pattern>
     </servlet-mapping>
 
     <servlet>

@@ -13,7 +13,6 @@
             <td class="admin-data-column-name" width="10%">house №</td>
             <td class="admin-data-column-name" width="10%">block №</td>
             <td class="admin-data-column-name" width="10%">flat №</td>
-            <td class="admin-data-column-name" width="5%">change</td>
             <td class="admin-data-column-name" width="5%">delete</td>
         </tr>
         <c:forEach var="property" items="${propertyList}">
@@ -26,8 +25,11 @@
                 <td class="admin-data-column-field">${property.houseNumber}</td>
                 <td class="admin-data-column-field">${property.blockNumber}</td>
                 <td class="admin-data-column-field">${property.flatNumber}</td>
-                <td class="admin-data-column-field">change</td>
-                <td class="admin-data-column-field">delete</td>
+                <td class="admin-data-column-field">
+                    <c:if test="${!hasOffer.get(property)}">
+                        <a href="/deleteProperty?id=${property.id}">delete</a>
+                    </c:if>
+                </td>
             </tr>
         </c:forEach>
     </table>

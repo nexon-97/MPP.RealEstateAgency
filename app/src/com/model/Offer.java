@@ -42,4 +42,12 @@ public class Offer {
     public BigDecimal getCost() {
         return this.cost;
     }
+
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (!this.getClass().equals(obj.getClass())) return false;
+
+        Offer obj2 = (Offer)obj;
+        return ((this.id == obj2.getId()));
+    }
 }

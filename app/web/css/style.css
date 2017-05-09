@@ -237,6 +237,16 @@ footer
     text-align: center;
 }
 
+.success-field
+{
+    color: white;
+    background: green;
+    padding: 0px 5px 0px 5px;
+    border-radius: 5px;
+    font-size: 14px;
+    text-align: center;
+}
+
 .convenienceIconBackNo
 {
     border: 3px solid darkslategrey;
@@ -781,4 +791,6 @@ footer
     border: 1px solid black;
     text-align: center;
     background-color: #90c9ff;
+    max-width: 200px;
+    overflow-x:hidden;
 }

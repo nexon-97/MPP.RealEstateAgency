@@ -1,6 +1,7 @@
 package com.dao;
 
 import com.model.Offer;
+import com.model.Property;
 import com.model.User;
 import com.utils.request.filter.FilterParameter;
 
@@ -13,6 +14,7 @@ public interface OfferDAO {
     boolean deleteOffer(Offer offer);
     boolean addOffer(Offer offer);
     List<Offer> listUserOffers(User user);
+    List<Offer> listPropertyOffers(Property property);
     List<Offer> list();
     List<Offer> filter(List<FilterParameter> filterParams);
 }

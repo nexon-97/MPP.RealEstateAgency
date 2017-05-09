@@ -14,6 +14,12 @@
         <div class="profileViewContent">
             <c:choose>
                 <c:when test="${user != null}">
+                    <c:if test="${(error != null)}">
+                        <div id="add-error" class="error-field">${error}</div>
+                    </c:if>
+                    <c:if test="${(success != null)}">
+                        <div id="add-error" class="success-field">${success}</div>
+                    </c:if>
                     <c:forEach var="userInfo" items="${userList}">
                         <c:set var="userInfo" value="${userInfo}" scope="request" />
                         <jsp:include page="user_short_info.jsp" />

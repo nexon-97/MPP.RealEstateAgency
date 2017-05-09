@@ -2,6 +2,7 @@ package com.services;
 
 import com.model.Deal;
 import com.model.DealRequest;
+import com.model.Offer;
 import com.model.User;
 
 import java.util.List;
@@ -24,4 +25,5 @@ public interface DealService {
     List<DealRequest> listUncommittedSellerRequests(User realtor);
     DealRequest getDealRequestById(int id);
     boolean updateDealRequest(DealRequest request);
+    boolean hasDealOnOffer(Offer offer);
 }

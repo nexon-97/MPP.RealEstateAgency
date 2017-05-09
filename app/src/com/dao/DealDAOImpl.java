@@ -122,6 +122,27 @@ public class DealDAOImpl extends BaseDAO implements DealDAO {
     }
 
     @Override
+    public List<Deal> listOfferDeals(Offer offer){
+        Session session = openSession();
+        try {
+            Transaction tx = session.beginTransaction();
+            Criteria roleCriteria = session.createCriteria(Deal.class)
+                    .add(Restrictions.eq("offer", offer));
+            List<Deal> deals = roleCriteria.list();
+            tx.commit();
+
+            return deals;
+        } catch (HibernateException e) {
+            if (session.getTransaction() != null) session.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return null;
+    }
+
+    @Override
     public List<Deal> listBrokerValidatedDeals(User user) {
         Session session = openSession();
         if (session != null) {

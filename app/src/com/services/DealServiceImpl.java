@@ -4,6 +4,7 @@ import com.dao.DealDAO;
 import com.dao.DealDAOImpl;
 import com.model.Deal;
 import com.model.DealRequest;
+import com.model.Offer;
 import com.model.User;
 import com.services.shared.BaseService;
 import com.services.shared.ServiceId;
@@ -157,6 +158,14 @@ public class DealServiceImpl extends BaseService implements DealService {
         } else {
             return dao.updateDealRequest(request);
         }
+    }
+
+    @Override
+    public boolean hasDealOnOffer(Offer offer){
+        DealDAO dealDAO = new DealDAOImpl();
+        List<Deal> deals = dealDAO.listOfferDeals(offer);
+        if(deals.size()!=0) return true;
+        return false;
     }
 
     private boolean isDealValidated(Deal deal) {

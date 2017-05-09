@@ -1,6 +1,7 @@
 package com.services;
 
 import com.model.Offer;
+import com.model.Property;
 import com.model.User;
 import com.utils.request.ErrorRegistry;
 import com.utils.request.filter.FilterParameter;
@@ -16,4 +17,5 @@ public interface OfferService extends ErrorRegistry {
     boolean updateOffer(Offer offer);
     List<Offer> filterOffers(List<FilterParameter> filterParameters);
     boolean isValid(Offer offer);
+    boolean hasOfferOnProperty(Property property);
 }

@@ -1,8 +1,6 @@
 package com.dao;
 
-import com.model.Deal;
-import com.model.DealRequest;
-import com.model.User;
+import com.model.*;
 
 import java.util.List;
 
@@ -17,6 +15,7 @@ public interface DealDAO {
     List<Deal> listRealtorValidatedDeals(User user);
     List<Deal> listBrokerNonValidated(User user);
     List<Deal> listRealtorNonValidatedDeals(User user);
+    List<Deal> listOfferDeals(Offer offer);
     boolean addDealRequest(DealRequest request);
     boolean deleteDealRequest(DealRequest request);
     boolean updateDealRequest(DealRequest request);

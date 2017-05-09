@@ -73,6 +73,21 @@ public class PropertyDAOImpl extends BaseDAO implements PropertyDAO {
 
     @Override
     public boolean deleteProperty(Property property) {
+        Session session = openSession();
+        if (session != null) {
+            try {
+                Transaction tx = session.beginTransaction();
+                session.delete(property);
+                tx.commit();
+
+                return true;
+            } catch (HibernateException e) {
+                e.printStackTrace();
+            } finally {
+                session.close();
+            }
+        }
+
         return false;
     }
 

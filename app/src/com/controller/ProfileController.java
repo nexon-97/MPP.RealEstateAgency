@@ -2,8 +2,6 @@ package com.controller;
 
 import com.model.*;
 import com.services.DealService;
-import com.services.UserService;
-import com.services.UserServiceImpl;
 import com.services.shared.ServiceManager;
 import com.utils.request.validator.*;
 import org.springframework.stereotype.Controller;
@@ -12,10 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @Controller
 public class ProfileController extends BaseController {
@@ -54,7 +50,7 @@ public class ProfileController extends BaseController {
     public ModelAndView showProfileEditorPage(HttpServletResponse response) {
         initControllerResources(response);
 
-        if (!ServiceManager.getInstance().getAuthService().isUserLoggedIn())
+        if (ServiceManager.getInstance().getAuthService().isUserLoggedIn())
         {
             return buildModelAndView("edit_profile");
         }

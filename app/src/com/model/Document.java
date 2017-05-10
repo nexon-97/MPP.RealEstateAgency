@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class Document {
     private int id;
-    private DocumentType documentType;
+    private int documentType;
     private User buyer;
     private User seller;
     private Offer offer;
@@ -16,7 +16,7 @@ public class Document {
         return id;
     }
 
-    public DocumentType getDocumentType() {
+    public int getDocumentType() {
         return documentType;
     }
 
@@ -44,7 +44,7 @@ public class Document {
         this.id = id;
     }
 
-    public void setDocumentType(DocumentType documentType) {
+    public void setDocumentType(int documentType) {
         this.documentType = documentType;
     }
 

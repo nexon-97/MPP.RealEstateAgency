@@ -20,4 +20,6 @@ public abstract class SystemMessages {
     public static final String SuchDealRequestAlreadyRegistered = "Отклик на эту сделку уже зарегистрирован!";
     public static final String UnacceptableOfferParams = "Недопустимые параметры предложения!";
     public static final String UserIsNotOfferOwnerMessage = "Вы не владелец предложения!";
+    public static final String NoSuchProperyMessage = "Не существует такой собственности!";
+    public static final String FailedToDeletePropertyMessage = "Не удалось удалить собственность!";
 }

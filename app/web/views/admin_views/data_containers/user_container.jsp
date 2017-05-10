@@ -13,8 +13,7 @@
             <td class="admin-data-column-name" width="10%">surname</td>
             <td class="admin-data-column-name" width="10%">patronymic</td>
             <td class="admin-data-column-name" width="10%">phone</td>
-            <td class="admin-data-column-name" width="5%">change</td>
-            <td class="admin-data-column-name" width="5%">delete</td>
+            <td class="admin-data-column-name" width="20%">info</td>
         </tr>
         <c:forEach var="user" items="${userList}">
             <tr>
@@ -26,8 +25,7 @@
                 <td class="admin-data-column-field">${user.surname}</td>
                 <td class="admin-data-column-field">${user.patronymic}</td>
                 <td class="admin-data-column-field">${user.phone}</td>
-                <td class="admin-data-column-field">change</td>
-                <td class="admin-data-column-field">delete</td>
+                <td class="admin-data-column-field">${user.info}</td>
             </tr>
         </c:forEach>
     </table>

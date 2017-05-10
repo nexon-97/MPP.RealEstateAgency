@@ -2,14 +2,14 @@ package com.services;
 
 import com.dao.DealDAO;
 import com.dao.DealDAOImpl;
-import com.model.Deal;
-import com.model.DealRequest;
-import com.model.User;
+import com.model.*;
 import com.services.shared.BaseService;
 import com.services.shared.ServiceId;
 import com.services.shared.ServiceManager;
 import com.services.shared.ServiceSharedResources;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -49,6 +49,27 @@ public class DealServiceImpl extends BaseService implements DealService {
     public boolean assignDealBroker(Deal deal, User user) {
         deal.setBroker(user);
         deal.setValidated(isDealValidated(deal));
+
+        if(deal.getValidated()){
+            TransactionService transactionService = new TransactionServiceImpl(getSharedResources());
+            transactionService.addTransaction(deal.getBuyer(), deal.getOffer().getProperty().getOwner(), new BigDecimal(deal.getOffer().getCost().doubleValue() * 0.02), deal.getOffer().getCost());
+            DocumentService documentService = new DocumentServiceImpl();
+            Document document = new Document();
+            document.setSeller(deal.getOffer().getProperty().getOwner());
+            document.setBuyer(deal.getBuyer());
+            document.setOffer(deal.getOffer());
+            document.setConfirmDate(new Date());
+
+            if (deal.getOffer().getOfferType().equals(OfferType.Sale)){
+                document.setDocumentType(DocumentType.DocumentOfSell.ordinal());
+                document.setGraduationDate(null);
+            } else {
+                document.setDocumentType(DocumentType.DocumentOfRent.ordinal());
+                document.setGraduationDate(new Date());// TODO
+            }
+            documentService.addDocument(document);
+        }
+
         return updateDeal(deal);
     }
 
@@ -157,6 +178,14 @@ public class DealServiceImpl extends BaseService implements DealService {
         } else {
             return dao.updateDealRequest(request);
         }
+    }
+
+    @Override
+    public boolean hasDealOnOffer(Offer offer){
+        DealDAO dealDAO = new DealDAOImpl();
+        List<Deal> deals = dealDAO.listOfferDeals(offer);
+        if(deals.size()!=0) return true;
+        return false;
     }
 
     private boolean isDealValidated(Deal deal) {

@@ -5,6 +5,7 @@ import com.model.Property;
 import com.model.User;
 import com.utils.request.filter.FilterParameter;
 import org.hibernate.*;
+import org.hibernate.criterion.Restrictions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -100,6 +101,27 @@ public class OfferDAOImpl extends BaseDAO implements OfferDAO {
         }
 
         return false;
+    }
+
+    @Override
+    public List<Offer> listPropertyOffers(Property property){
+        Session session = openSession();
+        try {
+            Transaction tx = session.beginTransaction();
+            Criteria roleCriteria = session.createCriteria(Offer.class)
+                    .add(Restrictions.eq("property", property));
+            List<Offer> offers = roleCriteria.list();
+            tx.commit();
+
+            return offers;
+        } catch (HibernateException e) {
+            if (session.getTransaction() != null) session.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return null;
     }
 
     @Override

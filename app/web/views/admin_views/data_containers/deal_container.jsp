@@ -12,8 +12,6 @@
             <td class="admin-data-column-name" width="20%">seller</td>
             <td class="admin-data-column-name" width="20%">realtor</td>
             <td class="admin-data-column-name" width="20%">broker</td>
-            <td class="admin-data-column-name" width="5%">change</td>
-            <td class="admin-data-column-name" width="5%">delete</td>
         </tr>
         <c:forEach var="deal" items="${dealList}">
             <tr>
@@ -34,8 +32,6 @@
                 <td class="admin-data-column-field">
                     ${deal.broker.name} ${deal.broker.surname} ${deal.broker.patronymic}
                 </td>
-                <td class="admin-data-column-field">change</td>
-                <td class="admin-data-column-field">delete</td>
             </tr>
         </c:forEach>
     </table>

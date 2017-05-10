@@ -1,5 +1,6 @@
 package com.controller;
 
+import com.helper.SystemMessages;
 import com.model.Property;
 import com.model.PropertyType;
 import com.services.PropertyService;
@@ -82,6 +83,28 @@ public class PropertyController extends BaseController  {
         }
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/deleteProperty")
+    public ModelAndView deleteOfferAction(HttpServletResponse response) {
+        initControllerResources(response);
+
+        Integer propertyId = getIdFromRequest();
+        if (propertyId != null) {
+            PropertyService propertyService = ServiceManager.getInstance().getPropertyService();
+            Property property = propertyService.getPropertyById(propertyId);
+
+            if (property != null) {
+                boolean deletionSuccess = propertyService.deleteProperty(property);
+                if (deletionSuccess) {
+                    return redirect("/profile");
+                } else {
+                    return showErrorMessage(SystemMessages.FailedToDeletePropertyMessage);
+                }
+            }
+        }
+
+        return showErrorMessage(SystemMessages.NoSuchProperyMessage);
+    }
+
     private RequestValidationChain buildPropertyValidationChain() {
         return new RequestValidationChain()
                 .addValidator(new EnumParameterValidator<>(PropertyType.class, "type", false))
@@ -100,7 +123,7 @@ public class PropertyController extends BaseController  {
                 .addValidator(new BooleanParameterValidator("phone"))
                 .addValidator(new BooleanParameterValidator("fridge"))
                 .addValidator(new BooleanParameterValidator("stove"))
-                .addValidator(new DescriptionStringParameterValidator("description", false));
+                .addValidator(new StringParameterValidator("description", false));
     }
 
     private ModelAndView getViewWithErrors(String key, Object error, Object values) {

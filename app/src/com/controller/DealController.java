@@ -57,6 +57,10 @@ public class DealController extends BaseController {
         ServiceManager serviceManager = ServiceManager.getInstance();
         User loggedUser = serviceManager.getAuthService().getLoggedUser();
         if (loggedUser != null) {
+            if (!loggedUser.getRoleId().equals(RoleId.User)) {
+                return showErrorMessage(HttpServletResponse.SC_FORBIDDEN, "Вы не имеете право откликаться на предложения!");
+            }
+
             Integer offerId = getIdFromRequest();
             Integer buyerId = getBuyerIdFromRequest();
 

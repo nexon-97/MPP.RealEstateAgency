@@ -1,5 +1,7 @@
-package com.dao;
+package com.dao.impl;
 
+import com.dao.BaseDAO;
+import com.dao.PropertyDAO;
 import com.model.Property;
 import com.model.User;
 import org.hibernate.Criteria;
@@ -16,7 +18,7 @@ public class PropertyDAOImpl extends BaseDAO implements PropertyDAO {
     public Property getPropertyById(int id) {
         Property property = null;
 
-        Session session = openSession();
+        Session session = getSession();
         if (session != null) {
             try {
                 Transaction tx = session.beginTransaction();
@@ -37,7 +39,7 @@ public class PropertyDAOImpl extends BaseDAO implements PropertyDAO {
 
     @Override
     public boolean updateProperty(Property property) {
-        Session session = openSession();
+        Session session = getSession();
         if (session != null) {
             try {
                 Transaction tx = session.beginTransaction();
@@ -55,7 +57,7 @@ public class PropertyDAOImpl extends BaseDAO implements PropertyDAO {
 
     @Override
     public boolean addProperty(Property property) {
-        Session session = openSession();
+        Session session = getSession();
         if (session != null) {
             try {
                 Transaction tx = session.beginTransaction();
@@ -73,7 +75,7 @@ public class PropertyDAOImpl extends BaseDAO implements PropertyDAO {
 
     @Override
     public boolean deleteProperty(Property property) {
-        Session session = openSession();
+        Session session = getSession();
         if (session != null) {
             try {
                 Transaction tx = session.beginTransaction();
@@ -93,7 +95,7 @@ public class PropertyDAOImpl extends BaseDAO implements PropertyDAO {
 
     @Override
     public List<Property> getPropertiesOwnedByUser(User user) {
-        Session session = openSession();
+        Session session = getSession();
         if (session != null) {
             try {
                 Transaction tx = session.beginTransaction();
@@ -117,7 +119,7 @@ public class PropertyDAOImpl extends BaseDAO implements PropertyDAO {
 
     @Override
     public List<Property> list() {
-        Session session = openSession();
+        Session session = getSession();
         try {
             Transaction tx = session.beginTransaction();
             List<Property> properties = session.createCriteria(Property.class).list();

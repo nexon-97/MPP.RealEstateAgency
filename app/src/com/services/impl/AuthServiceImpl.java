@@ -1,8 +1,9 @@
-package com.services;
+package com.services.impl;
 
 import com.dao.UserDAO;
-import com.dao.UserDAOImpl;
+import com.dao.impl.UserDAOImpl;
 import com.model.User;
+import com.services.AuthService;
 import com.services.shared.*;
 
 import javax.servlet.http.Cookie;

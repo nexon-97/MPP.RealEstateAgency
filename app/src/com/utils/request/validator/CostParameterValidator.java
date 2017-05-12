@@ -1,6 +1,10 @@
 package com.utils.request.validator;
 
+import com.services.shared.ServiceManager;
+
 import java.math.BigDecimal;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CostParameterValidator extends BigDecimalParameterValidator {
 
@@ -10,14 +14,21 @@ public class CostParameterValidator extends BigDecimalParameterValidator {
 
     @Override
     public boolean validate() {
-        if (super.validate()) {
-            boolean valid = this.getValue().compareTo(new BigDecimal(0.001)) > 0;
+        String value = ServiceManager.getInstance().getSharedResources().getRequest().getParameter(this.paramName);
+        Pattern pattern = Pattern.compile("\\d+(\\.\\d{1,2})?");
+        boolean match = pattern.matcher(value).matches();
 
-            if (!valid) {
-                this.errorMessage = "Цена не должна быть меньше 0 $!";
+        if (match) {
+            if (super.validate()) {
+                if (!(getValue().compareTo(new BigDecimal(0.01)) > 0)) {
+                    this.errorMessage = "Цена не должна быть меньше 0 $!";
+                    return false;
+                }
+
+                return true;
             }
-
-            return valid;
+        } else {
+            this.errorMessage = "Значение не соответствует формату XXX.XX";
         }
 
         return false;

@@ -20,30 +20,45 @@
                             <div class="contactInfoBlockValueDiv">
                                 <input type="text" name="surname" value="${user.surname}" class="contactInfoBlockValueInput"/>
                             </div>
+                            <c:if test="${errors != null && errors['surname'] != null}">
+                                <div class="error-field">${errors['surname']}</div>
+                            </c:if>
                         </div>
                         <div>
                             <div class="contactInfoBlockNameDiv">Имя</div>
                             <div class="contactInfoBlockValueDiv">
                                 <input type="text" name="name" value="${user.name}" class="contactInfoBlockValueInput" />
                             </div>
+                            <c:if test="${errors != null && errors['name'] != null}">
+                                <div class="error-field">${errors['name']}</div>
+                            </c:if>
                         </div>
                         <div>
                             <div class="contactInfoBlockNameDiv">Отчество</div>
                             <div class="contactInfoBlockValueDiv">
                                 <input type="text" name="patronymic" value="${user.patronymic}" class="contactInfoBlockValueInput" />
                             </div>
+                            <c:if test="${errors != null && errors['patronymic'] != null}">
+                                <div class="error-field">${errors['patronymic']}</div>
+                            </c:if>
                         </div>
                         <div>
                             <div class="contactInfoBlockNameDiv">E-mail</div>
                             <div class="contactInfoBlockValueDiv">
                                 <input type="text" name="email" value="${user.email}" class="contactInfoBlockValueInput" />
                             </div>
+                            <c:if test="${errors != null && errors['email'] != null}">
+                                <div class="error-field">${errors['email']}</div>
+                            </c:if>
                         </div>
                         <div>
                             <div class="contactInfoBlockNameDiv">Телефон</div>
                             <div class="contactInfoBlockValueDiv">
                                 <input type="text" name="phone" value="${user.phone}" class="contactInfoBlockValueInput" />
                             </div>
+                            <c:if test="${errors != null && errors['phone'] != null}">
+                                <div class="error-field">${errors['phone']}</div>
+                            </c:if>
                         </div>
                         <div>
                             <div class="contactInfoBlockNameDiv">О себе</div>

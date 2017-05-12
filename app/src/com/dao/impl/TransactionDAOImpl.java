@@ -1,5 +1,7 @@
-package com.dao;
+package com.dao.impl;
 
+import com.dao.BaseDAO;
+import com.dao.TransactionDAO;
 import com.model.Transaction;
 import com.model.User;
 import org.hibernate.Criteria;
@@ -9,7 +11,7 @@ import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
 
-public class TransactionDAOImpl extends BaseDAO implements TransactionDAO{
+public class TransactionDAOImpl extends BaseDAO implements TransactionDAO {
     @Override
     public Transaction getById(int id) {
         Session session = getSessionFactory().openSession();
@@ -25,7 +27,7 @@ public class TransactionDAOImpl extends BaseDAO implements TransactionDAO{
 
     @Override
     public List<Transaction> getIncomingList(User user) {
-        Session session = openSession();
+        Session session = getSession();
         List<Transaction> transactions = null;
 
         try {
@@ -47,7 +49,7 @@ public class TransactionDAOImpl extends BaseDAO implements TransactionDAO{
 
     @Override
     public List<Transaction> getOutgoingList(User user) {
-        Session session = openSession();
+        Session session = getSession();
         List<Transaction> transactions = null;
 
         try {
@@ -69,7 +71,7 @@ public class TransactionDAOImpl extends BaseDAO implements TransactionDAO{
 
     @Override
     public boolean addTransaction(Transaction transaction) {
-        Session session = openSession();
+        Session session = getSession();
         if (session != null) {
             try {
                 org.hibernate.Transaction tx = session.beginTransaction();
@@ -87,7 +89,7 @@ public class TransactionDAOImpl extends BaseDAO implements TransactionDAO{
 
     @Override
     public List<Transaction> list() {
-        Session session = openSession();
+        Session session = getSession();
         List<Transaction> transactions = null;
 
         try {

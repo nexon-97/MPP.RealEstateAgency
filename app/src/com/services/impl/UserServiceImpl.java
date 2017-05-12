@@ -1,13 +1,16 @@
-package com.services;
+package com.services.impl;
 
 import com.dao.UserDAO;
-import com.dao.UserDAOImpl;
+import com.dao.impl.UserDAOImpl;
 import com.model.RoleId;
 import com.model.User;
+import com.services.UserService;
 import com.services.shared.BaseService;
 import com.services.shared.ServiceId;
+import com.services.shared.ServiceManager;
 import com.services.shared.ServiceSharedResources;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public class UserServiceImpl extends BaseService implements UserService {
@@ -18,8 +21,13 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Override
     public boolean updateUser(User user) {
-        UserDAO userDAO = new UserDAOImpl();
-        return userDAO.update(user);
+        if (ServiceManager.getInstance().getPermissionService().canEditUserInfo(user)) {
+            UserDAO userDAO = new UserDAOImpl();
+            return userDAO.update(user);
+        }
+
+        setErrorInfo(HttpServletResponse.SC_FORBIDDEN, "У вас нет прав для изменения информации в профиле!");
+        return false;
     }
 
     @Override

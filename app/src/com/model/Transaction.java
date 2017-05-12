@@ -3,15 +3,13 @@ package com.model;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-public class Transaction {
-    private int id;
+public class Transaction extends Entity {
+
     private User buyer;
     private User seller;
     private BigDecimal companyFine;
     private BigDecimal payment;
     private Timestamp date;
-
-    public int getId() { return this.id;  }
 
     public User getBuyer() { return this.buyer; }
 
@@ -22,8 +20,6 @@ public class Transaction {
     public BigDecimal getPayment() { return this.payment; }
 
     public Timestamp getDate() { return this.date; }
-
-    public void setId(int id) { this.id = id; }
 
     public void setBuyer(User buyer) { this.buyer = buyer; }
 

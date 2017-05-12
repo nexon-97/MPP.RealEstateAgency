@@ -65,15 +65,15 @@ public class PropertyController extends BaseController  {
     public ModelAndView register(HttpServletResponse response) {
         initControllerResources(response);
 
-        if (ServiceManager.getInstance().getAuthService().getLoggedUser() == null) {
-            return buildModelAndView("../unauthorized_view");
+        if (!ServiceManager.getInstance().getAuthService().isUserLoggedIn()) {
+            return showUnauthorizedMessageView();
         } else {
             RequestValidationChain requestValidator = buildPropertyValidationChain();
             if (requestValidator.validate()){
                 PropertyService propertyService = ServiceManager.getInstance().getPropertyService();
                 boolean isAdded = propertyService.addProperty(requestValidator);
                 if (isAdded) {
-                    return redirect("/");
+                    return redirect("/profile");
                 } else {
                     return getViewWithErrors("addError", "Ошибка при добавлении собственности", requestValidator.getValidatedValues());
                 }

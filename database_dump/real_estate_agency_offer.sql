@@ -26,10 +26,10 @@ CREATE TABLE `offer` (
   `offer_id` int(11) NOT NULL AUTO_INCREMENT,
   `property_id` int(11) NOT NULL,
   `offer_type_id` int(11) NOT NULL,
-  `cost` decimal(20,0) NOT NULL,
+  `cost` decimal(20,2) NOT NULL,
   PRIMARY KEY (`offer_id`),
   KEY `fk_property_idx` (`property_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -41,4 +41,4 @@ CREATE TABLE `offer` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-05-03  3:47:05
+-- Dump completed on 2017-05-12  4:19:23

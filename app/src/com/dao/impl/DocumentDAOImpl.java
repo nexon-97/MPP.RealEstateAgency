@@ -1,10 +1,12 @@
-package com.dao;
+package com.dao.impl;
+import com.dao.BaseDAO;
+import com.dao.DocumentDAO;
 import com.model.Document;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class DocumentDAOImpl extends BaseDAO implements DocumentDAO  {
+public class DocumentDAOImpl extends BaseDAO implements DocumentDAO {
     @Override
     public Document getDocumentByID(int id) {
         Document document = null;

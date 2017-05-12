@@ -37,7 +37,7 @@ CREATE TABLE `document` (
   CONSTRAINT `buyer_id_fk` FOREIGN KEY (`buyer_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `offer_id_fk` FOREIGN KEY (`offer_id`) REFERENCES `offer` (`offer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `seller_id_fk` FOREIGN KEY (`seller_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -49,4 +49,4 @@ CREATE TABLE `document` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-05-03  3:47:05
+-- Dump completed on 2017-05-12  4:19:23

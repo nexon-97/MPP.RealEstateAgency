@@ -29,7 +29,8 @@ CREATE TABLE `deal` (
   `realtor_id` int(11) DEFAULT NULL,
   `broker_id` int(11) DEFAULT NULL,
   `validated` tinyint(1) NOT NULL,
-  PRIMARY KEY (`deal_id`)
+  PRIMARY KEY (`deal_id`),
+  UNIQUE KEY `offer_id_UNIQUE` (`offer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -42,4 +43,4 @@ CREATE TABLE `deal` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-05-03  3:47:05
+-- Dump completed on 2017-05-12  4:19:23

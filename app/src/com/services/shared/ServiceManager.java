@@ -1,6 +1,7 @@
 package com.services.shared;
 
 import com.services.*;
+import com.services.impl.*;
 import org.springframework.context.ApplicationContext;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +29,7 @@ public class ServiceManager {
         servicesMap.put(ServiceId.OfferService, new OfferServiceImpl(sharedResources));
         servicesMap.put(ServiceId.TransactionService, new TransactionServiceImpl(sharedResources));
         servicesMap.put(ServiceId.DealService, new DealServiceImpl(sharedResources));
+        servicesMap.put(ServiceId.DealRequestService, new DealRequestServiceImpl(sharedResources));
     }
 
     public BaseService getServiceById(ServiceId id) {
@@ -64,6 +66,10 @@ public class ServiceManager {
 
     public DealService getDealService() {
         return (DealService) getServiceById(ServiceId.DealService);
+    }
+
+    public DealRequestService getDealRequestService() {
+        return (DealRequestService) getServiceById(ServiceId.DealRequestService);
     }
 
     public ServiceSharedResources getSharedResources() {

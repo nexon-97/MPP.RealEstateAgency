@@ -7,4 +7,5 @@ public interface PermissionService {
     boolean canDeleteOffer(User user, Offer offer);
     boolean canAddOffers(User user);
     boolean canDeleteProperty(User user, Property property);
+    boolean canEditUserInfo(User user);
 }

@@ -1,20 +1,12 @@
 package com.model;
 
-public class Deal {
-    private int id;
+public class Deal extends Entity {
+
     private Offer offer;
     private User buyer;
     private User realtor;
     private User broker;
     private boolean validated;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public Offer getOffer() {
         return offer;

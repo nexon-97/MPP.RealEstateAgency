@@ -15,15 +15,15 @@
             <div id="members-container" style="padding-left: 30px">
                 <h2>Администраторы</h2>
                 <c:forEach var="admin" items="${adminsList}">
-                    <div><a href="/user?id=${admin.id}">${admin.surname} ${admin.name} ${admin.patronymic}</a></div>
+                    <div><a href="${pageContext.request.contextPath}/user?id=${admin.id}">${admin.surname} ${admin.name} ${admin.patronymic}</a></div>
                 </c:forEach>
                 <h2>Риэлторы</h2>
                 <c:forEach var="realtor" items="${realtorsList}">
-                    <div><a href="/user?id=${realtor.id}">${realtor.surname} ${realtor.name} ${realtor.patronymic}</a></div>
+                    <div><a href="${pageContext.request.contextPath}/user?id=${realtor.id}">${realtor.surname} ${realtor.name} ${realtor.patronymic}</a></div>
                 </c:forEach>
                 <h2>Брокеры</h2>
                 <c:forEach var="broker" items="${brokersList}">
-                    <div><a href="/user?id=${broker.id}">${broker.surname} ${broker.name} ${broker.patronymic}</a></div>
+                    <div><a href="${pageContext.request.contextPath}/user?id=${broker.id}">${broker.surname} ${broker.name} ${broker.patronymic}</a></div>
                 </c:forEach>
             </div>
         </div>

@@ -7,7 +7,9 @@ import org.hibernate.SessionFactory;
 import org.springframework.context.ApplicationContext;
 
 public class BaseDAO {
+
     private SessionFactory sessionFactory;
+    private Session session;
 
     public BaseDAO() {
         ApplicationContext context = ServiceManager.getInstance().getSharedResources().getApplicationContext();
@@ -18,12 +20,24 @@ public class BaseDAO {
         return sessionFactory;
     }
 
-    protected Session openSession() {
-        try {
-            Session session = getSessionFactory().openSession();
-            return session;
-        } catch (HibernateException e) {
-            return null;
+    protected Session getSession() {
+        if (this.session != null) {
+            return this.session;
+        } else {
+            try {
+                this.session = getSessionFactory().openSession();
+            } catch (HibernateException e) {
+                return null;
+            }
+        }
+
+        return this.session;
+    }
+
+    protected void closeSession() {
+        if (this.session != null) {
+            this.session.close();
+            this.session = null;
         }
     }
 }

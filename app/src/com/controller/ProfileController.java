@@ -1,6 +1,7 @@
 package com.controller;
 
 import com.model.*;
+import com.services.DealRequestService;
 import com.services.DealService;
 import com.services.shared.ServiceManager;
 import com.utils.request.validator.*;
@@ -26,17 +27,21 @@ public class ProfileController extends BaseController {
         if (loggedUser != null) {
             List<Property> userProperties = serviceManager.getPropertyService().getPropertiesOwnedByUser(loggedUser);
             List<Offer> userOffers = serviceManager.getOfferService().getUserOffers(loggedUser);
-            model.put("profileOwner", loggedUser);
-            model.put("ownProfile", true);
             model.put("userProperties", userProperties);
             model.put("userOffers", userOffers);
 
+            DealRequestService dealRequestService = serviceManager.getDealRequestService();
             DealService dealService = serviceManager.getDealService();
             if (loggedUser.getRoleId().equals(RoleId.Rieltor)) {
-                List<DealRequest> uncommitedRequests = dealService.listUncommittedRealtorRequests(loggedUser);
+                List<DealRequest> uncommitedRequests = dealRequestService.listUncommittedRealtorRequests(loggedUser);
                 model.put("uncommittedRealtorRequests", uncommitedRequests);
+            } else if (loggedUser.getRoleId().equals(RoleId.Broker)) {
+                List<Deal> unsignedDeals = dealService.listUnsignedDeals();
+                List<Deal> dealHistory = dealService.listBrokerDeals(loggedUser);
+                model.put("unsignedDeals", unsignedDeals);
+                model.put("dealHistory", dealHistory);
             } else if (loggedUser.getRoleId().equals(RoleId.User)) {
-                List<DealRequest> uncommitedRequests = dealService.listUncommittedSellerRequests(loggedUser);
+                List<DealRequest> uncommitedRequests = dealRequestService.listUncommittedSellerRequests(loggedUser);
                 model.put("uncommittedRealtorRequests", uncommitedRequests);
             }
 
@@ -53,27 +58,32 @@ public class ProfileController extends BaseController {
         if (ServiceManager.getInstance().getAuthService().isUserLoggedIn())
         {
             return buildModelAndView("edit_profile");
+        } else {
+            return showUnauthorizedMessageView();
         }
-
-        return showUnauthorizedMessageView();
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/profileEdit")
     public ModelAndView commitProfileEditionPage(HttpServletResponse response) {
         initControllerResources(response);
-        RequestValidationChain requestValidationChain = buildProfileEditDataValidator();
 
-        if (requestValidationChain.validate()){
-            User updatedUser = refreshUserData(requestValidationChain.getValidatedValues());
-            ServiceManager.getInstance().getUserService().updateUser(updatedUser);
-        } else {
-            ServiceManager.getInstance().getSharedResources().getModel().put("msg", "Broken profile edition request");
-            return buildModelAndView("../error_message");
+        if (!ServiceManager.getInstance().getAuthService().isUserLoggedIn()) {
+            return showUnauthorizedMessageView();
         }
 
-        return redirect("/profile");
-    }
+        RequestValidationChain requestValidationChain = buildProfileEditDataValidator();
+        if (requestValidationChain.validate()){
+            User updatedUser = refreshUserData(requestValidationChain.getValidatedValues());
+            boolean updateSuccess = ServiceManager.getInstance().getUserService().updateUser(updatedUser);
 
+            if (updateSuccess) {
+                return redirect("/profile");
+            }
+        }
+
+        putErrorMessagesMap(requestValidationChain.getErrorMessageMap());
+        return buildModelAndView(HttpServletResponse.SC_BAD_REQUEST, "edit_profile");
+    }
 
     private RequestValidationChain buildProfileEditDataValidator(){
         return new RequestValidationChain()
@@ -97,5 +107,10 @@ public class ProfileController extends BaseController {
             loggedUser.setInfo(((String)dataMap.get("info")).length() > 0 ? (String)dataMap.get("info") : null);
         }
         return loggedUser;
+    }
+
+    private void putErrorMessagesMap(Map<String, String> errorMessagesMap) {
+        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
+        model.put("errors", errorMessagesMap);
     }
 }

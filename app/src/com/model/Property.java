@@ -1,7 +1,7 @@
 package com.model;
 
-public class Property {
-    private int id;
+public class Property extends Entity {
+
     private PropertyType type;
     private User owner;
     private String city;
@@ -20,10 +20,6 @@ public class Property {
     private boolean hasFridge;
     private boolean hasStove;
     private String description;
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public void setType(PropertyType type) {
         this.type = type;
@@ -93,10 +89,6 @@ public class Property {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Integer getId() {
-        return this.id;
     }
 
     public PropertyType getType() {

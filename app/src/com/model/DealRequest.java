@@ -1,18 +1,13 @@
 package com.model;
 
-public class DealRequest {
+public class DealRequest extends Entity {
 
-    private int id;
     private Offer offer;
     private User buyer;
     private User realtor;
     private boolean sellerValidation;
     private boolean buyerValidation;
     private Boolean realtorValidation;
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public void setOffer(Offer offer) {
         this.offer = offer;
@@ -36,10 +31,6 @@ public class DealRequest {
 
     public void setRealtorValidation(Boolean realtorValidation) {
         this.realtorValidation = realtorValidation;
-    }
-
-    public int getId() {
-        return this.id;
     }
 
     public Offer getOffer() {

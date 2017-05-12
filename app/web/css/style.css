@@ -732,6 +732,15 @@ footer
     font-weight: bold;
 }
 
+.deal-seller-confirm-button
+{
+    background-color: #d32f08;
+    font-size: 16px;
+    color: white;
+    padding: 4px 8px;
+    font-weight: bold;
+}
+
 .restore-pass-btn
 {
     background-color: #a3b3ff;

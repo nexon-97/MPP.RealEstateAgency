@@ -3,18 +3,14 @@ package com.model;
 
 import java.util.Date;
 
-public class Document {
-    private int id;
+public class Document extends Entity {
+
     private int documentType;
     private User buyer;
     private User seller;
     private Offer offer;
     private Date confirmDate;
     private Date graduationDate;
-
-    public int getId() {
-        return id;
-    }
 
     public int getDocumentType() {
         return documentType;
@@ -38,10 +34,6 @@ public class Document {
 
     public Date getConfirmDate() {
         return confirmDate;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public void setDocumentType(int documentType) {

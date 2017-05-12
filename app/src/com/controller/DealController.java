@@ -1,10 +1,11 @@
 package com.controller;
 
 import com.dao.DealDAO;
-import com.dao.DealDAOImpl;
+import com.dao.impl.DealDAOImpl;
 import com.helper.SystemMessages;
 import com.model.*;
-import com.services.AuthService;
+import com.services.DealRequestService;
+import com.services.DealService;
 import com.services.UserService;
 import com.services.shared.ServiceManager;
 import com.utils.request.ParseUtils;
@@ -19,23 +20,6 @@ import java.util.Map;
 
 @Controller
 public class DealController extends BaseController {
-
-    @RequestMapping(method = RequestMethod.GET, value = "/deals")
-    public ModelAndView showAllDeals(HttpServletResponse response) {
-        initControllerResources(response);
-        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
-
-        if (!hasAdminRights()) {
-            model.put("msg", "Нужны права администратора для просмотра этой страницы!");
-            return buildModelAndView("../error_message");
-        }
-
-        DealDAO dao = new DealDAOImpl();
-        List<Deal> deals = dao.list();
-        model.put("deals", deals);
-
-        return buildModelAndView("deals_view");
-    }
 
     @RequestMapping(method = RequestMethod.GET, value = "/deal")
     public ModelAndView showDeal(HttpServletResponse response) {
@@ -55,7 +39,7 @@ public class DealController extends BaseController {
         }
 
         DealDAO dao = new DealDAOImpl();
-        Deal deal = dao.getDealById(dealId);
+        Deal deal = dao.get(dealId);
         if (deal != null) {
             model.put("deal", deal);
         } else {
@@ -71,30 +55,33 @@ public class DealController extends BaseController {
         initControllerResources(response);
 
         ServiceManager serviceManager = ServiceManager.getInstance();
-        if (serviceManager.getAuthService().isUserLoggedIn()) {
+        User loggedUser = serviceManager.getAuthService().getLoggedUser();
+        if (loggedUser != null) {
             Integer offerId = getIdFromRequest();
             Integer buyerId = getBuyerIdFromRequest();
 
             if (offerId == null || buyerId == null) {
-                return showErrorMessage("Отклик на предложение поврежден!");
+                return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, "Отклик на предложение поврежден!");
             }
 
             Offer offer = serviceManager.getOfferService().getOfferById(offerId);
             if (offer == null) {
-                return showErrorMessage(SystemMessages.NoSuchOfferMessage);
+                return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, SystemMessages.NoSuchOfferMessage);
             }
 
             User buyer = serviceManager.getUserService().getUserByID(buyerId);
             if (buyer == null) {
-                return showErrorMessage(SystemMessages.InvalidDealRequestBuyerAssigned);
+                return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, SystemMessages.InvalidDealRequestBuyerAssigned);
+            } else if (!loggedUser.equals(buyer)) {
+                return showErrorMessage(HttpServletResponse.SC_FORBIDDEN, "Вы не можете откликаться на предложение от имени другого пользователя!");
             }
 
             DealRequest dealRequest = new DealRequest();
             dealRequest.setOffer(offer);
             dealRequest.setBuyer(buyer);
 
-            if (serviceManager.getDealService().isDealRequestRegistered(dealRequest)) {
-                return showErrorMessage(SystemMessages.SuchDealRequestAlreadyRegistered);
+            if (serviceManager.getDealRequestService().isAlreadyRegistered(dealRequest)) {
+                return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, SystemMessages.SuchDealRequestAlreadyRegistered);
             }
 
             // Add optional realtor
@@ -113,13 +100,13 @@ public class DealController extends BaseController {
             } else if (realtorId != 0) {
                 boolean realtorAdded = addDealRequestRealtor(dealRequest);
                 if (!realtorAdded) {
-                    return showErrorMessage(SystemMessages.FailedToAddRealtorToDealRequest);
+                    return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, SystemMessages.FailedToAddRealtorToDealRequest);
                 }
             }
 
-            boolean requestAdded = serviceManager.getDealService().addDealRequest(dealRequest);
+            boolean requestAdded = serviceManager.getDealRequestService().add(dealRequest);
             if (!requestAdded) {
-                return showErrorMessage(SystemMessages.FailedToAddDealRequest);
+                return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, SystemMessages.FailedToAddDealRequest);
             } else {
                 return showSuccessMessage(SystemMessages.DealRequestHasBeenRegistered);
             }
@@ -139,22 +126,23 @@ public class DealController extends BaseController {
             Integer realtorId = getRealtorIdFromRequest();
 
             if (requestId != null && realtorId != null) {
-                DealRequest request = serviceManager.getDealService().getDealRequestById(requestId);
+                DealRequestService dealRequestService = serviceManager.getDealRequestService();
+                DealRequest request = dealRequestService.get(requestId);
 
                 if (request != null) {
                     if (!request.getRealtor().equals(loggedUser)) {
-                        return showErrorMessage("Вы не были помечены как риэлтор в этом отклике!");
+                        return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, "Вы не были помечены как риэлтор в этом отклике!");
                     }
 
                     request.setRealtorValidation(true);
-                    serviceManager.getDealService().updateDealRequest(request);
+                    dealRequestService.update(request);
 
                     return redirect("/profile");
                 } else {
-                    return showErrorMessage("Такого отклика не существует!");
+                    return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, "Такого отклика не существует!");
                 }
             } else {
-                return showErrorMessage("Не удалось изменить риэлтора в отклике на предложение!");
+                return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, "Не удалось изменить риэлтора в отклике на предложение!");
             }
         }
 
@@ -172,7 +160,8 @@ public class DealController extends BaseController {
             Integer sellerId = getSellerIdFromRequest();
 
             if (requestId != null && sellerId != null) {
-                DealRequest request = serviceManager.getDealService().getDealRequestById(requestId);
+                DealRequestService dealRequestService = serviceManager.getDealRequestService();
+                DealRequest request = dealRequestService.get(requestId);
 
                 if (request != null) {
                     if (!request.getOffer().getProperty().getOwner().equals(loggedUser)) {
@@ -180,7 +169,7 @@ public class DealController extends BaseController {
                     }
 
                     request.setSellerValidation(true);
-                    serviceManager.getDealService().updateDealRequest(request);
+                    dealRequestService.update(request);
 
                     return redirect("/profile");
                 } else {
@@ -192,6 +181,34 @@ public class DealController extends BaseController {
         }
 
         return showUnauthorizedMessageView();
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/confirmDealBroker")
+    public ModelAndView confirmDealBroker(HttpServletResponse response) {
+        initControllerResources(response);
+
+        User currentUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
+        if (!currentUser.getRoleId().equals(RoleId.Broker)) {
+            return showErrorMessage(SystemMessages.InsufficientRightsMessage);
+        }
+
+        Integer id = getIdFromRequest();
+        if (id != null) {
+            DealService dealService = ServiceManager.getInstance().getDealService();
+            Deal deal = dealService.get(id);
+
+            if (deal != null) {
+                if (dealService.signDeal(deal, currentUser)) {
+                    return redirectToReferer();
+                } else {
+                    return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, "Не удалось закрепить брокера за сделкой!");
+                }
+            } else {
+                return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, SystemMessages.NoSuchDealMessage);
+            }
+        } else {
+            return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, SystemMessages.NoDealIdProvidedMessage);
+        }
     }
 
     private boolean hasAdminRights() {

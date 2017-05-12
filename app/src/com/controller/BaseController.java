@@ -40,6 +40,11 @@ public class BaseController {
         return new ModelAndView(viewName, ServiceManager.getInstance().getSharedResources().getModel());
     }
 
+    protected ModelAndView buildModelAndView(int responseCode, String viewName) {
+        this.response.setStatus(responseCode);
+        return new ModelAndView(viewName, ServiceManager.getInstance().getSharedResources().getModel());
+    }
+
     protected ModelAndView redirect(String path) {
         return new ModelAndView("redirect:" + path);
     }

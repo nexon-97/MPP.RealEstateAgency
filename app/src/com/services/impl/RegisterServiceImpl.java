@@ -1,7 +1,7 @@
-package com.services;
+package com.services.impl;
 
 import com.dao.UserDAO;
-import com.dao.UserDAOImpl;
+import com.dao.impl.UserDAOImpl;
 
 import com.model.RoleId;
 import com.model.User;
@@ -9,6 +9,7 @@ import com.model.User;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import com.services.RegisterService;
 import com.services.shared.BaseService;
 import com.services.shared.ServiceId;
 import com.services.shared.ServiceSharedResources;

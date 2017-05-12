@@ -16,18 +16,21 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `permission`
+-- Table structure for table `deal_request`
 --
 
-DROP TABLE IF EXISTS `permission`;
+DROP TABLE IF EXISTS `deal_request`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `permission` (
-  `permission_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) NOT NULL,
-  PRIMARY KEY (`permission_id`),
-  UNIQUE KEY `permission_id_UNIQUE` (`permission_id`),
-  UNIQUE KEY `name_UNIQUE` (`name`)
+CREATE TABLE `deal_request` (
+  `request_id` int(11) NOT NULL AUTO_INCREMENT,
+  `offer_id` int(11) NOT NULL,
+  `buyer_id` int(11) NOT NULL,
+  `realtor_id` int(11) DEFAULT NULL,
+  `buyer_confirm` tinyint(1) NOT NULL,
+  `seller_confirm` tinyint(1) NOT NULL,
+  `realtor_confirm` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`request_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -40,4 +43,4 @@ CREATE TABLE `permission` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-05-03  3:47:05
+-- Dump completed on 2017-05-12  4:19:22

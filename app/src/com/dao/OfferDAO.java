@@ -6,15 +6,9 @@ import com.model.User;
 import com.utils.request.filter.FilterParameter;
 
 import java.util.List;
-import java.util.Map;
 
-public interface OfferDAO {
-    Offer getOfferById(int id);
-    boolean updateOffer(Offer offer);
-    boolean deleteOffer(Offer offer);
-    boolean addOffer(Offer offer);
+public interface OfferDAO extends CrudDAO<Offer> {
     List<Offer> listUserOffers(User user);
     List<Offer> listPropertyOffers(Property property);
-    List<Offer> list();
     List<Offer> filter(List<FilterParameter> filterParams);
 }

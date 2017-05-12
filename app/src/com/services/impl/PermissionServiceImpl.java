@@ -1,10 +1,12 @@
-package com.services;
+package com.services.impl;
 
 import com.model.*;
+import com.services.PermissionService;
 import com.services.shared.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class PermissionServiceImpl extends BaseService implements PermissionService {
@@ -45,6 +47,12 @@ public class PermissionServiceImpl extends BaseService implements PermissionServ
         }
 
         return false;
+    }
+
+    @Override
+    public boolean canEditUserInfo(User user) {
+        User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
+        return (loggedUser != null && user != null && loggedUser.equals(user));
     }
 
     private boolean isLoggedUserAdmin() {

@@ -1,32 +1,17 @@
 package com.model;
 
-public class User {
-    private int id;
+public class User extends Entity {
 
     private RoleId roleId;
-
     private String login;
-
     private String passwordHash;
-
     private String email;
-
     private String name;
-
     private String surname;
-
     private String patronymic;
-
     private String phone;
-
     private String info;
-
     private String restorePasswordKey;
-
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public void setRoleId(RoleId roleId) {
         this.roleId = roleId;
@@ -62,10 +47,6 @@ public class User {
 
     public void setInfo(String info) {
         this.info = info;
-    }
-
-    public int getId() {
-        return this.id;
     }
 
     public RoleId getRoleId() {

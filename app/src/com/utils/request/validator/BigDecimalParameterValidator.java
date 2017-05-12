@@ -10,10 +10,10 @@ import java.text.ParseException;
 
 public class BigDecimalParameterValidator implements RequestParameterValidator<BigDecimal>, RequestValueContainer<BigDecimal>  {
 
-    private String paramName;
-    private BigDecimal value;
+    protected String paramName;
+    protected BigDecimal value;
     protected String errorMessage;
-    private boolean isNullAllowed;
+    protected boolean isNullAllowed;
 
     public BigDecimalParameterValidator(String paramName, boolean isNullAllowed) {
         this.paramName = paramName;

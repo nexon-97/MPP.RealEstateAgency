@@ -1,11 +1,12 @@
-package com.services;
+package com.services.impl;
 
 import com.dao.PropertyDAO;
-import com.dao.PropertyDAOImpl;
+import com.dao.impl.PropertyDAOImpl;
 import com.model.Property;
 import com.model.User;
 import com.model.PropertyType;
 
+import com.services.PropertyService;
 import com.services.shared.BaseService;
 import com.services.shared.ServiceId;
 import com.services.shared.ServiceManager;

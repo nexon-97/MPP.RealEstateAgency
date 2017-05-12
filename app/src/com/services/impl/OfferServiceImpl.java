@@ -1,11 +1,12 @@
-package com.services;
+package com.services.impl;
 
 import com.dao.OfferDAO;
-import com.dao.OfferDAOImpl;
+import com.dao.impl.OfferDAOImpl;
 import com.helper.SystemMessages;
 import com.model.Offer;
 import com.model.Property;
 import com.model.User;
+import com.services.OfferService;
 import com.services.shared.*;
 import com.utils.request.filter.FilterParameter;
 
@@ -38,7 +39,7 @@ public class OfferServiceImpl extends BaseService implements OfferService {
     public Offer getOfferById(int id) {
         OfferDAO offerDAO = new OfferDAOImpl();
 
-        return offerDAO.getOfferById(id);
+        return offerDAO.get(id);
     }
 
     @Override
@@ -48,7 +49,7 @@ public class OfferServiceImpl extends BaseService implements OfferService {
 
             if (Objects.equals(loggedUser, offer.getProperty().getOwner())) {
                 OfferDAO offerDAO = new OfferDAOImpl();
-                return offerDAO.addOffer(offer);
+                return offerDAO.add(offer);
             } else {
                 setErrorInfo(HttpServletResponse.SC_FORBIDDEN, SystemMessages.UserIsNotOfferOwnerMessage);
             }
@@ -66,7 +67,7 @@ public class OfferServiceImpl extends BaseService implements OfferService {
 
         if (hasPermission) {
             OfferDAO offerDAO = new OfferDAOImpl();
-            return offerDAO.deleteOffer(offer);
+            return offerDAO.delete(offer);
         }
 
         return false;
@@ -79,7 +80,7 @@ public class OfferServiceImpl extends BaseService implements OfferService {
 
         if (hasPermission && isValid(offer)) {
             OfferDAO offerDAO = new OfferDAOImpl();
-            return offerDAO.updateOffer(offer);
+            return offerDAO.update(offer);
         }
 
         return false;

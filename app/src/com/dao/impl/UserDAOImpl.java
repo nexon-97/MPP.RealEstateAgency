@@ -1,5 +1,7 @@
-package com.dao;
+package com.dao.impl;
 
+import com.dao.BaseDAO;
+import com.dao.UserDAO;
 import com.model.RoleId;
 import com.model.User;
 import org.hibernate.*;
@@ -30,7 +32,7 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
 
     @Override
     public User getByLogin(String login) {
-        Session session = openSession();
+        Session session = getSession();
         User user = null;
         try {
             Transaction tx = session.beginTransaction();
@@ -49,7 +51,7 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
 
     @Override
     public List<User> getUsersByRole(RoleId roleId) {
-        Session session = openSession();
+        Session session = getSession();
         try {
             Transaction tx = session.beginTransaction();
             Criteria roleCriteria = session.createCriteria(User.class)
@@ -88,7 +90,7 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
 
     @Override
     public boolean update(User user) {
-        Session session = openSession();
+        Session session = getSession();
 
         if (session != null) {
             try {
@@ -110,7 +112,7 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
     }
 
     public List<User> getSeveralUsers(int from, int count){
-        Session session = openSession();
+        Session session = getSession();
         List<User> users = null;
 
         try {
@@ -134,7 +136,7 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
 
     @Override
     public List<User> list() {
-        Session session = openSession();
+        Session session = getSession();
         try {
             Transaction tx = session.beginTransaction();
             List<User> users = session.createCriteria(User.class).list();

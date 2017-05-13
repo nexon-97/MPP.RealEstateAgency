@@ -59,7 +59,4 @@ public class Document extends Entity {
     public void setConfirmDate(Date confirmDate) {
         this.confirmDate = confirmDate;
     }
-
-
-
 }

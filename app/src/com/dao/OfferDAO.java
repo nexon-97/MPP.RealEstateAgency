@@ -11,4 +11,5 @@ public interface OfferDAO extends CrudDAO<Offer> {
     List<Offer> listUserOffers(User user);
     List<Offer> listPropertyOffers(Property property);
     List<Offer> filter(List<FilterParameter> filterParams);
+    List<Offer> listActual();
 }

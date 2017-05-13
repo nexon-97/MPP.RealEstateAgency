@@ -168,4 +168,9 @@ public class Property extends Entity {
         Property obj2 = (Property)obj;
         return ((this.id == obj2.getId()));
     }
+
+    @Override
+    public boolean isOwner(User user) {
+        return getOwner().equals(user);
+    }
 }

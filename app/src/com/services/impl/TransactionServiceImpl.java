@@ -5,6 +5,7 @@ import com.dao.TransactionDAO;
 import com.dao.impl.TransactionDAOImpl;
 import com.model.User;
 import com.services.TransactionService;
+import com.services.shared.AbstractCrudService;
 import com.services.shared.BaseService;
 import com.services.shared.ServiceId;
 import com.services.shared.ServiceSharedResources;
@@ -15,33 +16,10 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
-public class TransactionServiceImpl extends BaseService implements TransactionService {
-    public TransactionServiceImpl(ServiceSharedResources sharedResources) { super(ServiceId.TransactionService, sharedResources); }
+public class TransactionServiceImpl extends AbstractCrudService<Transaction> implements TransactionService {
 
-    @Override
-    public boolean addTransaction(User buyer, User seller, BigDecimal companyFine, BigDecimal payment) {
-        TransactionDAO transactionDAO = new TransactionDAOImpl();
-        Transaction transaction = new Transaction();
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
-        long now = calendar.getTimeInMillis();
-
-        Timestamp date = new Timestamp(now);
-
-        transaction.setBuyer(buyer);
-        transaction.setSeller(seller);
-        transaction.setCompanyFine(companyFine);
-        transaction.setPayment(payment);
-        transaction.setDate(date);
-
-        return transactionDAO.addTransaction(transaction);
-    }
-
-    @Override
-    public Transaction getTransactionById(int id){
-        TransactionDAO transactionDAO = new TransactionDAOImpl();
-        return transactionDAO.getById(id);
+    public TransactionServiceImpl(ServiceSharedResources sharedResources) {
+        super(ServiceId.TransactionService, sharedResources, Transaction.class);
     }
 
     @Override
@@ -54,11 +32,5 @@ public class TransactionServiceImpl extends BaseService implements TransactionSe
     public List<Transaction> getOutgoingTransactions(User user){
         TransactionDAO transactionDAO = new TransactionDAOImpl();
         return transactionDAO.getOutgoingList(user);
-    }
-
-    @Override
-    public List<Transaction> getTransactionsList(){
-        TransactionDAO transactionDAO = new TransactionDAOImpl();
-        return transactionDAO.list();
     }
 }

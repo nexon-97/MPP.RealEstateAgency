@@ -5,12 +5,8 @@ import com.model.User;
 
 import java.util.List;
 
-public interface UserDAO {
-    User getById(int id);
+public interface UserDAO extends CrudDAO<User> {
     User getByLogin(String login);
     List<User> getUsersByRole(RoleId roleId);
-    boolean save(User user);
-    boolean update(User user);
-    List<User> getSeveralUsers(int from, int count);
-    List<User> list();
+    List<User> getUsersRange(int from, int count);
 }

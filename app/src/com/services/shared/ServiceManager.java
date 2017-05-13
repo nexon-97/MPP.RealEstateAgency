@@ -1,5 +1,6 @@
 package com.services.shared;
 
+import com.model.*;
 import com.services.*;
 import com.services.impl.*;
 import org.springframework.context.ApplicationContext;
@@ -14,10 +15,12 @@ public class ServiceManager {
 
     private ServiceSharedResources sharedResources;
     private Map<ServiceId, BaseService> servicesMap;
+    private Map<Class<? extends Entity>, CrudService> crudServicesMap;
 
     protected ServiceManager(ApplicationContext context, HttpServletRequest request, HttpServletResponse response) {
         sharedResources = new ServiceSharedResourcesImpl(context, request, response);
         servicesMap = new HashMap<>();
+        crudServicesMap = new HashMap<>();
     }
 
     private void init() {
@@ -30,6 +33,15 @@ public class ServiceManager {
         servicesMap.put(ServiceId.TransactionService, new TransactionServiceImpl(sharedResources));
         servicesMap.put(ServiceId.DealService, new DealServiceImpl(sharedResources));
         servicesMap.put(ServiceId.DealRequestService, new DealRequestServiceImpl(sharedResources));
+        servicesMap.put(ServiceId.DocumentService, new DocumentServiceImpl(sharedResources));
+
+        crudServicesMap.put(Property.class, getPropertyService());
+        crudServicesMap.put(User.class, getUserService());
+        crudServicesMap.put(Offer.class, getOfferService());
+        crudServicesMap.put(Transaction.class, getTransactionService());
+        crudServicesMap.put(Deal.class, getDealService());
+        crudServicesMap.put(DealRequest.class, getDealRequestService());
+        crudServicesMap.put(Document.class, getDocumentService());
     }
 
     public BaseService getServiceById(ServiceId id) {
@@ -72,8 +84,16 @@ public class ServiceManager {
         return (DealRequestService) getServiceById(ServiceId.DealRequestService);
     }
 
+    public DocumentService getDocumentService() {
+        return (DocumentService) getServiceById(ServiceId.DocumentService);
+    }
+
     public ServiceSharedResources getSharedResources() {
         return sharedResources;
+    }
+
+    public <E extends Entity> CrudService<E> getCrudService(Class<E> metaclass) {
+        return crudServicesMap.getOrDefault(metaclass, null);
     }
 
     public static ServiceManager build(ApplicationContext context, HttpServletRequest request, HttpServletResponse response) {

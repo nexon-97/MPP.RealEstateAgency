@@ -14,21 +14,21 @@ public class CostParameterValidator extends BigDecimalParameterValidator {
 
     @Override
     public boolean validate() {
-        String value = ServiceManager.getInstance().getSharedResources().getRequest().getParameter(this.paramName);
-        Pattern pattern = Pattern.compile("\\d+(\\.\\d{1,2})?");
-        boolean match = pattern.matcher(value).matches();
+        if (super.validate()) {
+            String value = ServiceManager.getInstance().getSharedResources().getRequest().getParameter(this.paramName);
+            Pattern pattern = Pattern.compile("\\d+(\\.\\d{1,2})?");
 
-        if (match) {
-            if (super.validate()) {
+            if (value != null && pattern.matcher(value).matches()) {
                 if (!(getValue().compareTo(new BigDecimal(0.01)) > 0)) {
-                    this.errorMessage = "Цена не должна быть меньше 0 $!";
+                    this.errorMessage = "Нельзя совершать бесплатные сделки!";
                     return false;
                 }
-
-                return true;
+            } else {
+                this.errorMessage = "Значение не соответствует формату XXX.XX";
+                return false;
             }
-        } else {
-            this.errorMessage = "Значение не соответствует формату XXX.XX";
+
+            return true;
         }
 
         return false;

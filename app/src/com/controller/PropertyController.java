@@ -19,7 +19,7 @@ public class PropertyController extends BaseController  {
 
     @RequestMapping(method = RequestMethod.GET, value = "/property")
     public ModelAndView showPropertyInfo(HttpServletResponse response) {
-        initControllerResources(response);
+        initResources(response);
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
 
         // Retrieve property id from request
@@ -33,21 +33,15 @@ public class PropertyController extends BaseController  {
 
         // Load property
         PropertyService propertyService = ServiceManager.getInstance().getPropertyService();
-        Property property = propertyService.getPropertyById(propertyId);
+        Property property = propertyService.get(propertyId);
 
-        if (property == null) {
-            model.put("msg", "Can't find requested property!");
-            return buildModelAndView("../error_message");
-        } else {
-            model.put("property", property);
-        }
-
+        model.put("property", property);
         return buildModelAndView("property");
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/addProperty")
     public ModelAndView visitAddPropertyForm(HttpServletResponse response) {
-        initControllerResources(response);
+        initResources(response);
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
 
         if (ServiceManager.getInstance().getAuthService().getLoggedUser() != null) {
@@ -63,7 +57,7 @@ public class PropertyController extends BaseController  {
 
     @RequestMapping(method = RequestMethod.POST, value = "/addProperty")
     public ModelAndView register(HttpServletResponse response) {
-        initControllerResources(response);
+        initResources(response);
 
         if (!ServiceManager.getInstance().getAuthService().isUserLoggedIn()) {
             return showUnauthorizedMessageView();
@@ -71,7 +65,7 @@ public class PropertyController extends BaseController  {
             RequestValidationChain requestValidator = buildPropertyValidationChain();
             if (requestValidator.validate()){
                 PropertyService propertyService = ServiceManager.getInstance().getPropertyService();
-                boolean isAdded = propertyService.addProperty(requestValidator);
+                boolean isAdded = propertyService.add(requestValidator);
                 if (isAdded) {
                     return redirect("/profile");
                 } else {
@@ -85,24 +79,18 @@ public class PropertyController extends BaseController  {
 
     @RequestMapping(method = RequestMethod.GET, value = "/deleteProperty")
     public ModelAndView deleteOfferAction(HttpServletResponse response) {
-        initControllerResources(response);
+        initResources(response);
 
         Integer propertyId = getIdFromRequest();
         if (propertyId != null) {
-            PropertyService propertyService = ServiceManager.getInstance().getPropertyService();
-            Property property = propertyService.getPropertyById(propertyId);
+                PropertyService propertyService = ServiceManager.getInstance().getPropertyService();
+                Property property = propertyService.get(propertyId);
+                propertyService.delete(property);
 
-            if (property != null) {
-                boolean deletionSuccess = propertyService.deleteProperty(property);
-                if (deletionSuccess) {
-                    return redirect("/profile");
-                } else {
-                    return showErrorMessage(SystemMessages.FailedToDeletePropertyMessage);
-                }
-            }
+                return redirect("/profile");
         }
 
-        return showErrorMessage(SystemMessages.NoSuchProperyMessage);
+        return showErrorMessage(SystemMessages.NoSuchPropertyMessage);
     }
 
     private RequestValidationChain buildPropertyValidationChain() {

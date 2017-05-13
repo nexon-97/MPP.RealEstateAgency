@@ -80,10 +80,21 @@ public class OfferDAOImpl extends AbstractCrudDAO<Offer> implements OfferDAO {
         return null;
     }
 
+    @Override
+    public List<Offer> listActual() {
+        Session session = getSession();
+        if (session != null) {
+            Criteria criteria = session.createCriteria(Offer.class)
+                    .add(Restrictions.eq("outdated", false));
+
+            return filter(criteria);
+        }
+
+        return null;
+    }
+
     private String constructFilterQuery(List<FilterParameter> filterParams) {
-        String o = classNames.get(Offer.class);
-        String p = classNames.get(Property.class);
-        String query = String.format("SELECT {%s.*}, {%s.*} FROM Offer %s JOIN Property %s ON %s.property_id = %s.property_id", o, p, o, p, o, p);
+        String query = String.format("SELECT {o.*}, {p.*} FROM Offer o JOIN Property p ON o.property_id = p.property_id");
 
         boolean isFirst = true;
         for (FilterParameter param : filterParams) {

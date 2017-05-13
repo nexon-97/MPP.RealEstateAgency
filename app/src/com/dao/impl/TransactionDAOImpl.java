@@ -1,108 +1,45 @@
 package com.dao.impl;
 
-import com.dao.BaseDAO;
+import com.dao.AbstractCrudDAO;
 import com.dao.TransactionDAO;
 import com.model.Transaction;
 import com.model.User;
 import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
 
-public class TransactionDAOImpl extends BaseDAO implements TransactionDAO {
-    @Override
-    public Transaction getById(int id) {
-        Session session = getSessionFactory().openSession();
-        session.beginTransaction();
+public class TransactionDAOImpl extends AbstractCrudDAO<Transaction> implements TransactionDAO {
 
-        Transaction transaction = (Transaction) session.get(Transaction.class, id);
-
-        session.getTransaction().commit();
-        session.close();
-
-        return transaction;
+    public TransactionDAOImpl() {
+        super(Transaction.class);
     }
 
     @Override
     public List<Transaction> getIncomingList(User user) {
         Session session = getSession();
-        List<Transaction> transactions = null;
+        if (session != null) {
+            Criteria criteria = session.createCriteria(Transaction.class)
+                    .add(Restrictions.eq("seller", user));
 
-        try {
-            org.hibernate.Transaction tx = session.beginTransaction();
-
-            Criteria criteria = session.createCriteria(Transaction.class);
-            criteria.add(Restrictions.eq("seller", user));
-            transactions = (List<Transaction>)criteria.list();
-
-            tx.commit();
-        } catch (HibernateException e) {
-            e.printStackTrace();
-        } finally {
-            session.close();
+            return super.filter(criteria);
         }
 
-        return transactions;
+        return null;
     }
 
     @Override
     public List<Transaction> getOutgoingList(User user) {
         Session session = getSession();
-        List<Transaction> transactions = null;
-
-        try {
-            org.hibernate.Transaction tx = session.beginTransaction();
-
-            Criteria criteria = session.createCriteria(Transaction.class);
-            criteria.add(Restrictions.eq("buyer", user));
-            transactions = (List<Transaction>)criteria.list();
-
-            tx.commit();
-        } catch (HibernateException e) {
-            e.printStackTrace();
-        } finally {
-            session.close();
-        }
-
-        return transactions;
-    }
-
-    @Override
-    public boolean addTransaction(Transaction transaction) {
-        Session session = getSession();
         if (session != null) {
-            try {
-                org.hibernate.Transaction tx = session.beginTransaction();
-                session.save(transaction);
-                tx.commit();
-            } catch (HibernateException e) {
-                e.printStackTrace();
-                return false;
-            } finally {
-                session.close();
-            }
-        }
-        return true;
-    }
+            Criteria criteria = session.createCriteria(Transaction.class)
+                    .add(Restrictions.eq("buyer", user));
 
-    @Override
-    public List<Transaction> list() {
-        Session session = getSession();
-        List<Transaction> transactions = null;
+            return super.filter(criteria);
 
-        try {
-            org.hibernate.Transaction tx = session.beginTransaction();
-            transactions = (List<Transaction>) session.createQuery("FROM Transaction").list();
-            tx.commit();
-        } catch (HibernateException e) {
-            if (session.getTransaction() != null) session.getTransaction().rollback();
-            e.printStackTrace();
-        } finally {
-            session.close();
         }
 
-        return transactions;
+        return null;
     }
 }

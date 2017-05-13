@@ -3,14 +3,23 @@ package com.services.impl;
 import com.dao.DocumentDAO;
 import com.dao.impl.DocumentDAOImpl;
 import com.model.Document;
+import com.model.User;
 import com.services.DocumentService;
+import com.services.shared.AbstractCrudService;
+import com.services.shared.ServiceId;
+import com.services.shared.ServiceSharedResources;
 
-public class DocumentServiceImpl implements DocumentService {
+import java.util.List;
+
+public class DocumentServiceImpl extends AbstractCrudService<Document> implements DocumentService {
+
+    public DocumentServiceImpl(ServiceSharedResources sharedResources) {
+        super(ServiceId.DocumentService, sharedResources, Document.class);
+    }
 
     @Override
-    public boolean addDocument(Document document) {
+    public List<Document> listUserDocuments(User user) {
         DocumentDAO documentDAO = new DocumentDAOImpl();
-
-        return  documentDAO.addDocument(document);
+        return  documentDAO.listUserDocuments(user);
     }
 }

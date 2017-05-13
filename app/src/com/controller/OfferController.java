@@ -2,12 +2,13 @@ package com.controller;
 
 import com.helper.SystemMessages;
 import com.model.*;
+import com.permission.EntityOperation;
+import com.permission.Operation;
 import com.services.OfferService;
 import com.services.shared.ServiceManager;
-import com.utils.request.constructor.OfferConstructor;
 import com.utils.request.filter.FilterParameter;
 import com.utils.request.filter.OfferFilterParameters;
-import com.utils.request.validator.*;
+import com.utils.request.validator.IntegerParameterValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,176 +18,133 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 @Controller
-public class OfferController extends BaseController {
-
-    private RequestValidationChain offerValidationChain;
+public class OfferController extends AbstractCrudController<Offer> {
 
     public OfferController() {
-        this.offerValidationChain = buildOfferValidationChain();
+        super(Offer.class);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/offer")
+    @EntityOperation(type = Operation.Read)
     public ModelAndView showOffer(HttpServletResponse response) {
-        initControllerResources(response);
+        initResources(response);
 
-        Integer id = getIdFromRequest();
-        if (id != null) {
-            OfferService offerService = ServiceManager.getInstance().getOfferService();
-            Offer offer = offerService.getOfferById(id);
-
-            if (offer != null) {
-                Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
-                model.put("offer", offer);
-                return buildModelAndView("offer_view");
-            }
+        if (hasPermissionError()) {
+            return finalizeController(getResponseData());
         }
 
-        return showErrorMessage(HttpServletResponse.SC_NOT_FOUND, SystemMessages.NoSuchOfferMessage);
+        Offer offer = getService().get(getIdFromRequest());
+        if (offer != null) {
+            putModelItem("offer", offer);
+
+            return finalizeController("offer_view");
+        }
+
+        return showOfferNotFoundMessage();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/addOffer")
+    @EntityOperation(type = Operation.Create)
     public ModelAndView showAddOfferView(HttpServletResponse response) {
-        initControllerResources(response);
-        ServiceManager serviceManager = ServiceManager.getInstance();
+        initResources(response);
 
-        User loggedUser = serviceManager.getAuthService().getLoggedUser();
-        if (loggedUser != null) {
-            if (serviceManager.getPermissionService().canAddOffers(loggedUser)) {
-                addCurrentUserPropertiesModel();
-                List<Property> userProperties = (List<Property>) serviceManager.getSharedResources().getModel().get("userProperties");
-
-                if (userProperties.size() > 0) {
-                    addOfferTypeValuesModel();
-
-                    return buildModelAndView("add_offer_view");
-                } else {
-                    return showErrorMessage(SystemMessages.NoPropertyMessage);
-                }
-            } else {
-                return showErrorMessage(HttpServletResponse.SC_FORBIDDEN, "Вы не можете добавлять предложения!");
-            }
+        if (hasPermissionError()) {
+            return finalizeController(getResponseData());
         }
 
-        return showUnauthorizedMessageView();
+        fillOfferViewModel(null);
+
+        return finalizeController("add_offer_view");
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/addOffer")
+    @EntityOperation(type = Operation.Create)
     public ModelAndView addOfferAction(HttpServletResponse response) {
-        initControllerResources(response);
+        initResources(response);
 
-        User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
-        if (loggedUser == null) {
-            return showUnauthorizedMessageView();
-        } else if (loggedUser.getRoleId() != RoleId.User) {
-            return showErrorMessage(HttpServletResponse.SC_FORBIDDEN, "Вы не можете добавлять предложения!");
+        if (hasPermissionError()) {
+            return finalizeController(getResponseData());
         }
 
-        boolean offerValid = offerValidationChain.validate();
-        Offer offer = constructOfferFromRequest();
-        if (offerValid) {
-            OfferService offerService = ServiceManager.getInstance().getOfferService();
+        Offer offer = getEntity();
+        OfferService offerService = ServiceManager.getInstance().getOfferService();
+        if (offerService.add(offer)) {
+            return finalizeController(HttpServletResponse.SC_CREATED, "redirect:/profile");
+        } else {
+            fillOfferViewModel(offer);
 
-            if (offerService.addOffer(offer)) {
-                return redirect("/profile");
-            } else {
-                return showErrorMessage(offerService.getErrorCode(), offerService.getErrorMessage());
-            }
+            return finalizeController(offerService.getResponseData().getStatus(), "add_offer_view");
         }
-
-        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
-        model.put("errors", offerValidationChain.getErrorMessageMap());
-        model.put("offer", offer);
-        addOfferTypeValuesModel();
-        addCurrentUserPropertiesModel();
-
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        return buildModelAndView("/add_offer_view");
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/editOffer")
+    @EntityOperation(type = Operation.Update)
     public ModelAndView showEditOfferView(HttpServletResponse response) {
-        initControllerResources(response);
-        ServiceManager serviceManager = ServiceManager.getInstance();
+        initResources(response);
 
-        Integer offerId = getIdFromRequest();
-        if (offerId != null) {
-            Offer offer = serviceManager.getOfferService().getOfferById(offerId);
-
-            if (offer != null) {
-                User loggedUser = serviceManager.getAuthService().getLoggedUser();
-
-                if (serviceManager.getPermissionService().canEditOffer(loggedUser, offer)) {
-                    Map<String, Object> model = serviceManager.getSharedResources().getModel();
-                    model.put("offer", offer);
-                    addOfferTypeValuesModel();
-                    addCurrentUserPropertiesModel();
-
-                    return buildModelAndView("edit_offer_view");
-                } else {
-                    return showErrorMessage(HttpServletResponse.SC_FORBIDDEN, SystemMessages.EditOfferInsufficientRightsMessage);
-                }
-            }
+        if (hasPermissionError()) {
+            return finalizeController(getResponseData());
         }
 
-        return showErrorMessage(HttpServletResponse.SC_NOT_FOUND, SystemMessages.NoSuchOfferMessage);
+        Offer offer = ServiceManager.getInstance().getOfferService().get(getIdFromRequest());
+        if (offer != null) {
+            fillOfferViewModel(offer);
+
+            return buildModelAndView("edit_offer_view");
+        }
+
+        return showOfferNotFoundMessage();
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/editOffer")
+    @EntityOperation(type = Operation.Update)
     public ModelAndView editOfferAction(HttpServletResponse response) {
-        initControllerResources(response);
+        initResources(response);
 
-        boolean offerValid = offerValidationChain.validate();
-        Offer offer = constructOfferFromRequest();
-        if (offerValid) {
+        if (hasPermissionError()) {
+            return finalizeController(getResponseData());
+        }
+
+        Offer offer = getEntity();
+        if (offer != null) {
             OfferService offerService = ServiceManager.getInstance().getOfferService();
 
-            User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
-            if (ServiceManager.getInstance().getPermissionService().canEditOffer(loggedUser, offer)) {
-                if (offerService.updateOffer(offer)) {
-                    return redirect("/offer?id=" + String.valueOf(offer.getId()));
-                } else {
-                    return showErrorMessage(offerService.getErrorCode(), offerService.getErrorMessage());
-                }
+            if (offerService.update(offer)) {
+                return finalizeController("redirect:/offer?id=" + String.valueOf(offer.getId()));
             } else {
-                return showErrorMessage(HttpServletResponse.SC_FORBIDDEN, SystemMessages.UserIsNotOfferOwnerMessage);
+                fillOfferViewModel(offer);
+
+                return finalizeController(offerService.getResponseData().getStatus(), "edit_offer_view");
             }
         }
 
-        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
-        model.put("errors", offerValidationChain.getErrorMessageMap());
-        model.put("offer", offer);
-        addOfferTypeValuesModel();
-        addCurrentUserPropertiesModel();
-
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        return buildModelAndView("/edit_offer_view");
+        return showOfferNotFoundMessage();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/deleteOffer")
+    @EntityOperation(type = Operation.Delete)
     public ModelAndView deleteOfferAction(HttpServletResponse response) {
-        initControllerResources(response);
+        initResources(response);
 
-        Integer offerId = getIdFromRequest();
-        if (offerId != null) {
-            OfferService offerService = ServiceManager.getInstance().getOfferService();
-            Offer offer = offerService.getOfferById(offerId);
-
-            if (offer != null) {
-                boolean deletionSuccess = offerService.deleteOffer(offer);
-                if (deletionSuccess) {
+        Integer id = getIdFromRequest();
+        if (id != null) {
+            Offer offer = getService().get(id);
+            if (offer != null && getService().canDelete(offer)) {
+                if (getService().delete(offer)) {
                     return redirectToReferer();
-                } else {
-                    return showErrorMessage(SystemMessages.FailedToDeleteOfferMessage);
                 }
+            } else {
+                return finalizeController(getService().getResponseData());
             }
         }
 
-        return showErrorMessage(SystemMessages.NoSuchOfferMessage);
+        putModelItem("msg", "Не удалось удалить предложение!");
+        return finalizeController(HttpServletResponse.SC_BAD_REQUEST, getErrorMessageView());
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/offerFilter")
     public ModelAndView showOfferFilter(HttpServletResponse response) {
-        initControllerResources(response);
+        initResources(response);
 
         addOfferTypeValuesModel();
 
@@ -195,7 +153,7 @@ public class OfferController extends BaseController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/offerFilter")
     public ModelAndView filterOffers(HttpServletResponse response) {
-        initControllerResources(response);
+        initResources(response);
 
         OfferFilterParameters filterParameters = new OfferFilterParameters();
         boolean paramsValid = filterParameters.validate();
@@ -203,7 +161,7 @@ public class OfferController extends BaseController {
             List<FilterParameter> filterParams = filterParameters.construct();
 
             OfferService offerService = ServiceManager.getInstance().getOfferService();
-            List<Offer> filteredOffers = offerService.filterOffers(filterParams);
+            List<Offer> filteredOffers = offerService.filter(filterParams);
 
             Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
             model.put("offers", filteredOffers);
@@ -215,35 +173,24 @@ public class OfferController extends BaseController {
         return buildModelAndView("offer_filter");
     }
 
-    private RequestValidationChain buildOfferValidationChain() {
-        return new RequestValidationChain()
-            .addValidator(new CostParameterValidator("cost", false))
-            .addValidator(new PropertyParameterValidator("property", false))
-            .addValidator(new EnumParameterValidator<>(OfferType.class, "offerType", false));
-    }
-
-    private Offer constructOfferFromRequest() {
-        OfferConstructor constructor = new OfferConstructor();
-        Offer offer = constructor.construct(offerValidationChain.getValidatedValues());
-
-        Integer id = getIdFromRequest();
-        if (id != null) {
-            offer.setId(id);
-        }
-
-        return offer;
+    private void fillOfferViewModel(Offer offer) {
+        addOfferTypeValuesModel();
+        addCurrentUserPropertiesModel();
+        putModelItem("offer", offer);
     }
 
     private void addOfferTypeValuesModel() {
-        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
-        model.put("offerTypes", OfferType.values());
+        putModelItem("offerTypes", OfferType.values());
     }
 
     private void addCurrentUserPropertiesModel() {
         User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
-        List<Property> userProperties = ServiceManager.getInstance().getPropertyService().getPropertiesOwnedByUser(loggedUser);
+        List<Property> userProperties = ServiceManager.getInstance().getPropertyService().listUserOwnedProperties(loggedUser);
+        putModelItem("userProperties", userProperties);
+    }
 
-        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
-        model.put("userProperties", userProperties);
+    private ModelAndView showOfferNotFoundMessage() {
+        putModelItem("msg", "Предложение не найдено!");
+        return finalizeController(HttpServletResponse.SC_NOT_FOUND, getErrorMessageView());
     }
 }

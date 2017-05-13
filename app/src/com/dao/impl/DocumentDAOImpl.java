@@ -1,81 +1,20 @@
 package com.dao.impl;
-import com.dao.BaseDAO;
+
+import com.dao.AbstractCrudDAO;
 import com.dao.DocumentDAO;
 import com.model.Document;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import com.model.User;
 
-public class DocumentDAOImpl extends BaseDAO implements DocumentDAO {
-    @Override
-    public Document getDocumentByID(int id) {
-        Document document = null;
-        Session session = getSessionFactory().openSession();
-        if (session != null) {
-            try{
-                Transaction tx = session.beginTransaction();
-                document = (Document)session.get(Document.class, id);
-                tx.commit();
-            }
-            catch (HibernateException e){
-                e.printStackTrace();
-            }
-        }
-       return document;
+import java.util.List;
+
+public class DocumentDAOImpl extends AbstractCrudDAO<Document> implements DocumentDAO {
+
+    public DocumentDAOImpl() {
+        super(Document.class);
     }
 
     @Override
-    public boolean updateDocument(Document document) {
-        Session session = getSessionFactory().openSession();
-        if (session != null) {
-            try {
-                Transaction tx = session.beginTransaction();
-                session.update(document);
-                tx.commit();
-            } catch (HibernateException e) {
-                return false;
-            } finally {
-                session.close();
-            }
-        }
-        return true;
+    public List<Document> listUserDocuments(User user) {
+        return null;
     }
-
-    @Override
-    public boolean deleteDocument(Document document) {
-        Session session = getSessionFactory().openSession();
-        if (session != null) {
-            try {
-                Transaction tx = session.beginTransaction();
-                session.delete(document);
-                tx.commit();
-            }
-            catch (HibernateException e){
-                return false;
-            }
-            finally {
-                session.close();
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public boolean addDocument(Document document) {
-        Session session = getSessionFactory().openSession();
-        if (session != null) {
-            try {
-                Transaction tx = session.beginTransaction();
-                session.save(document);
-                tx.commit();
-            } catch (HibernateException e) {
-                System.out.println(e.getMessage());
-                return false;
-            } finally {
-                session.close();
-            }
-        }
-        return true;
-    }
-
 }

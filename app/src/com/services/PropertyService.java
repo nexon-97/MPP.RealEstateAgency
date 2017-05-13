@@ -5,13 +5,8 @@ import com.model.User;
 import com.utils.request.validator.RequestValidationChain;
 
 import java.util.List;
-import java.util.Map;
 
-public interface PropertyService {
-    Property getPropertyById(int id);
-    boolean addProperty(RequestValidationChain requestValidationChain);
-    boolean updateProperty(Map<String, String[]> params);
-    boolean deleteProperty(Property property);
-    List<Property> getPropertiesOwnedByUser(User user);
-    List<Property> getList();
+public interface PropertyService extends CrudService<Property> {
+    boolean add(RequestValidationChain requestValidationChain);
+    List<Property> listUserOwnedProperties(User owner);
 }

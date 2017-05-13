@@ -92,14 +92,9 @@ public class User extends Entity {
     public void setRestorePasswordKey(String restorePasswordKey) {
         this.restorePasswordKey = restorePasswordKey;
     }
-  
-    @Override
-    public boolean equals(Object other) {
-        if (other instanceof User) {
-            User otherUser = (User)other;
-            return otherUser.getId() == getId();
-        }
 
-        return false;
+    @Override
+    public boolean isOwner(User user) {
+        return this.equals(user);
     }
 }

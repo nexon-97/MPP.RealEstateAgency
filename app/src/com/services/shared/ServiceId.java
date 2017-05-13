@@ -10,4 +10,5 @@ public enum  ServiceId {
     TransactionService,
     DealService,
     DealRequestService,
+    DocumentService,
 }

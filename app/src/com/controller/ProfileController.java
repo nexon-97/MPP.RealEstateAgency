@@ -19,13 +19,13 @@ public class ProfileController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/profile")
     public ModelAndView showProfile(HttpServletResponse response) {
-        initControllerResources(response);
+        initResources(response);
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
         ServiceManager serviceManager = ServiceManager.getInstance();
 
         User loggedUser = serviceManager.getAuthService().getLoggedUser();
         if (loggedUser != null) {
-            List<Property> userProperties = serviceManager.getPropertyService().getPropertiesOwnedByUser(loggedUser);
+            List<Property> userProperties = serviceManager.getPropertyService().listUserOwnedProperties(loggedUser);
             List<Offer> userOffers = serviceManager.getOfferService().getUserOffers(loggedUser);
             model.put("userProperties", userProperties);
             model.put("userOffers", userOffers);
@@ -53,7 +53,7 @@ public class ProfileController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/profileEdit")
     public ModelAndView showProfileEditorPage(HttpServletResponse response) {
-        initControllerResources(response);
+        initResources(response);
 
         if (ServiceManager.getInstance().getAuthService().isUserLoggedIn())
         {
@@ -65,7 +65,7 @@ public class ProfileController extends BaseController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/profileEdit")
     public ModelAndView commitProfileEditionPage(HttpServletResponse response) {
-        initControllerResources(response);
+        initResources(response);
 
         if (!ServiceManager.getInstance().getAuthService().isUserLoggedIn()) {
             return showUnauthorizedMessageView();
@@ -74,11 +74,9 @@ public class ProfileController extends BaseController {
         RequestValidationChain requestValidationChain = buildProfileEditDataValidator();
         if (requestValidationChain.validate()){
             User updatedUser = refreshUserData(requestValidationChain.getValidatedValues());
-            boolean updateSuccess = ServiceManager.getInstance().getUserService().updateUser(updatedUser);
+                ServiceManager.getInstance().getUserService().update(updatedUser);
 
-            if (updateSuccess) {
-                return redirect("/profile");
-            }
+            return redirect("/profile");
         }
 
         putErrorMessagesMap(requestValidationChain.getErrorMessageMap());

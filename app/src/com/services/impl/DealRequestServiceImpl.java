@@ -29,15 +29,13 @@ public class DealRequestServiceImpl extends AbstractCrudService<DealRequest> imp
             deal.setRealtor(request.getRealtor());
 
             // Remove request from database
-            boolean deleteSucceeded = super.delete(request);
-            if (!deleteSucceeded) {
-                return false;
-            }
-
-            return ServiceManager.getInstance().getDealService().add(deal);
+            super.delete(request);
+            ServiceManager.getInstance().getDealService().add(deal);
         } else {
             return super.update(request);
         }
+
+        return true;
     }
 
     @Override

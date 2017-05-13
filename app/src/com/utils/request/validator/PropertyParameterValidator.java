@@ -5,10 +5,6 @@ import com.services.shared.ServiceManager;
 import com.utils.request.ParseUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.ParseException;
 
 public class PropertyParameterValidator implements RequestParameterValidator<Property>, RequestValueContainer<Property> {
 
@@ -36,7 +32,7 @@ public class PropertyParameterValidator implements RequestParameterValidator<Pro
 
         Integer id = ParseUtils.parseInteger(paramValue);
         if (id != null) {
-            this.value = ServiceManager.getInstance().getPropertyService().getPropertyById(id);
+            this.value = ServiceManager.getInstance().getPropertyService().get(id);
         }
 
         if (this.value == null) {

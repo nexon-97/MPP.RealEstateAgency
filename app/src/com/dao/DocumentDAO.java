@@ -1,11 +1,10 @@
 package com.dao;
 
 import com.model.Document;
+import com.model.User;
 
-public interface DocumentDAO {
-     Document getDocumentByID(int id);
-     boolean updateDocument(Document document);
-     boolean deleteDocument(Document document);
-     boolean addDocument(Document document);
+import java.util.List;
 
+public interface DocumentDAO extends CrudDAO<Document> {
+     List<Document> listUserDocuments(User user);
 }

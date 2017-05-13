@@ -8,14 +8,10 @@ import com.utils.request.filter.FilterParameter;
 
 import java.util.List;
 
-public interface OfferService extends ErrorRegistry {
+public interface OfferService extends CrudService<Offer> {
     List<Offer> getUserOffers(User user);
-    List<Offer> listAllOffers();
-    Offer getOfferById(int id);
-    boolean addOffer(Offer offer);
-    boolean deleteOffer(Offer offer);
-    boolean updateOffer(Offer offer);
-    List<Offer> filterOffers(List<FilterParameter> filterParameters);
+    List<Offer> filter(List<FilterParameter> filterParameters);
+    List<Offer> listActual();
     boolean isValid(Offer offer);
     boolean hasOfferOnProperty(Property property);
 }

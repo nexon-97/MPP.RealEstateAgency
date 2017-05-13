@@ -17,11 +17,11 @@ public class IndexController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/")
     public ModelAndView navigateToIndex(HttpServletResponse response) {
-        initControllerResources(response);
+        initResources(response);
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
 
         OfferService offerService = ServiceManager.getInstance().getOfferService();
-        List<Offer> offers = offerService.listAllOffers();
+        List<Offer> offers = offerService.listActual();
         model.put("offers", offers);
 
         return buildModelAndView("index");

@@ -1,5 +1,6 @@
 package com.dao.impl;
 
+import com.dao.AbstractCrudDAO;
 import com.dao.BaseDAO;
 import com.dao.PropertyDAO;
 import com.model.Property;
@@ -12,125 +13,22 @@ import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
 
-public class PropertyDAOImpl extends BaseDAO implements PropertyDAO {
+public class PropertyDAOImpl extends AbstractCrudDAO<Property> implements PropertyDAO {
 
-    @Override
-    public Property getPropertyById(int id) {
-        Property property = null;
-
-        Session session = getSession();
-        if (session != null) {
-            try {
-                Transaction tx = session.beginTransaction();
-
-                property = (Property)session.get(Property.class, id);
-
-                tx.commit();
-            } catch (HibernateException e) {
-                e.printStackTrace();
-                return null;
-            } finally {
-                session.close();
-            }
-        }
-
-        return property;
-    }
-
-    @Override
-    public boolean updateProperty(Property property) {
-        Session session = getSession();
-        if (session != null) {
-            try {
-                Transaction tx = session.beginTransaction();
-                session.update(property);
-                tx.commit();
-            } catch (HibernateException e) {
-                e.printStackTrace();
-                return false;
-            } finally {
-                session.close();
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public boolean addProperty(Property property) {
-        Session session = getSession();
-        if (session != null) {
-            try {
-                Transaction tx = session.beginTransaction();
-                session.save(property);
-                tx.commit();
-            } catch (HibernateException e) {
-                e.printStackTrace();
-                return false;
-            } finally {
-                session.close();
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public boolean deleteProperty(Property property) {
-        Session session = getSession();
-        if (session != null) {
-            try {
-                Transaction tx = session.beginTransaction();
-                session.delete(property);
-                tx.commit();
-
-                return true;
-            } catch (HibernateException e) {
-                e.printStackTrace();
-            } finally {
-                session.close();
-            }
-        }
-
-        return false;
+    public PropertyDAOImpl() {
+        super(Property.class);
     }
 
     @Override
     public List<Property> getPropertiesOwnedByUser(User user) {
         Session session = getSession();
         if (session != null) {
-            try {
-                Transaction tx = session.beginTransaction();
+            Criteria criteria = session.createCriteria(Property.class)
+                    .add(Restrictions.eq("owner", user));
 
-                Criteria filterCriteria = session.createCriteria(Property.class);
-                filterCriteria.add(Restrictions.eq("owner", user));
-                List<Property> userProperties = (List<Property>)filterCriteria.list();
-
-                tx.commit();
-
-                return userProperties;
-            } catch (HibernateException e) {
-                e.printStackTrace();
-            } finally {
-                session.close();
-            }
+            return super.filter(criteria);
         }
 
-        return null;
-    }
-
-    @Override
-    public List<Property> list() {
-        Session session = getSession();
-        try {
-            Transaction tx = session.beginTransaction();
-            List<Property> properties = session.createCriteria(Property.class).list();
-            tx.commit();
-            return properties;
-        } catch (HibernateException e) {
-            if (session.getTransaction() != null) session.getTransaction().rollback();
-            e.printStackTrace();
-        } finally {
-            session.close();
-        }
         return null;
     }
 }

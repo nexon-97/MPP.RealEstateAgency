@@ -20,33 +20,6 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>AuthController</servlet-name>
-        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-        <init-param>
-            <param-name>contextConfigLocation</param-name>
-            <param-value>/WEB-INF/servlets/authControllerServlet.xml</param-value>
-        </init-param>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AuthController</servlet-name>
-        <url-pattern>/auth</url-pattern>
-        <url-pattern>/logout</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>RegisterController</servlet-name>
-        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-        <init-param>
-            <param-name>contextConfigLocation</param-name>
-            <param-value>/WEB-INF/servlets/registerControllerServlet.xml</param-value>
-        </init-param>
-    </servlet>
-    <servlet-mapping>
-		<servlet-name>RegisterController</servlet-name>
-		<url-pattern>/register</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
         <servlet-name>PropertyController</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
@@ -123,6 +96,10 @@
         <url-pattern>/user_roles</url-pattern>
         <url-pattern>/user</url-pattern>
         <url-pattern>/team</url-pattern>
+        <url-pattern>/auth</url-pattern>
+        <url-pattern>/logout</url-pattern>
+        <url-pattern>/register</url-pattern>
+        <url-pattern>/restorePassword</url-pattern>
     </servlet-mapping>
 
     <servlet>

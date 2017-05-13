@@ -7,31 +7,20 @@ import com.model.User;
 import com.model.PropertyType;
 
 import com.services.PropertyService;
-import com.services.shared.BaseService;
-import com.services.shared.ServiceId;
-import com.services.shared.ServiceManager;
-import com.services.shared.ServiceSharedResources;
+import com.services.shared.*;
 import com.utils.request.validator.RequestValidationChain;
 
 import java.util.List;
-import java.util.Map;
 
-public class PropertyServiceImpl extends BaseService implements PropertyService {
+public class PropertyServiceImpl extends AbstractCrudService<Property> implements PropertyService {
+
     public PropertyServiceImpl(ServiceSharedResources sharedResources) {
-        super(ServiceId.PropertyService, sharedResources);
+        super(ServiceId.PropertyService, sharedResources, Property.class);
     }
 
     @Override
-    public Property getPropertyById(int id) {
-        PropertyDAO dao = new PropertyDAOImpl();
-
-        return dao.getPropertyById(id);
-    }
-
-    @Override
-    public boolean addProperty(RequestValidationChain requestValidationChain) {
+    public boolean add(RequestValidationChain requestValidationChain) {
         Property property = new Property();
-        PropertyDAO propertyDAO = new PropertyDAOImpl();
         boolean isCorrectFields = true;
 
         property.setType((PropertyType)requestValidationChain.getValue("type"));
@@ -55,42 +44,18 @@ public class PropertyServiceImpl extends BaseService implements PropertyService 
         User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
         property.setOwner(loggedUser);
 
-        Map<String, Object> model = getSharedResources().getModel();
-        return propertyDAO.addProperty(property);
+        super.add(property);
+        return true;
     }
 
     @Override
-    public boolean updateProperty(Map<String, String[]> params) {
-        return false;
-    }
-
-    @Override
-    public boolean deleteProperty(Property property) {
-        User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
-        boolean hasPermission = ServiceManager.getInstance().getPermissionService().canDeleteProperty(loggedUser, property);
-
-        if (hasPermission) {
-            PropertyDAO propertyDAO = new PropertyDAOImpl();
-            return propertyDAO.deleteProperty(property);
-        }
-
-        return false;
-    }
-
-    @Override
-    public List<Property> getPropertiesOwnedByUser(User user) {
+    public List<Property> listUserOwnedProperties(User user) {
         PropertyDAO propertyDAO = new PropertyDAOImpl();
 
         return propertyDAO.getPropertiesOwnedByUser(user);
     }
 
-    @Override
-    public List<Property> getList() {
-        PropertyDAO propertyDAO = new PropertyDAOImpl();
-        return propertyDAO.list();
-    }
-
     private boolean checkNotNullNumber(Integer data) {
-        return data>0;
+        return data > 0;
     }
 }

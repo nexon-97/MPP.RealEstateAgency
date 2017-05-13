@@ -22,28 +22,28 @@ public class AdministrativeController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/admin_data")
     public ModelAndView visitAdminData(HttpServletResponse response) {
-        initControllerResources(response);
+        initResources(response);
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
 
         if (!checkRights(RoleId.Admin)) {
             return showErrorMessage(SystemMessages.InsufficientRightsMessage);
         }
 
-        List<User> users = ServiceManager.getInstance().getUserService().getList();
-        List<Property> properties = ServiceManager.getInstance().getPropertyService().getList();
-        List<Offer> offers = ServiceManager.getInstance().getOfferService().listAllOffers();
-        List<Deal> deals = ServiceManager.getInstance().getDealService().list();
-        Map<Property, Boolean> hasOfferMap = getHasOfferMap(properties);
-        Map<Offer, Boolean> hasDealMap = getHasDealMap(offers);
+            List<User> users = ServiceManager.getInstance().getUserService().list();
+            List<Property> properties = ServiceManager.getInstance().getPropertyService().list();
+            List<Offer> offers = ServiceManager.getInstance().getOfferService().list();
+            List<Deal> deals = ServiceManager.getInstance().getDealService().list();
+            Map<Property, Boolean> hasOfferMap = getHasOfferMap(properties);
+            Map<Offer, Boolean> hasDealMap = getHasDealMap(offers);
 
-        model.put("userList", users);
-        model.put("propertyList", properties);
-        model.put("offerList", offers);
-        model.put("dealList", deals);
-        model.put("hasOffer", hasOfferMap);
-        model.put("hasDeal", hasDealMap);
+            model.put("userList", users);
+            model.put("propertyList", properties);
+            model.put("offerList", offers);
+            model.put("dealList", deals);
+            model.put("hasOffer", hasOfferMap);
+            model.put("hasDeal", hasDealMap);
 
-        return buildModelAndView("admin_data");
+            return buildModelAndView("admin_data");
     }
 
     boolean checkRights(RoleId roleId) {
@@ -53,20 +53,23 @@ public class AdministrativeController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/companyWork")
     public ModelAndView getCompanyWorkReport(HttpServletResponse response) {
-        initControllerResources(response);
+        initResources(response);
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
         User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
 
-        if (loggedUser != null && loggedUser.getRoleId().equals(RoleId.Admin)){
-            TransactionService transactionService = ServiceManager.getInstance().getTransactionService();
-            List<Transaction> transactions = transactionService.getTransactionsList();
-            model.put("transactions", transactions);
-            BigDecimal sumCompanyFine = BigDecimal.ZERO;
-            for (Transaction transaction : transactions){
-                sumCompanyFine = sumCompanyFine.add(transaction.getCompanyFine());
-            }
-            model.put("totalFine", sumCompanyFine);
-            return buildModelAndView("../company_work");
+        if (loggedUser != null && loggedUser.getRoleId().equals(RoleId.Admin)) {
+                TransactionService transactionService = ServiceManager.getInstance().getTransactionService();
+                List<Transaction> transactions = transactionService.list();
+
+                BigDecimal sumCompanyFine = BigDecimal.ZERO;
+                for (Transaction transaction : transactions){
+                    sumCompanyFine = sumCompanyFine.add(transaction.getCompanyFine());
+                }
+
+                model.put("transactions", transactions);
+                model.put("totalFine", sumCompanyFine);
+
+                return buildModelAndView("../company_work");
         }
 
         String msgError = "У вас нет прав для просмотра этой страницы!";

@@ -11,6 +11,7 @@
     <div class="content">
         <div class="add-offer-form-wrapper">
             <form method="post" action="/editOffer">
+                <input type="hidden" name="id" value="${offer.id}" />
                 <div>Собственность</div>
                 <div>
                     <select class="property-form-input" name="property">

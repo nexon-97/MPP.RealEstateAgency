@@ -38,7 +38,8 @@ public class RegisterServiceImpl extends BaseService implements RegisterService 
         if (userDAO.getByLogin(user.getLogin()) != null){
             return false;
         }
-        return userDAO.save(user);
+
+        return userDAO.add(user);
     }
 
     @Override

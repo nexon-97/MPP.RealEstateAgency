@@ -23,7 +23,7 @@ public class DealController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/deal")
     public ModelAndView showDeal(HttpServletResponse response) {
-        initControllerResources(response);
+        initResources(response);
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
 
         if (!hasAdminRights()) {
@@ -52,7 +52,7 @@ public class DealController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/addDealRequest")
     public ModelAndView addOfferRequest(HttpServletResponse response) {
-        initControllerResources(response);
+        initResources(response);
 
         ServiceManager serviceManager = ServiceManager.getInstance();
         User loggedUser = serviceManager.getAuthService().getLoggedUser();
@@ -68,17 +68,11 @@ public class DealController extends BaseController {
                 return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, "Отклик на предложение поврежден!");
             }
 
-            Offer offer = serviceManager.getOfferService().getOfferById(offerId);
-            if (offer == null) {
-                return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, SystemMessages.NoSuchOfferMessage);
-            }
+            Offer offer;
+            User buyer;
 
-            User buyer = serviceManager.getUserService().getUserByID(buyerId);
-            if (buyer == null) {
-                return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, SystemMessages.InvalidDealRequestBuyerAssigned);
-            } else if (!loggedUser.equals(buyer)) {
-                return showErrorMessage(HttpServletResponse.SC_FORBIDDEN, "Вы не можете откликаться на предложение от имени другого пользователя!");
-            }
+            offer = serviceManager.getOfferService().get(offerId);
+            buyer = serviceManager.getUserService().get(buyerId);
 
             DealRequest dealRequest = new DealRequest();
             dealRequest.setOffer(offer);
@@ -108,12 +102,9 @@ public class DealController extends BaseController {
                 }
             }
 
-            boolean requestAdded = serviceManager.getDealRequestService().add(dealRequest);
-            if (!requestAdded) {
-                return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, SystemMessages.FailedToAddDealRequest);
-            } else {
-                return showSuccessMessage(SystemMessages.DealRequestHasBeenRegistered);
-            }
+            serviceManager.getDealRequestService().add(dealRequest);
+
+            return showSuccessMessage(SystemMessages.DealRequestHasBeenRegistered);
         }
 
         return showUnauthorizedMessageView();
@@ -121,7 +112,7 @@ public class DealController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/confirmDealRealtor")
     public ModelAndView confirmDealRequestRealtor(HttpServletResponse response) {
-        initControllerResources(response);
+        initResources(response);
 
         ServiceManager serviceManager = ServiceManager.getInstance();
         User loggedUser = serviceManager.getAuthService().getLoggedUser();
@@ -130,10 +121,9 @@ public class DealController extends BaseController {
             Integer realtorId = getRealtorIdFromRequest();
 
             if (requestId != null && realtorId != null) {
-                DealRequestService dealRequestService = serviceManager.getDealRequestService();
-                DealRequest request = dealRequestService.get(requestId);
+                    DealRequestService dealRequestService = serviceManager.getDealRequestService();
+                    DealRequest request = dealRequestService.get(requestId);
 
-                if (request != null) {
                     if (!request.getRealtor().equals(loggedUser)) {
                         return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, "Вы не были помечены как риэлтор в этом отклике!");
                     }
@@ -142,9 +132,6 @@ public class DealController extends BaseController {
                     dealRequestService.update(request);
 
                     return redirect("/profile");
-                } else {
-                    return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, "Такого отклика не существует!");
-                }
             } else {
                 return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, "Не удалось изменить риэлтора в отклике на предложение!");
             }
@@ -155,7 +142,7 @@ public class DealController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/confirmDealSeller")
     public ModelAndView confirmDealRequestSeller(HttpServletResponse response) {
-        initControllerResources(response);
+        initResources(response);
 
         ServiceManager serviceManager = ServiceManager.getInstance();
         User loggedUser = serviceManager.getAuthService().getLoggedUser();
@@ -164,10 +151,9 @@ public class DealController extends BaseController {
             Integer sellerId = getSellerIdFromRequest();
 
             if (requestId != null && sellerId != null) {
-                DealRequestService dealRequestService = serviceManager.getDealRequestService();
-                DealRequest request = dealRequestService.get(requestId);
+                    DealRequestService dealRequestService = serviceManager.getDealRequestService();
+                    DealRequest request = dealRequestService.get(requestId);
 
-                if (request != null) {
                     if (!request.getOffer().getProperty().getOwner().equals(loggedUser)) {
                         return showErrorMessage("Вы не владелец данной собственности!");
                     }
@@ -176,9 +162,6 @@ public class DealController extends BaseController {
                     dealRequestService.update(request);
 
                     return redirect("/profile");
-                } else {
-                    return showErrorMessage("Такого отклика не существует!");
-                }
             } else {
                 return showErrorMessage("Не удалось подтвердить отклик на предложение!");
             }
@@ -189,7 +172,7 @@ public class DealController extends BaseController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/confirmDealBroker")
     public ModelAndView confirmDealBroker(HttpServletResponse response) {
-        initControllerResources(response);
+        initResources(response);
 
         User currentUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
         if (!currentUser.getRoleId().equals(RoleId.Broker)) {
@@ -201,14 +184,10 @@ public class DealController extends BaseController {
             DealService dealService = ServiceManager.getInstance().getDealService();
             Deal deal = dealService.get(id);
 
-            if (deal != null) {
-                if (dealService.signDeal(deal, currentUser)) {
-                    return redirectToReferer();
-                } else {
-                    return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, "Не удалось закрепить брокера за сделкой!");
-                }
+            if (dealService.signDeal(deal, currentUser)) {
+                return redirectToReferer();
             } else {
-                return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, SystemMessages.NoSuchDealMessage);
+                return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, "Не удалось закрепить брокера за сделкой!");
             }
         } else {
             return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, SystemMessages.NoDealIdProvidedMessage);
@@ -250,14 +229,12 @@ public class DealController extends BaseController {
     private boolean addDealRequestRealtor(DealRequest request) {
         Integer realtorId = getRealtorIdFromRequest();
         if (realtorId != null) {
-            User realtor = ServiceManager.getInstance().getUserService().getUserByID(realtorId);
+            User realtor = ServiceManager.getInstance().getUserService().get(realtorId);
 
-            if (realtor != null) {
-                request.setRealtor(realtor);
-                request.setRealtorValidation(false);
+            request.setRealtor(realtor);
+            request.setRealtorValidation(false);
 
-                return true;
-            }
+            return true;
         }
 
         return false;

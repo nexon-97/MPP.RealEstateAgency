@@ -1,4 +1,6 @@
-package com.security;
+package com.security.annotations;
+
+import com.model.RoleId;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,6 +9,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.METHOD })
-public @interface AccessLevelCheck {
-    AccessLevel value();
+public @interface RoleCheck {
+    RoleId value();
 }

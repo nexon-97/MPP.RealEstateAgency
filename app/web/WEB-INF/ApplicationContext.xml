@@ -19,11 +19,9 @@
     <context:component-scan base-package="com.controller" />
     <mvc:annotation-driven />
 
-    <bean id="aspectSecured" class="com.interceptors.SecureBeforeMethod" />
-    <bean id="secureAccessLevel" class="com.security.SecureAccessLevel" />
+    <bean id="secureAccessLevel" class="com.security.SecurityAnnotationsHandler" />
     <aop:aspectj-autoproxy/>
     <aop:config>
-        <aop:aspect id="aspectSecured" ref="aspectSecured" />
         <aop:aspect id="secureAccessLevel" ref="secureAccessLevel" />
     </aop:config>
 

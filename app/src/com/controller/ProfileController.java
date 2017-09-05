@@ -1,8 +1,7 @@
 package com.controller;
 
-import com.forms.ProfileData;
 import com.model.*;
-import com.security.AuthCheck;
+import com.security.annotations.AuthCheck;
 import com.services.*;
 import com.utils.request.validator.*;
 import org.springframework.beans.factory.annotation.Autowired;

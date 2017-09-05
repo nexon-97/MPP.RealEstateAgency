@@ -1,14 +1,16 @@
 package com.controller;
 
-import com.exception.AccessLevelException;
-import com.exception.UnauthorizedException;
-import com.security.AccessLevel;
+import com.exception.*;
 import com.services.AuthService;
 import com.utils.request.ParseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.view.JstlView;
@@ -45,53 +47,56 @@ public class BaseController {
     }
 
     @ExceptionHandler(UnauthorizedException.class)
-    public ModelAndView handleUnauthorizedException() {
+    protected ModelAndView handleUnauthorizedException() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("unauthorized_view");
-
         return modelAndView;
     }
 
     @ExceptionHandler(AccessLevelException.class)
-    public ModelAndView handleAccessLevelException() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.getModel().put("msg", "У Вас недостаточно прав для выполнения данного действия!");
-        modelAndView.setViewName("error_message");
-        return modelAndView;
+    protected ModelAndView handleAccessLevelException() {
+        return showErrorMessage("У Вас недостаточно прав для выполнения данного действия!");
     }
 
-    protected ModelAndView showBadRequestView(String message) {
-        //response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        return showErrorMessage(message);
+    @ExceptionHandler(GenericException.class)
+    protected ModelAndView handleGenericException(GenericException ex) {
+        return showErrorMessage(ex.getMessage());
     }
 
-    protected ModelAndView showErrorMessage(int responseCode, String message) {
-        //response.setStatus(responseCode);
-        return showErrorMessage(message);
+    @ExceptionHandler(ServletRequestBindingException.class)
+    protected ModelAndView handleMissingParams() {
+        return showBadRequestView();
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    protected ModelAndView handleMethodArgumentTypeMismatch() {
+        return showBadRequestView();
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    protected ModelAndView handleEntityNotFound(EntityNotFoundException ex) {
+        return showErrorMessage(ex.getMessage());
+    }
+
+    @ExceptionHandler(RoleMismatchException.class)
+    protected ModelAndView handleRoleMismatch(RoleMismatchException ex) {
+        return showErrorMessage(ex.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ModelAndView showBadRequestView() {
+        return showErrorMessage("Запрос поврежден!");
     }
 
     protected ModelAndView showErrorMessage(String message) {
-        //Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
-        //model.put("msg", message);
-
-        JstlView view = new JstlView("views/error_message.jsp");
-        return new ModelAndView(view, null);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.getModel().put("msg", message);
+        modelAndView.setViewName("error_message");
+        attachAuthDataToExceptionReport(modelAndView);
+        return modelAndView;
     }
 
-    protected ModelAndView showSuccessMessage(String message) {
-        //Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
-        //model.put("msg", message);
-
-        JstlView view = new JstlView("views/success_message.jsp");
-        return new ModelAndView(view, null);
-    }
-
-    protected Integer getIdFromRequest() {
-        String idParam = request.getParameter("id");
-        if (idParam != null) {
-            return ParseUtils.parseInteger(idParam);
-        }
-
-        return null;
+    protected void attachAuthDataToExceptionReport(ModelAndView modelAndView) {
+        modelAndView.getModel().put("user", authService.getLoggedUser());
     }
 }

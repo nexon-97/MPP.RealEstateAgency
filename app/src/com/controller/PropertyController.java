@@ -1,111 +1,76 @@
 package com.controller;
 
+import com.exception.EntityNotFoundException;
+import com.exception.GenericException;
 import com.helper.SystemMessages;
 import com.model.Property;
 import com.model.PropertyType;
+import com.model.RoleId;
+import com.security.annotations.RoleCheck;
 import com.services.PropertyService;
 import com.utils.request.validator.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
 
 @Controller
 public class PropertyController extends BaseController  {
 
-    @RequestMapping(method = RequestMethod.GET, value = "/property")
-    public ModelAndView showPropertyInfo(HttpServletResponse response) {
-        /*initControllerResources(response);
-        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
+    @Autowired
+    PropertyService propertyService;
 
-        // Retrieve property id from request
-        int propertyId = -1;
-        try {
-            propertyId = Integer.valueOf(request.getParameter("id"));
-        } catch (NullPointerException | NumberFormatException e) {
-            model.put("msg", "Invalid property id!");
-            return buildModelAndView("../error_message");
-        }
-
-        // Load property
-        PropertyService propertyService = ServiceManager.getInstance().getPropertyService();
+    @GetMapping(value = "/property")
+    public String showPropertyInfo(@RequestParam("id") int propertyId, Model model) {
         Property property = propertyService.getPropertyById(propertyId);
-
         if (property == null) {
-            model.put("msg", "Can't find requested property!");
-            return buildModelAndView("../error_message");
-        } else {
-            model.put("property", property);
+            throw new EntityNotFoundException("Такой собственности не существует!");
         }
 
-        return buildModelAndView("property");*/
-        return null;
+        model.addAttribute("property", property);
+        return "property_view/property";
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/addProperty")
-    public ModelAndView visitAddPropertyForm(HttpServletResponse response) {
-        /*initControllerResources(response);
-        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
+    @GetMapping(value = "/addProperty")
+    @RoleCheck(RoleId.User)
+    public String visitAddPropertyForm(Model model) {
+        PropertyType[] types = PropertyType.values();
+        model.addAttribute("types", types);
 
-        if (ServiceManager.getInstance().getAuthService().getLoggedUser() != null) {
-            PropertyService propService = ServiceManager.getInstance().getPropertyService();
-            PropertyType[] types = PropertyType.values();
-            model.put("types", types);
-
-            return buildModelAndView("addProperty");
-        } else {
-            return buildModelAndView("../unauthorized_view");
-        }*/
-        return null;
+        return "property_view/addProperty";
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/addProperty")
-    public ModelAndView register(HttpServletResponse response) {
-        /*initControllerResources(response);
-
-        if (!ServiceManager.getInstance().getAuthService().isUserLoggedIn()) {
-            return showUnauthorizedMessageView();
-        } else {
-            RequestValidationChain requestValidator = buildPropertyValidationChain();
-            if (requestValidator.validate()){
-                PropertyService propertyService = ServiceManager.getInstance().getPropertyService();
-                boolean isAdded = propertyService.addProperty(requestValidator);
-                if (isAdded) {
-                    return redirect("/profile");
-                } else {
-                    return getViewWithErrors("addError", "Ошибка при добавлении собственности", requestValidator.getValidatedValues());
-                }
+    @PostMapping(value = "/addProperty")
+    @RoleCheck(RoleId.User)
+    public String doAddProperty(Model model) {
+        RequestValidationChain requestValidator = buildPropertyValidationChain();
+        if (requestValidator.validate(request)) {
+            boolean isAdded = propertyService.addProperty(requestValidator);
+            if (isAdded) {
+                return redirect("/profile");
             } else {
-                return getViewWithErrors("errors", requestValidator.getErrorMessageMap(), requestValidator.getValidatedValues());
+                return getViewWithErrors(model, "addError", "Ошибка при добавлении собственности", requestValidator.getValidatedValues());
             }
-        }*/
-        return null;
+        } else {
+            return getViewWithErrors(model, "errors", requestValidator.getErrorMessageMap(), requestValidator.getValidatedValues());
+        }
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/deleteProperty")
-    public ModelAndView deleteOfferAction(HttpServletResponse response) {
-        /*initControllerResources(response);
-
-        Integer propertyId = getIdFromRequest();
-        if (propertyId != null) {
-            PropertyService propertyService = ServiceManager.getInstance().getPropertyService();
-            Property property = propertyService.getPropertyById(propertyId);
-
-            if (property != null) {
-                boolean deletionSuccess = propertyService.deleteProperty(property);
-                if (deletionSuccess) {
-                    return redirect("/profile");
-                } else {
-                    return showErrorMessage(SystemMessages.FailedToDeletePropertyMessage);
-                }
+    @GetMapping(value = "/deleteProperty")
+    @RoleCheck(RoleId.User)
+    public String deleteOfferAction(@RequestParam("id") int propertyId) {
+        Property property = propertyService.getPropertyById(propertyId);
+        if (property != null) {
+            boolean deletionSuccess = propertyService.deleteProperty(property);
+            if (deletionSuccess) {
+                return redirectToReferer();
+            } else {
+                throw new GenericException(SystemMessages.FailedToDeletePropertyMessage);
             }
         }
 
-        return showErrorMessage(SystemMessages.NoSuchProperyMessage);*/
-        return null;
+        throw new EntityNotFoundException(SystemMessages.NoSuchProperyMessage);
     }
 
     private RequestValidationChain buildPropertyValidationChain() {
@@ -129,13 +94,12 @@ public class PropertyController extends BaseController  {
                 .addValidator(new StringParameterValidator("description", false));
     }
 
-    private ModelAndView getViewWithErrors(String key, Object error, Object values) {
-        /*Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
+    private String getViewWithErrors(Model model, String key, Object error, Object values) {
         PropertyType[] types = PropertyType.values();
-        model.put(key, error);
-        model.put("values", values);
-        model.put("types", types);
-        return buildModelAndView("addProperty");*/
-        return null;
+        model.addAttribute(key, error);
+        model.addAttribute("values", values);
+        model.addAttribute("types", types);
+
+        return "addProperty";
     }
 }

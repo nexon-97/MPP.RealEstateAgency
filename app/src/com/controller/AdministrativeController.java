@@ -1,18 +1,15 @@
 package com.controller;
 
-import com.helper.SystemMessages;
 import com.model.*;
+import com.services.AuthService;
 import com.services.DealService;
 import com.services.OfferService;
-import com.services.TransactionService;
-import com.services.shared.ServiceManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,9 +17,18 @@ import java.util.Map;
 @Controller
 public class AdministrativeController extends BaseController {
 
-    @RequestMapping(method = RequestMethod.GET, value = "/admin_data")
+    @Autowired
+    AuthService authService;
+
+    @Autowired
+    OfferService offerService;
+
+    @Autowired
+    DealService dealService;
+
+    @GetMapping(value = "/admin_data")
     public ModelAndView visitAdminData(HttpServletResponse response) {
-        initControllerResources(response);
+        /*initControllerResources(response);
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
 
         if (!checkRights(RoleId.Admin)) {
@@ -41,19 +47,20 @@ public class AdministrativeController extends BaseController {
         model.put("offerList", offers);
         model.put("dealList", deals);
         model.put("hasOffer", hasOfferMap);
-        model.put("hasDeal", hasDealMap);
+        model.put("hasDeal", hasDealMap);*/
 
-        return buildModelAndView("admin_data");
+       // return buildModelAndView("admin_data");
+        return null;
     }
 
     boolean checkRights(RoleId roleId) {
-        User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
+        User loggedUser = authService.getLoggedUser();
         return (loggedUser != null && loggedUser.getRoleId().equals(roleId));
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/companyWork")
+    @GetMapping(value = "/companyWork")
     public ModelAndView getCompanyWorkReport(HttpServletResponse response) {
-        initControllerResources(response);
+        /*initControllerResources(response);
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
         User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
 
@@ -70,14 +77,13 @@ public class AdministrativeController extends BaseController {
         }
 
         String msgError = "У вас нет прав для просмотра этой страницы!";
-        model.put("msg", msgError);
+        model.put("msg", msgError);*/
 
-        return buildModelAndView("../error_message");
-
+        //return buildModelAndView("../error_message");
+        return null;
     }
 
     private Map<Property, Boolean> getHasOfferMap(List<Property> properties){
-        OfferService offerService = ServiceManager.getInstance().getOfferService();
         Map<Property, Boolean> hasOfferMap = new HashMap<>();
         for(Property property: properties){
             boolean bool = offerService.hasOfferOnProperty(property);
@@ -87,7 +93,6 @@ public class AdministrativeController extends BaseController {
     }
 
     private Map<Offer, Boolean> getHasDealMap(List<Offer> offers){
-        DealService dealService = ServiceManager.getInstance().getDealService();
         Map<Offer, Boolean> hasDealMap = new HashMap<>();
         for(Offer offer: offers){
             boolean bool = dealService.hasDealOnOffer(offer);

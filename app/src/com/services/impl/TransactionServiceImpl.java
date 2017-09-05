@@ -6,8 +6,6 @@ import com.dao.impl.TransactionDAOImpl;
 import com.model.User;
 import com.services.TransactionService;
 import com.services.shared.BaseService;
-import com.services.shared.ServiceId;
-import com.services.shared.ServiceSharedResources;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -16,8 +14,6 @@ import java.util.List;
 import java.util.TimeZone;
 
 public class TransactionServiceImpl extends BaseService implements TransactionService {
-    public TransactionServiceImpl(ServiceSharedResources sharedResources) { super(ServiceId.TransactionService, sharedResources); }
-
     @Override
     public boolean addTransaction(User buyer, User seller, BigDecimal companyFine, BigDecimal payment) {
         TransactionDAO transactionDAO = new TransactionDAOImpl();

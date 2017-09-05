@@ -10,6 +10,7 @@ import com.services.DealService;
 import com.services.DocumentService;
 import com.services.TransactionService;
 import com.services.shared.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -18,8 +19,11 @@ import java.util.Objects;
 
 public class DealServiceImpl extends AbstractCrudService<Deal> implements DealService {
 
-    public DealServiceImpl(ServiceSharedResources sharedResources) {
-        super(ServiceId.DealService, sharedResources, Deal.class);
+    @Autowired
+    TransactionService transactionService;
+
+    public DealServiceImpl() {
+        super(Deal.class);
     }
 
     @Override
@@ -29,7 +33,6 @@ public class DealServiceImpl extends AbstractCrudService<Deal> implements DealSe
         boolean updateSuccess = update(deal);
 
         if (updateSuccess) {
-            TransactionService transactionService = new TransactionServiceImpl(getSharedResources());
             transactionService.addTransaction(deal.getBuyer(), deal.getOffer().getProperty().getOwner(), new BigDecimal(deal.getOffer().getCost().doubleValue() * 0.02), deal.getOffer().getCost());
             DocumentService documentService = new DocumentServiceImpl();
             Document document = new Document();

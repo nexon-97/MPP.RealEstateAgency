@@ -7,7 +7,6 @@ import com.model.*;
 import com.services.DealRequestService;
 import com.services.DealService;
 import com.services.UserService;
-import com.services.shared.ServiceManager;
 import com.utils.request.ParseUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +22,7 @@ public class DealController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/deal")
     public ModelAndView showDeal(HttpServletResponse response) {
-        initControllerResources(response);
+        /*initControllerResources(response);
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
 
         if (!hasAdminRights()) {
@@ -47,12 +46,13 @@ public class DealController extends BaseController {
             return buildModelAndView("../error_message");
         }
 
-        return buildModelAndView("deal_view");
+        return buildModelAndView("deal_view");*/
+        return null;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/addDealRequest")
     public ModelAndView addOfferRequest(HttpServletResponse response) {
-        initControllerResources(response);
+        /*initControllerResources(response);
 
         ServiceManager serviceManager = ServiceManager.getInstance();
         User loggedUser = serviceManager.getAuthService().getLoggedUser();
@@ -116,12 +116,13 @@ public class DealController extends BaseController {
             }
         }
 
-        return showUnauthorizedMessageView();
+        return showUnauthorizedMessageView();*/
+        return null;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/confirmDealRealtor")
     public ModelAndView confirmDealRequestRealtor(HttpServletResponse response) {
-        initControllerResources(response);
+        /*initControllerResources(response);
 
         ServiceManager serviceManager = ServiceManager.getInstance();
         User loggedUser = serviceManager.getAuthService().getLoggedUser();
@@ -150,12 +151,13 @@ public class DealController extends BaseController {
             }
         }
 
-        return showErrorMessage("Вы не риэлтор!");
+        return showErrorMessage("Вы не риэлтор!");*/
+        return null;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/confirmDealSeller")
     public ModelAndView confirmDealRequestSeller(HttpServletResponse response) {
-        initControllerResources(response);
+        /*initControllerResources(response);
 
         ServiceManager serviceManager = ServiceManager.getInstance();
         User loggedUser = serviceManager.getAuthService().getLoggedUser();
@@ -184,12 +186,13 @@ public class DealController extends BaseController {
             }
         }
 
-        return showUnauthorizedMessageView();
+        return showUnauthorizedMessageView();*/
+        return null;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/confirmDealBroker")
     public ModelAndView confirmDealBroker(HttpServletResponse response) {
-        initControllerResources(response);
+        /*initControllerResources(response);
 
         User currentUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
         if (!currentUser.getRoleId().equals(RoleId.Broker)) {
@@ -212,12 +215,14 @@ public class DealController extends BaseController {
             }
         } else {
             return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, SystemMessages.NoDealIdProvidedMessage);
-        }
+        }*/
+        return null;
     }
 
     private boolean hasAdminRights() {
-        User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
-        return loggedUser != null && loggedUser.getRoleId().equals(RoleId.Admin);
+        //User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
+        //return loggedUser != null && loggedUser.getRoleId().equals(RoleId.Admin);
+        return false;
     }
 
     private Integer getBuyerIdFromRequest() {
@@ -248,7 +253,7 @@ public class DealController extends BaseController {
     }
 
     private boolean addDealRequestRealtor(DealRequest request) {
-        Integer realtorId = getRealtorIdFromRequest();
+        /*Integer realtorId = getRealtorIdFromRequest();
         if (realtorId != null) {
             User realtor = ServiceManager.getInstance().getUserService().getUserByID(realtorId);
 
@@ -258,14 +263,15 @@ public class DealController extends BaseController {
 
                 return true;
             }
-        }
+        }*/
 
         return false;
     }
 
     private ModelAndView showInsufficientRightsMessage() {
-        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
+        /*Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
         model.put("msg", "Нужны права администратора для просмотра этой страницы!");
-        return buildModelAndView("../error_message");
+        return buildModelAndView("../error_message");*/
+        return null;
     }
 }

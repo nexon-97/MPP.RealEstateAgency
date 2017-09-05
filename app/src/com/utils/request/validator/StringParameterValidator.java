@@ -1,6 +1,5 @@
 package com.utils.request.validator;
 
-import com.services.shared.ServiceManager;
 import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,8 +17,9 @@ public class StringParameterValidator implements RequestParameterValidator<Strin
 
     @Override
     public boolean validate() {
-        HttpServletRequest request = ServiceManager.getInstance().getSharedResources().getRequest();
-        this.value = request.getParameter(this.paramName);
+        //HttpServletRequest request = ServiceManager.getInstance().getSharedResources().getRequest();
+        HttpServletRequest request = null;
+                this.value = request.getParameter(this.paramName);
 
         return this.value != null;
     }

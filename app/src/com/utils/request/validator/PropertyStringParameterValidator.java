@@ -1,7 +1,5 @@
 package com.utils.request.validator;
 
-import com.services.shared.ServiceManager;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -17,7 +15,7 @@ public class PropertyStringParameterValidator extends RegexParameterValidator {
     public boolean validate() {
         this.errorMessage = null;
         try {
-            HttpServletRequest request = ServiceManager.getInstance().getSharedResources().getRequest();
+            HttpServletRequest request = null;
             String paramValue = request.getParameter(this.paramName).trim();
             if (Objects.equals(paramValue, "")) {
                 return checkNullPermission(String.format("Параметр '%s' отсутствует", paramName));

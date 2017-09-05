@@ -1,7 +1,5 @@
 package com.utils.request.validator;
 
-import com.services.shared.ServiceManager;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,7 +21,7 @@ public class EmailStringParameterValidator extends RegexParameterValidator {
     public boolean validate() {
         this.errorMessage = null;
         try {
-            HttpServletRequest request = ServiceManager.getInstance().getSharedResources().getRequest();
+            HttpServletRequest request = null;
             String paramValue = request.getParameter(this.paramName).trim();
             if ("".equals(paramValue)){
                 return checkNullPermission("E-mail отсутствует");

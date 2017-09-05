@@ -4,7 +4,6 @@ import com.helper.SystemMessages;
 import com.model.Property;
 import com.model.PropertyType;
 import com.services.PropertyService;
-import com.services.shared.ServiceManager;
 import com.utils.request.validator.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +18,7 @@ public class PropertyController extends BaseController  {
 
     @RequestMapping(method = RequestMethod.GET, value = "/property")
     public ModelAndView showPropertyInfo(HttpServletResponse response) {
-        initControllerResources(response);
+        /*initControllerResources(response);
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
 
         // Retrieve property id from request
@@ -42,12 +41,13 @@ public class PropertyController extends BaseController  {
             model.put("property", property);
         }
 
-        return buildModelAndView("property");
+        return buildModelAndView("property");*/
+        return null;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/addProperty")
     public ModelAndView visitAddPropertyForm(HttpServletResponse response) {
-        initControllerResources(response);
+        /*initControllerResources(response);
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
 
         if (ServiceManager.getInstance().getAuthService().getLoggedUser() != null) {
@@ -58,12 +58,13 @@ public class PropertyController extends BaseController  {
             return buildModelAndView("addProperty");
         } else {
             return buildModelAndView("../unauthorized_view");
-        }
+        }*/
+        return null;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/addProperty")
     public ModelAndView register(HttpServletResponse response) {
-        initControllerResources(response);
+        /*initControllerResources(response);
 
         if (!ServiceManager.getInstance().getAuthService().isUserLoggedIn()) {
             return showUnauthorizedMessageView();
@@ -80,12 +81,13 @@ public class PropertyController extends BaseController  {
             } else {
                 return getViewWithErrors("errors", requestValidator.getErrorMessageMap(), requestValidator.getValidatedValues());
             }
-        }
+        }*/
+        return null;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/deleteProperty")
     public ModelAndView deleteOfferAction(HttpServletResponse response) {
-        initControllerResources(response);
+        /*initControllerResources(response);
 
         Integer propertyId = getIdFromRequest();
         if (propertyId != null) {
@@ -102,7 +104,8 @@ public class PropertyController extends BaseController  {
             }
         }
 
-        return showErrorMessage(SystemMessages.NoSuchProperyMessage);
+        return showErrorMessage(SystemMessages.NoSuchProperyMessage);*/
+        return null;
     }
 
     private RequestValidationChain buildPropertyValidationChain() {
@@ -127,11 +130,12 @@ public class PropertyController extends BaseController  {
     }
 
     private ModelAndView getViewWithErrors(String key, Object error, Object values) {
-        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
+        /*Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
         PropertyType[] types = PropertyType.values();
         model.put(key, error);
         model.put("values", values);
         model.put("types", types);
-        return buildModelAndView("addProperty");
+        return buildModelAndView("addProperty");*/
+        return null;
     }
 }

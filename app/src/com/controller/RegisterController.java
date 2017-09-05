@@ -1,7 +1,6 @@
 package com.controller;
 
 import com.services.RegisterService;
-import com.services.shared.ServiceManager;
 import com.utils.request.validator.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,18 +15,20 @@ public class RegisterController extends BaseController{
 
     @RequestMapping(method = RequestMethod.GET, value = "/register")
     public ModelAndView visitRegistrationForm(HttpServletResponse response) {
-        initControllerResources(response);
+        /*initControllerResources(response);
         if (ServiceManager.getInstance().getAuthService().getLoggedUser() != null){
             return buildModelAndView("register/register_logged");
         }
         else {
             return buildModelAndView("register/register");
-        }
+        }*/
+
+        return null;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/register")
     public ModelAndView register(HttpServletResponse response) {
-        initControllerResources(response);
+        /*initControllerResources(response);
         RegisterService registerService = ServiceManager.getInstance().getRegisterService();
         RequestValidationChain requestValidator = buildRegisterDataValidator();
         if (requestValidator.validate()){
@@ -43,14 +44,18 @@ public class RegisterController extends BaseController{
             }
         } else {
             return getViewWithErrors("errors", requestValidator.getErrorMessageMap(), requestValidator.getValidatedValues());
-        }
+        }*/
+
+        return null;
     }
 
     private ModelAndView getViewWithErrors(String key, Object error, Object values){
-        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
+        /*Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
         model.put(key, error);
         model.put("values", values);
-        return buildModelAndView("register/register");
+        return buildModelAndView("register/register");*/
+
+        return null;
     }
 
     private RequestValidationChain buildRegisterDataValidator(){

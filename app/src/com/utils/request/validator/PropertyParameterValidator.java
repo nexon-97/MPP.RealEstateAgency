@@ -1,16 +1,16 @@
 package com.utils.request.validator;
 
 import com.model.Property;
-import com.services.shared.ServiceManager;
+import com.services.PropertyService;
 import com.utils.request.ParseUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.ParseException;
 
 public class PropertyParameterValidator implements RequestParameterValidator<Property>, RequestValueContainer<Property> {
+
+    @Autowired
+    PropertyService propertyService;
 
     private String paramName;
     private Property value;
@@ -27,7 +27,7 @@ public class PropertyParameterValidator implements RequestParameterValidator<Pro
         this.errorMessage = null;
         this.value = null;
 
-        HttpServletRequest request = ServiceManager.getInstance().getSharedResources().getRequest();
+        HttpServletRequest request = null;
 
         String paramValue = request.getParameter(this.paramName);
         if (paramValue == null && this.isNullAllowed) {
@@ -36,7 +36,7 @@ public class PropertyParameterValidator implements RequestParameterValidator<Pro
 
         Integer id = ParseUtils.parseInteger(paramValue);
         if (id != null) {
-            this.value = ServiceManager.getInstance().getPropertyService().getPropertyById(id);
+            this.value = propertyService.getPropertyById(id);
         }
 
         if (this.value == null) {

@@ -11,15 +11,9 @@ import java.security.NoSuchAlgorithmException;
 
 import com.services.RegisterService;
 import com.services.shared.BaseService;
-import com.services.shared.ServiceId;
-import com.services.shared.ServiceSharedResources;
 import com.utils.request.validator.RequestValidationChain;
 
 public class RegisterServiceImpl extends BaseService implements RegisterService {
-
-    public RegisterServiceImpl(ServiceSharedResources sharedResources) {
-        super(ServiceId.RegistrationService, sharedResources);
-    }
 
     @Override
     public boolean register(RequestValidationChain requestValidationChain) {

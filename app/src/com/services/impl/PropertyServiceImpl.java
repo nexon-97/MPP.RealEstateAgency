@@ -8,18 +8,12 @@ import com.model.PropertyType;
 
 import com.services.PropertyService;
 import com.services.shared.BaseService;
-import com.services.shared.ServiceId;
-import com.services.shared.ServiceManager;
-import com.services.shared.ServiceSharedResources;
 import com.utils.request.validator.RequestValidationChain;
 
 import java.util.List;
 import java.util.Map;
 
 public class PropertyServiceImpl extends BaseService implements PropertyService {
-    public PropertyServiceImpl(ServiceSharedResources sharedResources) {
-        super(ServiceId.PropertyService, sharedResources);
-    }
 
     @Override
     public Property getPropertyById(int id) {
@@ -52,11 +46,12 @@ public class PropertyServiceImpl extends BaseService implements PropertyService 
         property.setHasStove((Boolean) requestValidationChain.getValue("stove"));
         property.setDescription((String)requestValidationChain.getValue("description"));
 
-        User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
+        /*User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
         property.setOwner(loggedUser);
 
         Map<String, Object> model = getSharedResources().getModel();
-        return propertyDAO.addProperty(property);
+        return propertyDAO.addProperty(property);*/
+        return false;
     }
 
     @Override
@@ -66,13 +61,13 @@ public class PropertyServiceImpl extends BaseService implements PropertyService 
 
     @Override
     public boolean deleteProperty(Property property) {
-        User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
+        /*User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
         boolean hasPermission = ServiceManager.getInstance().getPermissionService().canDeleteProperty(loggedUser, property);
 
         if (hasPermission) {
             PropertyDAO propertyDAO = new PropertyDAOImpl();
             return propertyDAO.deleteProperty(property);
-        }
+        }*/
 
         return false;
     }

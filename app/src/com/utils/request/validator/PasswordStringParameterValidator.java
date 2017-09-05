@@ -1,7 +1,5 @@
 package com.utils.request.validator;
 
-import com.services.shared.ServiceManager;
-
 import javax.servlet.http.HttpServletRequest;
 
 public class PasswordStringParameterValidator extends StringParameterValidator {
@@ -13,7 +11,7 @@ public class PasswordStringParameterValidator extends StringParameterValidator {
     public boolean validate() {
         this.errorMessage = null;
         try {
-            HttpServletRequest request = ServiceManager.getInstance().getSharedResources().getRequest();
+            HttpServletRequest request = null;
             String paramValue = request.getParameter(this.paramName).trim();
             if ("".equals(paramValue)){
                 return checkNullPermission("Пароль отсутствует");

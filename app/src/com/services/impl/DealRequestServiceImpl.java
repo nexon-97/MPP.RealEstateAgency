@@ -7,16 +7,13 @@ import com.model.DealRequest;
 import com.model.User;
 import com.services.DealRequestService;
 import com.services.shared.AbstractCrudService;
-import com.services.shared.ServiceId;
-import com.services.shared.ServiceManager;
-import com.services.shared.ServiceSharedResources;
 
 import java.util.List;
 
 public class DealRequestServiceImpl extends AbstractCrudService<DealRequest> implements DealRequestService {
 
-    public DealRequestServiceImpl(ServiceSharedResources sharedResources) {
-        super(ServiceId.DealRequestService, sharedResources, DealRequest.class);
+    public DealRequestServiceImpl() {
+        super(DealRequest.class);
     }
 
     @Override
@@ -34,7 +31,8 @@ public class DealRequestServiceImpl extends AbstractCrudService<DealRequest> imp
                 return false;
             }
 
-            return ServiceManager.getInstance().getDealService().add(deal);
+            //return ServiceManager.getInstance().getDealService().add(deal);
+            return false;
         } else {
             return super.update(request);
         }
@@ -44,7 +42,7 @@ public class DealRequestServiceImpl extends AbstractCrudService<DealRequest> imp
     public boolean add(DealRequest request) {
         if (validate(request)) {
             // Add validation flag to request initiator
-            User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
+            /*User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
             if (loggedUser != null && loggedUser.equals(request.getBuyer())) {
                 request.setBuyerValidation(true);
             } else if (loggedUser != null && loggedUser.equals(request.getRealtor())) {
@@ -54,7 +52,7 @@ public class DealRequestServiceImpl extends AbstractCrudService<DealRequest> imp
             DealRequestDAO dao = new DealRequestDAOImpl();
             if (dao.get(request.getId()) == null) {
                 return dao.add(request);
-            }
+            }*/
         }
 
         return super.add(request);

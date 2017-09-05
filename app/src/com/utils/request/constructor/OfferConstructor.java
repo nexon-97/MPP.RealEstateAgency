@@ -3,7 +3,6 @@ package com.utils.request.constructor;
 import com.model.Offer;
 import com.model.OfferType;
 import com.model.Property;
-import com.services.shared.ServiceManager;
 
 import java.math.BigDecimal;
 import java.util.Map;

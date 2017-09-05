@@ -11,7 +11,7 @@
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>/WEB-INF/servlets/indexController.xml</param-value>
+            <param-value>/WEB-INF/ApplicationContext.xml</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>
@@ -24,13 +24,14 @@
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>/WEB-INF/servlets/authControllerServlet.xml</param-value>
+            <param-value>/WEB-INF/ApplicationContext.xml</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>
         <servlet-name>AuthController</servlet-name>
         <url-pattern>/auth</url-pattern>
         <url-pattern>/logout</url-pattern>
+        <url-pattern>/restorePassword</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -38,7 +39,7 @@
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>/WEB-INF/servlets/registerControllerServlet.xml</param-value>
+            <param-value>/WEB-INF/ApplicationContext.xml</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>
@@ -51,7 +52,7 @@
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>/WEB-INF/servlets/propertyController.xml</param-value>
+            <param-value>/WEB-INF/ApplicationContext.xml</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>
@@ -66,7 +67,7 @@
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>/WEB-INF/servlets/profileController.xml</param-value>
+            <param-value>/WEB-INF/ApplicationContext.xml</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>
@@ -80,7 +81,7 @@
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>/WEB-INF/servlets/offerController.xml</param-value>
+            <param-value>/WEB-INF/ApplicationContext.xml</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>
@@ -97,7 +98,7 @@
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>/WEB-INF/servlets/dealController.xml</param-value>
+            <param-value>/WEB-INF/ApplicationContext.xml</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>
@@ -115,7 +116,7 @@
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>/WEB-INF/servlets/userControllerServlet.xml</param-value>
+            <param-value>/WEB-INF/ApplicationContext.xml</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>
@@ -130,7 +131,7 @@
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>/WEB-INF/servlets/administrativeControllerServlet.xml</param-value>
+            <param-value>/WEB-INF/ApplicationContext.xml</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>

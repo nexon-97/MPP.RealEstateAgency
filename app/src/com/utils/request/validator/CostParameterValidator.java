@@ -1,9 +1,7 @@
 package com.utils.request.validator;
 
-import com.services.shared.ServiceManager;
-
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CostParameterValidator extends BigDecimalParameterValidator {
@@ -14,7 +12,8 @@ public class CostParameterValidator extends BigDecimalParameterValidator {
 
     @Override
     public boolean validate() {
-        String value = ServiceManager.getInstance().getSharedResources().getRequest().getParameter(this.paramName);
+        HttpServletRequest request = null;
+        String value = request.getParameter(this.paramName);
         Pattern pattern = Pattern.compile("\\d+(\\.\\d{1,2})?");
         boolean match = pattern.matcher(value).matches();
 

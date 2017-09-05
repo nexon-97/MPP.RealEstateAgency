@@ -5,7 +5,6 @@ import com.model.Property;
 import com.model.RoleId;
 import com.model.User;
 import com.services.*;
-import com.services.shared.ServiceManager;
 import com.utils.request.validator.EnumParameterValidator;
 import com.utils.request.validator.LoginStringParameterValidator;
 import com.utils.request.validator.RequestValidationChain;
@@ -25,9 +24,7 @@ public class UserController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/user_roles")
     public ModelAndView visitRegistrationForm(HttpServletResponse response) {
-        initControllerResources(response);
-        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
-        ServiceManager serviceManager = ServiceManager.getInstance();
+        /*initControllerResources(response);
 
         User loggedUser = serviceManager.getAuthService().getLoggedUser();
         if (loggedUser != null) {
@@ -42,12 +39,13 @@ public class UserController extends BaseController {
             }
         }
 
-        return buildModelAndView("user_roles");
+        return buildModelAndView("user_roles");*/
+        return null;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/user_roles")
     public ModelAndView changeUserRole(HttpServletResponse response) {
-        initControllerResources(response);
+        /*initControllerResources(response);
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
         ServiceManager serviceManager = ServiceManager.getInstance();
         HttpServletRequest request = ServiceManager.getInstance().getSharedResources().getRequest();
@@ -84,12 +82,14 @@ public class UserController extends BaseController {
             }
         }
 
-        return buildModelAndView("user_roles");
+        return buildModelAndView("user_roles");*/
+
+        return null;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/user")
     public ModelAndView showUserProfilePage(HttpServletResponse response) {
-        initControllerResources(response);
+        /*initControllerResources(response);
 
         Integer userId = getIdFromRequest();
         if (userId != null) {
@@ -116,12 +116,14 @@ public class UserController extends BaseController {
             }
         }
 
-        return showBadRequestView("Такого пользователя не существует!");
+        return showBadRequestView("Такого пользователя не существует!");*/
+
+        return null;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/team")
     public ModelAndView showTeamPage(HttpServletResponse response) {
-        initControllerResources(response);
+        /*initControllerResources(response);
 
         UserService userService = ServiceManager.getInstance().getUserService();
         List<User> adminsList = userService.getUsersByRole(RoleId.Admin);
@@ -133,7 +135,9 @@ public class UserController extends BaseController {
         model.put("realtorsList", realtorsList);
         model.put("brokersList", brokersList);
 
-        return buildModelAndView("team");
+        return buildModelAndView("team");*/
+
+        return null;
     }
 
     private int getMinUserIdFromRequest(){

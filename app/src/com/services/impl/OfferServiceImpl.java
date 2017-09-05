@@ -9,6 +9,7 @@ import com.model.User;
 import com.services.OfferService;
 import com.services.shared.*;
 import com.utils.request.filter.FilterParameter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
@@ -17,9 +18,8 @@ import java.util.Objects;
 
 public class OfferServiceImpl extends BaseService implements OfferService {
 
-    public OfferServiceImpl(ServiceSharedResources sharedResources) {
-        super(ServiceId.OfferService, sharedResources);
-    }
+    @Autowired
+    OfferDAO offerDAO;
 
     @Override
     public List<Offer> getUserOffers(User user) {
@@ -30,8 +30,6 @@ public class OfferServiceImpl extends BaseService implements OfferService {
 
     @Override
     public List<Offer> listAllOffers() {
-        OfferDAO offerDAO = new OfferDAOImpl();
-
         return offerDAO.list();
     }
 
@@ -44,7 +42,7 @@ public class OfferServiceImpl extends BaseService implements OfferService {
 
     @Override
     public boolean addOffer(Offer offer) {
-        if (isValid(offer)) {
+        /*if (isValid(offer)) {
             User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
 
             if (Objects.equals(loggedUser, offer.getProperty().getOwner())) {
@@ -55,33 +53,33 @@ public class OfferServiceImpl extends BaseService implements OfferService {
             }
         } else {
             setErrorInfo(HttpServletResponse.SC_BAD_REQUEST, SystemMessages.UnacceptableOfferParams);
-        }
+        }*/
 
         return false;
     }
 
     @Override
     public boolean deleteOffer(Offer offer) {
-        User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
+        /*User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
         boolean hasPermission = ServiceManager.getInstance().getPermissionService().canDeleteOffer(loggedUser, offer);
 
         if (hasPermission) {
             OfferDAO offerDAO = new OfferDAOImpl();
             return offerDAO.delete(offer);
-        }
+        }*/
 
         return false;
     }
 
     @Override
     public boolean updateOffer(Offer offer) {
-        User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
+        /*User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
         boolean hasPermission = ServiceManager.getInstance().getPermissionService().canEditOffer(loggedUser, offer);
 
         if (hasPermission && isValid(offer)) {
             OfferDAO offerDAO = new OfferDAOImpl();
             return offerDAO.update(offer);
-        }
+        }*/
 
         return false;
     }

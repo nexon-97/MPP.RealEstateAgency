@@ -5,8 +5,12 @@ import com.dao.impl.UserDAOImpl;
 import com.model.User;
 import com.services.AuthService;
 import com.services.shared.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -15,21 +19,22 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 public class AuthServiceImpl extends BaseService implements AuthService {
+
+    @Autowired
+    private UserDAO userDAO;
+
     private User loggedUser;
 
     private static String loginCookieName = "auth_login";
     private static String passwordCookieName = "auth_pass";
 
-    public AuthServiceImpl(ServiceSharedResources sharedResources) {
-        super(ServiceId.AuthorizationService, sharedResources);
-
-        loginFromCookies();
-    }
 
     @Override
-    public boolean loginFromCookies() {
-        UserDAO userDAO = new UserDAOImpl();
-        Cookie[] cookies = getSharedResources().getCookies();
+    public boolean loginFromCookies(HttpServletRequest request) {
+        // Reset logged user
+        setLoggedUser(null);
+
+        Cookie[] cookies = request.getCookies();
 
         String login = null;
         String password = null;
@@ -71,10 +76,8 @@ public class AuthServiceImpl extends BaseService implements AuthService {
     }
 
     @Override
-    public boolean login(String login, String password) {
+    public boolean login(String login, String password, HttpServletResponse response) {
         if (login != null || password != null) {
-            UserDAO userDAO = new UserDAOImpl();
-
             User user = userDAO.getByLogin(login);
             if (user != null) {
                 if (user.getPasswordHash().equals(getPasswordHash(password))) {
@@ -82,11 +85,10 @@ public class AuthServiceImpl extends BaseService implements AuthService {
 
                     // Put login data to cookies
                     Cookie loginCookie = buildLoginCookie(loginCookieName, user.getLogin());
-                    Cookie passCookie = buildLoginCookie(passwordCookieName, getPasswordHash(password));//password);//;
+                    Cookie passCookie = buildLoginCookie(passwordCookieName, getPasswordHash(password));
 
-                    ServiceSharedResources sharedResources = getSharedResources();
-                    sharedResources.addCookie(loginCookie);
-                    sharedResources.addCookie(passCookie);
+                    response.addCookie(loginCookie);
+                    response.addCookie(passCookie);
 
                     return true;
                 }
@@ -107,25 +109,22 @@ public class AuthServiceImpl extends BaseService implements AuthService {
     }
 
     @Override
-    public boolean logout() {
-        ServiceSharedResources sharedResources = getSharedResources();
-        sharedResources.resetCookie(loginCookieName);
-        sharedResources.resetCookie(passwordCookieName);
+    public boolean logout(HttpServletResponse response) {
+        resetCookie(response, loginCookieName);
+        resetCookie(response, passwordCookieName);
+        setLoggedUser(null);
 
         return true;
     }
 
     private void setLoggedUser(User user) {
         loggedUser = user;
-
-        // Put model data
-        Map<String, Object> model = getSharedResources().getModel();
-        model.put("user", user);
     }
 
     private Cookie buildLoginCookie(String name, String value) {
         int cookieDuration = 60 * 60 * 24 * 7;
         Cookie cookie = null;
+
         try {
             cookie = new Cookie(name, URLEncoder.encode(value, "UTF-8"));
             cookie.setMaxAge(cookieDuration);
@@ -133,20 +132,25 @@ public class AuthServiceImpl extends BaseService implements AuthService {
             e.printStackTrace();
         }
 
-
         return cookie;
     }
 
     private static String getPasswordHash(String password){
         String passwordHash = "";
+
         try {
             MessageDigest md5 = MessageDigest.getInstance("MD5");
             passwordHash = new String(md5.digest(password.getBytes()));
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+
         return passwordHash;
     }
 
-
+    private static void resetCookie(HttpServletResponse response, String name) {
+        Cookie removedCookie = new Cookie(name, "");
+        removedCookie.setMaxAge(0);
+        response.addCookie(removedCookie);
+    }
 }

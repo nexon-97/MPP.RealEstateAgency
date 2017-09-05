@@ -1,7 +1,5 @@
 package com.utils.request.validator;
 
-import com.services.shared.ServiceManager;
-
 import javax.servlet.http.HttpServletRequest;
 
 public class IntegerParameterValidator implements RequestParameterValidator<Integer>, RequestValueContainer<Integer> {
@@ -19,7 +17,8 @@ public class IntegerParameterValidator implements RequestParameterValidator<Inte
     @Override
     public boolean validate() {
         this.errorMessage = null;
-        HttpServletRequest request = ServiceManager.getInstance().getSharedResources().getRequest();
+        //HttpServletRequest request = ServiceManager.getInstance().getSharedResources().getRequest();
+        HttpServletRequest request = null;
 
         try {
             this.value = Integer.valueOf(getParamValue(request));

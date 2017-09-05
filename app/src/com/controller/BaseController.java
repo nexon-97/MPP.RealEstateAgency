@@ -1,11 +1,12 @@
 package com.controller;
 
-import com.services.shared.ServiceManager;
-
 import com.utils.request.ParseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.JstlView;
 
@@ -18,38 +19,16 @@ import java.util.Map;
 public class BaseController {
 
     @Autowired
-    protected ApplicationContext context;
-
-    @Autowired
     protected HttpServletRequest request;
 
     protected HttpServletResponse response;
 
-    protected void initControllerResources(HttpServletResponse response) {
-        ServiceManager.build(context, request, response);
-        this.response = response;
 
-        try {
-            request.setCharacterEncoding("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            System.out.println("Unsupported encoding!");
-        }
+    protected String redirect(String path) {
+        return "redirect:" + path;
     }
 
-    protected ModelAndView buildModelAndView(String viewName) {
-        return new ModelAndView(viewName, ServiceManager.getInstance().getSharedResources().getModel());
-    }
-
-    protected ModelAndView buildModelAndView(int responseCode, String viewName) {
-        this.response.setStatus(responseCode);
-        return new ModelAndView(viewName, ServiceManager.getInstance().getSharedResources().getModel());
-    }
-
-    protected ModelAndView redirect(String path) {
-        return new ModelAndView("redirect:" + path);
-    }
-
-    protected ModelAndView redirectToReferer() {
+    protected String redirectToReferer() {
         String referer = request.getHeader("Referer");
         if (referer != null) {
             return redirect(referer);
@@ -61,7 +40,9 @@ public class BaseController {
     protected ModelAndView showUnauthorizedMessageView() {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         JstlView view = new JstlView("views/unauthorized_view.jsp");
-        return new ModelAndView(view, ServiceManager.getInstance().getSharedResources().getModel());
+
+        //return new ModelAndView(view, ServiceManager.getInstance().getSharedResources().getModel());
+        return null;
     }
 
     protected ModelAndView showBadRequestView(String message) {
@@ -75,19 +56,19 @@ public class BaseController {
     }
 
     protected ModelAndView showErrorMessage(String message) {
-        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
-        model.put("msg", message);
+        //Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
+        //model.put("msg", message);
 
         JstlView view = new JstlView("views/error_message.jsp");
-        return new ModelAndView(view, model);
+        return new ModelAndView(view, null);
     }
 
     protected ModelAndView showSuccessMessage(String message) {
-        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
-        model.put("msg", message);
+        //Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
+        //model.put("msg", message);
 
         JstlView view = new JstlView("views/success_message.jsp");
-        return new ModelAndView(view, model);
+        return new ModelAndView(view, null);
     }
 
     protected Integer getIdFromRequest() {

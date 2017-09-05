@@ -1,8 +1,10 @@
 package com.services.impl;
 
 import com.model.*;
+import com.services.AuthService;
 import com.services.PermissionService;
 import com.services.shared.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,9 +13,8 @@ import java.util.Set;
 
 public class PermissionServiceImpl extends BaseService implements PermissionService {
 
-    public PermissionServiceImpl(ServiceSharedResources sharedResources) {
-        super(ServiceId.PermissionService, sharedResources);
-    }
+    @Autowired
+    AuthService authService;
 
     @Override
     public boolean canEditOffer(User user, Offer offer) {
@@ -51,12 +52,12 @@ public class PermissionServiceImpl extends BaseService implements PermissionServ
 
     @Override
     public boolean canEditUserInfo(User user) {
-        User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
+        User loggedUser = authService.getLoggedUser();
         return (loggedUser != null && user != null && loggedUser.equals(user));
     }
 
     private boolean isLoggedUserAdmin() {
-        User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
+        User loggedUser = authService.getLoggedUser();
         return (loggedUser != null && loggedUser.getRoleId().equals(RoleId.Admin));
     }
 }

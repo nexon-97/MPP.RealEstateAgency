@@ -1,7 +1,5 @@
 package com.utils.request.validator;
 
-import com.services.shared.ServiceManager;
-
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -23,7 +21,8 @@ public class BigDecimalParameterValidator implements RequestParameterValidator<B
     @Override
     public boolean validate() {
         this.errorMessage = null;
-        HttpServletRequest request = ServiceManager.getInstance().getSharedResources().getRequest();
+        //HttpServletRequest request = ServiceManager.getInstance().getSharedResources().getRequest();
+        HttpServletRequest request = null;
 
         String paramValue = request.getParameter(this.paramName);
         if ((paramValue == null || "".equals(paramValue)) && this.isNullAllowed) {

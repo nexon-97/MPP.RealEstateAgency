@@ -1,6 +1,5 @@
 package com.utils.request.validator;
 
-import com.services.shared.ServiceManager;
 import com.utils.request.ParseUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +21,7 @@ public class EnumParameterValidator<T extends Enum<T>> implements RequestParamet
     @Override
     public boolean validate() {
         this.errorMessage = null;
-        HttpServletRequest request = ServiceManager.getInstance().getSharedResources().getRequest();
+        HttpServletRequest request = null;
         String paramValue = request.getParameter(this.paramName);
 
         if (paramValue != null) {

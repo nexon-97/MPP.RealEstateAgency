@@ -1,20 +1,17 @@
 package com.dao;
 
-import com.services.shared.ServiceManager;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.context.ApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class BaseDAO {
 
+    @Autowired
     private SessionFactory sessionFactory;
+
     private Session session;
 
-    public BaseDAO() {
-        ApplicationContext context = ServiceManager.getInstance().getSharedResources().getApplicationContext();
-        this.sessionFactory = context.getBean(SessionFactory.class);
-    }
 
     public SessionFactory getSessionFactory() {
         return sessionFactory;

@@ -11,9 +11,7 @@ public abstract class AbstractCrudService<E extends Entity> extends BaseService 
 
     private Class<E> metaclass;
 
-    public AbstractCrudService(ServiceId serviceId, ServiceSharedResources sharedResources, Class<E> metaclass) {
-        super(serviceId, sharedResources);
-
+    public AbstractCrudService(Class<E> metaclass) {
         this.metaclass = metaclass;
     }
 

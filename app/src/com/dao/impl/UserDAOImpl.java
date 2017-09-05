@@ -24,7 +24,7 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
                 e.printStackTrace();
                 return null;
             } finally {
-                session.close();
+                closeSession();
             }
         }
         return user;
@@ -43,7 +43,7 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
         } catch (HibernateException e) {
             e.printStackTrace();
         } finally {
-            session.close();
+            closeSession();
         }
 
         return user;
@@ -64,7 +64,7 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
             if (session.getTransaction() != null) session.getTransaction().rollback();
             e.printStackTrace();
         } finally {
-            session.close();
+            closeSession();
         }
 
         return null;
@@ -82,7 +82,7 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
                 e.printStackTrace();
                 return false;
             } finally {
-                session.close();
+                closeSession();
             }
         }
         return true;
@@ -104,7 +104,7 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
                 if (session.getTransaction() != null) session.getTransaction().rollback();
                 e.printStackTrace();
             } finally {
-                session.close();
+                closeSession();
             }
         }
 
@@ -128,7 +128,7 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
             if (session.getTransaction() != null) session.getTransaction().rollback();
             e.printStackTrace();
         } finally {
-            session.close();
+            closeSession();
         }
 
         return users;
@@ -147,7 +147,7 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
             if (session.getTransaction() != null) session.getTransaction().rollback();
             e.printStackTrace();
         } finally {
-            session.close();
+            closeSession();
         }
 
         return null;

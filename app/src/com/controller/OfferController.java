@@ -3,7 +3,6 @@ package com.controller;
 import com.helper.SystemMessages;
 import com.model.*;
 import com.services.OfferService;
-import com.services.shared.ServiceManager;
 import com.utils.request.constructor.OfferConstructor;
 import com.utils.request.filter.FilterParameter;
 import com.utils.request.filter.OfferFilterParameters;
@@ -27,7 +26,7 @@ public class OfferController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/offer")
     public ModelAndView showOffer(HttpServletResponse response) {
-        initControllerResources(response);
+        /*initControllerResources(response);
 
         Integer id = getIdFromRequest();
         if (id != null) {
@@ -37,16 +36,17 @@ public class OfferController extends BaseController {
             if (offer != null) {
                 Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
                 model.put("offer", offer);
-                return buildModelAndView("offer_view");
+                return buildModelAndView("offer/offer_view");
             }
         }
 
-        return showErrorMessage(HttpServletResponse.SC_NOT_FOUND, SystemMessages.NoSuchOfferMessage);
+        return showErrorMessage(HttpServletResponse.SC_NOT_FOUND, SystemMessages.NoSuchOfferMessage);*/
+        return null;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/addOffer")
     public ModelAndView showAddOfferView(HttpServletResponse response) {
-        initControllerResources(response);
+        /*initControllerResources(response);
         ServiceManager serviceManager = ServiceManager.getInstance();
 
         User loggedUser = serviceManager.getAuthService().getLoggedUser();
@@ -58,7 +58,7 @@ public class OfferController extends BaseController {
                 if (userProperties.size() > 0) {
                     addOfferTypeValuesModel();
 
-                    return buildModelAndView("add_offer_view");
+                    return buildModelAndView("offer/add_offer_view");
                 } else {
                     return showErrorMessage(SystemMessages.NoPropertyMessage);
                 }
@@ -67,12 +67,13 @@ public class OfferController extends BaseController {
             }
         }
 
-        return showUnauthorizedMessageView();
+        return showUnauthorizedMessageView();*/
+        return null;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/addOffer")
     public ModelAndView addOfferAction(HttpServletResponse response) {
-        initControllerResources(response);
+        /*initControllerResources(response);
 
         User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
         if (loggedUser == null) {
@@ -100,12 +101,13 @@ public class OfferController extends BaseController {
         addCurrentUserPropertiesModel();
 
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        return buildModelAndView("/add_offer_view");
+        return buildModelAndView("offer/add_offer_view");*/
+        return null;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/editOffer")
     public ModelAndView showEditOfferView(HttpServletResponse response) {
-        initControllerResources(response);
+        /*initControllerResources(response);
         ServiceManager serviceManager = ServiceManager.getInstance();
 
         Integer offerId = getIdFromRequest();
@@ -121,19 +123,20 @@ public class OfferController extends BaseController {
                     addOfferTypeValuesModel();
                     addCurrentUserPropertiesModel();
 
-                    return buildModelAndView("edit_offer_view");
+                    return buildModelAndView("offer/edit_offer_view");
                 } else {
                     return showErrorMessage(HttpServletResponse.SC_FORBIDDEN, SystemMessages.EditOfferInsufficientRightsMessage);
                 }
             }
         }
 
-        return showErrorMessage(HttpServletResponse.SC_NOT_FOUND, SystemMessages.NoSuchOfferMessage);
+        return showErrorMessage(HttpServletResponse.SC_NOT_FOUND, SystemMessages.NoSuchOfferMessage);*/
+        return null;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/editOffer")
     public ModelAndView editOfferAction(HttpServletResponse response) {
-        initControllerResources(response);
+        /*initControllerResources(response);
 
         boolean offerValid = offerValidationChain.validate();
         Offer offer = constructOfferFromRequest();
@@ -159,12 +162,13 @@ public class OfferController extends BaseController {
         addCurrentUserPropertiesModel();
 
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        return buildModelAndView("/edit_offer_view");
+        return buildModelAndView("offer/edit_offer_view");*/
+        return null;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/deleteOffer")
     public ModelAndView deleteOfferAction(HttpServletResponse response) {
-        initControllerResources(response);
+        /*initControllerResources(response);
 
         Integer offerId = getIdFromRequest();
         if (offerId != null) {
@@ -181,21 +185,23 @@ public class OfferController extends BaseController {
             }
         }
 
-        return showErrorMessage(SystemMessages.NoSuchOfferMessage);
+        return showErrorMessage(SystemMessages.NoSuchOfferMessage);*/
+        return null;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/offerFilter")
     public ModelAndView showOfferFilter(HttpServletResponse response) {
-        initControllerResources(response);
+        /*initControllerResources(response);
 
         addOfferTypeValuesModel();
 
-        return buildModelAndView("offer_filter");
+        return buildModelAndView("offer/offer_filter");*/
+        return null;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/offerFilter")
     public ModelAndView filterOffers(HttpServletResponse response) {
-        initControllerResources(response);
+        /*initControllerResources(response);
 
         OfferFilterParameters filterParameters = new OfferFilterParameters();
         boolean paramsValid = filterParameters.validate();
@@ -212,7 +218,8 @@ public class OfferController extends BaseController {
             addOfferTypeValuesModel();
         }
 
-        return buildModelAndView("offer_filter");
+        return buildModelAndView("offer/offer_filter");*/
+        return null;
     }
 
     private RequestValidationChain buildOfferValidationChain() {
@@ -235,15 +242,15 @@ public class OfferController extends BaseController {
     }
 
     private void addOfferTypeValuesModel() {
-        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
-        model.put("offerTypes", OfferType.values());
+        //Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
+        //model.put("offerTypes", OfferType.values());
     }
 
     private void addCurrentUserPropertiesModel() {
-        User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
+        /*User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
         List<Property> userProperties = ServiceManager.getInstance().getPropertyService().getPropertiesOwnedByUser(loggedUser);
 
         Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
-        model.put("userProperties", userProperties);
+        model.put("userProperties", userProperties);*/
     }
 }

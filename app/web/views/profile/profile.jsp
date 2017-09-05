@@ -35,9 +35,9 @@
                 </div>
             </div>
             <div>
-                <c:if test="${ownProfile != null}"><form method="get" action="/profileEdit">
+                <form method="get" action="/profileEdit">
                     <input type="submit" value="Изменить" class="buttonSimple" />
-                </form></c:if>
+                </form>
             </div>
             <c:choose>
                 <c:when test="${user.roleId == 'User'}">
@@ -49,11 +49,11 @@
                                 <c:if test="${property.flatNumber != null}">, кв. ${property.flatNumber}</c:if></a>
                         </div>
                     </c:forEach>
-                    <c:if test="${ownProfile != null}"><div>
+                    <div>
                         <div class="buttonSimple" style="margin-top: 10px;">
                             <a href="/addProperty">Добавить</a>
                         </div>
-                    </div></c:if>
+                    </div>
 
                     <div class="personalAreaLabel" style="margin-top: 15px">Предложения</div>
                     <c:choose>
@@ -64,11 +64,11 @@
                                      <jsp:include page="../offer/offer_compact_view.jsp" />
                                  </c:forEach>
                             </div>
-                            <c:if test="${ownProfile != null}"><div>
+                            <div>
                                 <div class="buttonSimple">
                                     <a href="/addOffer">Добавить</a>
                                 </div>
-                            </div></c:if>
+                            </div>
                             <div class="personalAreaLabel" style="margin-top: 15px">Отклики на предложения</div>
                             <c:forEach var="dealRequest" items="${uncommittedRealtorRequests}">
                                 <c:set var="buyer" value="${dealRequest.buyer}" />

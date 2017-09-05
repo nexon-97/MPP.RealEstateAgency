@@ -23,7 +23,6 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public boolean updateUser(User user) {
         if (permissionService.canEditUserInfo(user)) {
-            UserDAO userDAO = new UserDAOImpl();
             return userDAO.update(user);
         }
 

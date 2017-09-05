@@ -19,10 +19,8 @@ public class BigDecimalParameterValidator implements RequestParameterValidator<B
     }
 
     @Override
-    public boolean validate() {
+    public boolean validate(HttpServletRequest request) {
         this.errorMessage = null;
-        //HttpServletRequest request = ServiceManager.getInstance().getSharedResources().getRequest();
-        HttpServletRequest request = null;
 
         String paramValue = request.getParameter(this.paramName);
         if ((paramValue == null || "".equals(paramValue)) && this.isNullAllowed) {

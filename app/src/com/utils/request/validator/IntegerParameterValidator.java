@@ -15,10 +15,8 @@ public class IntegerParameterValidator implements RequestParameterValidator<Inte
     }
 
     @Override
-    public boolean validate() {
+    public boolean validate(HttpServletRequest request) {
         this.errorMessage = null;
-        //HttpServletRequest request = ServiceManager.getInstance().getSharedResources().getRequest();
-        HttpServletRequest request = null;
 
         try {
             this.value = Integer.valueOf(getParamValue(request));

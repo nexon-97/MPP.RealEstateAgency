@@ -6,7 +6,9 @@ import com.helper.SystemMessages;
 import com.model.Offer;
 import com.model.Property;
 import com.model.User;
+import com.services.AuthService;
 import com.services.OfferService;
+import com.services.PermissionService;
 import com.services.shared.*;
 import com.utils.request.filter.FilterParameter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +21,16 @@ import java.util.Objects;
 public class OfferServiceImpl extends BaseService implements OfferService {
 
     @Autowired
+    AuthService authService;
+
+    @Autowired
+    PermissionService permissionService;
+
+    @Autowired
     OfferDAO offerDAO;
 
     @Override
     public List<Offer> getUserOffers(User user) {
-        OfferDAO offerDAO = new OfferDAOImpl();
-
         return offerDAO.listUserOffers(user);
     }
 
@@ -35,59 +41,53 @@ public class OfferServiceImpl extends BaseService implements OfferService {
 
     @Override
     public Offer getOfferById(int id) {
-        OfferDAO offerDAO = new OfferDAOImpl();
-
         return offerDAO.get(id);
     }
 
     @Override
     public boolean addOffer(Offer offer) {
-        /*if (isValid(offer)) {
-            User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
+        if (isValid(offer)) {
+            User loggedUser = authService.getLoggedUser();
 
             if (Objects.equals(loggedUser, offer.getProperty().getOwner())) {
-                OfferDAO offerDAO = new OfferDAOImpl();
                 return offerDAO.add(offer);
             } else {
                 setErrorInfo(HttpServletResponse.SC_FORBIDDEN, SystemMessages.UserIsNotOfferOwnerMessage);
             }
         } else {
             setErrorInfo(HttpServletResponse.SC_BAD_REQUEST, SystemMessages.UnacceptableOfferParams);
-        }*/
+        }
 
         return false;
     }
 
     @Override
     public boolean deleteOffer(Offer offer) {
-        /*User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
-        boolean hasPermission = ServiceManager.getInstance().getPermissionService().canDeleteOffer(loggedUser, offer);
+        User loggedUser = authService.getLoggedUser();
+        boolean hasPermission = permissionService.canDeleteOffer(loggedUser, offer);
 
         if (hasPermission) {
-            OfferDAO offerDAO = new OfferDAOImpl();
             return offerDAO.delete(offer);
-        }*/
+        }
 
         return false;
     }
 
     @Override
     public boolean updateOffer(Offer offer) {
-        /*User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
-        boolean hasPermission = ServiceManager.getInstance().getPermissionService().canEditOffer(loggedUser, offer);
+        User loggedUser = authService.getLoggedUser();
+        boolean hasPermission = permissionService.canEditOffer(loggedUser, offer);
 
         if (hasPermission && isValid(offer)) {
-            OfferDAO offerDAO = new OfferDAOImpl();
             return offerDAO.update(offer);
-        }*/
+        }
 
         return false;
     }
 
     @Override
     public List<Offer> filterOffers(List<FilterParameter> filterParameters) {
-        OfferDAO dao = new OfferDAOImpl();
-        return dao.filter(filterParameters);
+        return offerDAO.filter(filterParameters);
     }
 
     @Override
@@ -100,10 +100,8 @@ public class OfferServiceImpl extends BaseService implements OfferService {
     }
 
     @Override
-    public boolean hasOfferOnProperty(Property property){
-        OfferDAO offerDAO = new OfferDAOImpl();
+    public boolean hasOfferOnProperty(Property property) {
         List<Offer> offers = offerDAO.listPropertyOffers(property);
-        if(offers.size()!=0) return true;
-        return false;
+        return offers.size() != 0;
     }
 }

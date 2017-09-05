@@ -15,9 +15,8 @@ public class ScopedBooleanParameterValidator implements RequestParameterValidato
     }
 
     @Override
-    public boolean validate() {
+    public boolean validate(HttpServletRequest request) {
         this.errorMessage = null;
-        HttpServletRequest request = null;
         String[] paramValues = request.getParameterValues(this.scope);
 
         this.value = false;

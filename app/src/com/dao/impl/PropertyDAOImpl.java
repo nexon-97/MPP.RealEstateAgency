@@ -30,7 +30,7 @@ public class PropertyDAOImpl extends BaseDAO implements PropertyDAO {
                 e.printStackTrace();
                 return null;
             } finally {
-                session.close();
+                closeSession();
             }
         }
 
@@ -49,7 +49,7 @@ public class PropertyDAOImpl extends BaseDAO implements PropertyDAO {
                 e.printStackTrace();
                 return false;
             } finally {
-                session.close();
+                closeSession();
             }
         }
         return true;
@@ -67,7 +67,7 @@ public class PropertyDAOImpl extends BaseDAO implements PropertyDAO {
                 e.printStackTrace();
                 return false;
             } finally {
-                session.close();
+                closeSession();
             }
         }
         return true;
@@ -86,7 +86,7 @@ public class PropertyDAOImpl extends BaseDAO implements PropertyDAO {
             } catch (HibernateException e) {
                 e.printStackTrace();
             } finally {
-                session.close();
+                closeSession();
             }
         }
 
@@ -110,7 +110,7 @@ public class PropertyDAOImpl extends BaseDAO implements PropertyDAO {
             } catch (HibernateException e) {
                 e.printStackTrace();
             } finally {
-                session.close();
+                closeSession();
             }
         }
 
@@ -129,8 +129,9 @@ public class PropertyDAOImpl extends BaseDAO implements PropertyDAO {
             if (session.getTransaction() != null) session.getTransaction().rollback();
             e.printStackTrace();
         } finally {
-            session.close();
+            closeSession();
         }
+
         return null;
     }
 }

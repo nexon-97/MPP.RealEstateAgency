@@ -4,17 +4,16 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class FullNameStringParameterValidator extends RegexParameterValidator{
+public class FullNameStringParameterValidator extends RegexParameterValidator {
 
     public FullNameStringParameterValidator(String paramName, boolean isNullAllowed) {
         super(paramName, isNullAllowed);
     }
 
     @Override
-    public boolean validate() {
+    public boolean validate(HttpServletRequest request) {
         this.errorMessage = null;
         try {
-            HttpServletRequest request = null;
             String paramValue = request.getParameter(this.paramName).trim();
             String paramRusName;
             if (paramName.equals("name")){

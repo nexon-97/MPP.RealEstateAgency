@@ -1,27 +1,34 @@
 package com.controller;
 
+import com.exception.AccessLevelException;
+import com.exception.UnauthorizedException;
+import com.security.AccessLevel;
+import com.services.AuthService;
 import com.utils.request.ParseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.UnsupportedEncodingException;
-import java.util.Map;
 
 @Controller
 public class BaseController {
 
     @Autowired
+    protected ApplicationContext context;
+
+    @Autowired
     protected HttpServletRequest request;
 
-    protected HttpServletResponse response;
+    @Autowired
+    protected ViewResolver viewResolver;
+
+    @Autowired
+    protected AuthService authService;
 
 
     protected String redirect(String path) {
@@ -37,21 +44,29 @@ public class BaseController {
         }
     }
 
-    protected ModelAndView showUnauthorizedMessageView() {
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        JstlView view = new JstlView("views/unauthorized_view.jsp");
+    @ExceptionHandler(UnauthorizedException.class)
+    public ModelAndView handleUnauthorizedException() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("unauthorized_view");
 
-        //return new ModelAndView(view, ServiceManager.getInstance().getSharedResources().getModel());
-        return null;
+        return modelAndView;
+    }
+
+    @ExceptionHandler(AccessLevelException.class)
+    public ModelAndView handleAccessLevelException() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.getModel().put("msg", "У Вас недостаточно прав для выполнения данного действия!");
+        modelAndView.setViewName("error_message");
+        return modelAndView;
     }
 
     protected ModelAndView showBadRequestView(String message) {
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        //response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         return showErrorMessage(message);
     }
 
     protected ModelAndView showErrorMessage(int responseCode, String message) {
-        response.setStatus(responseCode);
+        //response.setStatus(responseCode);
         return showErrorMessage(message);
     }
 

@@ -3,7 +3,7 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:p="http://www.springframework.org/schema/p"
        xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
             http://www.springframework.org/schema/beans/spring-beans.xsd
             http://www.springframework.org/schema/context
@@ -11,11 +11,21 @@
             http://www.springframework.org/schema/tx
             http://www.springframework.org/schema/tx/spring-tx.xsd
             http://www.springframework.org/schema/mvc
-            http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+            http://www.springframework.org/schema/mvc/spring-mvc.xsd
+            http://www.springframework.org/schema/aop
+            http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <context:annotation-config/>
     <context:component-scan base-package="com.controller" />
     <mvc:annotation-driven />
+
+    <bean id="aspectSecured" class="com.interceptors.SecureBeforeMethod" />
+    <bean id="secureAccessLevel" class="com.security.SecureAccessLevel" />
+    <aop:aspectj-autoproxy/>
+    <aop:config>
+        <aop:aspect id="aspectSecured" ref="aspectSecured" />
+        <aop:aspect id="secureAccessLevel" ref="secureAccessLevel" />
+    </aop:config>
 
     <bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />

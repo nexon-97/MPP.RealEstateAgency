@@ -1,5 +1,6 @@
 package com.utils.request.validator;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,13 +29,13 @@ public class RequestValidationChain {
         return null;
     }
 
-    public boolean validate() {
+    public boolean validate(HttpServletRequest request) {
         this.errorMessageMap.clear();
         this.validatedValues.clear();
 
         boolean isValidated = true;
         for (RequestParameterValidator validator : chain.values()) {
-            if (!validator.validate()) {
+            if (!validator.validate(request)) {
                 this.errorMessageMap.put(validator.getParameterName(), validator.getErrorMessage());
                 isValidated = false;
             } else {

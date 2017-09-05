@@ -5,12 +5,24 @@ import com.dao.impl.DealRequestDAOImpl;
 import com.model.Deal;
 import com.model.DealRequest;
 import com.model.User;
+import com.services.AuthService;
 import com.services.DealRequestService;
+import com.services.DealService;
 import com.services.shared.AbstractCrudService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 public class DealRequestServiceImpl extends AbstractCrudService<DealRequest> implements DealRequestService {
+
+    @Autowired
+    DealRequestDAO dealRequestDAO;
+
+    @Autowired
+    DealService dealService;
+
+    @Autowired
+    AuthService authService;
 
     public DealRequestServiceImpl() {
         super(DealRequest.class);
@@ -31,8 +43,7 @@ public class DealRequestServiceImpl extends AbstractCrudService<DealRequest> imp
                 return false;
             }
 
-            //return ServiceManager.getInstance().getDealService().add(deal);
-            return false;
+            return dealService.add(deal);
         } else {
             return super.update(request);
         }
@@ -42,17 +53,16 @@ public class DealRequestServiceImpl extends AbstractCrudService<DealRequest> imp
     public boolean add(DealRequest request) {
         if (validate(request)) {
             // Add validation flag to request initiator
-            /*User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
+            User loggedUser = authService.getLoggedUser();
             if (loggedUser != null && loggedUser.equals(request.getBuyer())) {
                 request.setBuyerValidation(true);
             } else if (loggedUser != null && loggedUser.equals(request.getRealtor())) {
                 request.setRealtorValidation(true);
             }
 
-            DealRequestDAO dao = new DealRequestDAOImpl();
-            if (dao.get(request.getId()) == null) {
-                return dao.add(request);
-            }*/
+            if (dealRequestDAO.get(request.getId()) == null) {
+                return dealRequestDAO.add(request);
+            }
         }
 
         return super.add(request);
@@ -60,26 +70,22 @@ public class DealRequestServiceImpl extends AbstractCrudService<DealRequest> imp
 
     @Override
     public List<DealRequest> listUncommittedRealtorRequests(User realtor) {
-        DealRequestDAO dao = new DealRequestDAOImpl();
-        return dao.listUncommittedRealtorRequests(realtor);
+        return dealRequestDAO.listUncommittedRealtorRequests(realtor);
     }
 
     @Override
     public List<DealRequest> listUncommittedBuyerRequests() {
-        DealRequestDAO dao = new DealRequestDAOImpl();
-        return dao.listUncommittedBuyerRequests();
+        return dealRequestDAO.listUncommittedBuyerRequests();
     }
 
     @Override
     public List<DealRequest> listUncommittedSellerRequests(User seller) {
-        DealRequestDAO dao = new DealRequestDAOImpl();
-        return dao.listUncommittedSellerRequests(seller);
+        return dealRequestDAO.listUncommittedSellerRequests(seller);
     }
 
     @Override
     public boolean isAlreadyRegistered(DealRequest request) {
-        DealRequestDAO dao = new DealRequestDAOImpl();
-        return dao.checkDealRequestClone(request);
+        return dealRequestDAO.checkDealRequestClone(request);
     }
 
     private boolean validate(DealRequest request) {

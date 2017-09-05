@@ -18,10 +18,9 @@ public class EmailStringParameterValidator extends RegexParameterValidator {
     }
 
     @Override
-    public boolean validate() {
+    public boolean validate(HttpServletRequest request) {
         this.errorMessage = null;
         try {
-            HttpServletRequest request = null;
             String paramValue = request.getParameter(this.paramName).trim();
             if ("".equals(paramValue)){
                 return checkNullPermission("E-mail отсутствует");

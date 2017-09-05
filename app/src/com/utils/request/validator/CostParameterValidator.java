@@ -11,14 +11,13 @@ public class CostParameterValidator extends BigDecimalParameterValidator {
     }
 
     @Override
-    public boolean validate() {
-        HttpServletRequest request = null;
+    public boolean validate(HttpServletRequest request) {
         String value = request.getParameter(this.paramName);
         Pattern pattern = Pattern.compile("\\d+(\\.\\d{1,2})?");
         boolean match = pattern.matcher(value).matches();
 
         if (match) {
-            if (super.validate()) {
+            if (super.validate(request)) {
                 if (!(getValue().compareTo(new BigDecimal(0.01)) > 0)) {
                     this.errorMessage = "Цена не должна быть меньше 0 $!";
                     return false;

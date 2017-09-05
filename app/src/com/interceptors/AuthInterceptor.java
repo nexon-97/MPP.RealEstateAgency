@@ -16,11 +16,15 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
+        request.setCharacterEncoding("UTF-8");
+
         authService.loginFromCookies(request);
         return true;
     }
 
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
-        modelAndView.getModel().put("user", authService.getLoggedUser());
+        if (modelAndView != null) {
+            modelAndView.getModel().put("user", authService.getLoggedUser());
+        }
     }
 }

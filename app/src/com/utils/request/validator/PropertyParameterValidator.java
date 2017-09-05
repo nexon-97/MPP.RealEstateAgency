@@ -23,11 +23,9 @@ public class PropertyParameterValidator implements RequestParameterValidator<Pro
     }
 
     @Override
-    public boolean validate() {
+    public boolean validate(HttpServletRequest request) {
         this.errorMessage = null;
         this.value = null;
-
-        HttpServletRequest request = null;
 
         String paramValue = request.getParameter(this.paramName);
         if (paramValue == null && this.isNullAllowed) {

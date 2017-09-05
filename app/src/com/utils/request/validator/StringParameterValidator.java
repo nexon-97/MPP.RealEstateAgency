@@ -16,11 +16,8 @@ public class StringParameterValidator implements RequestParameterValidator<Strin
     }
 
     @Override
-    public boolean validate() {
-        //HttpServletRequest request = ServiceManager.getInstance().getSharedResources().getRequest();
-        HttpServletRequest request = null;
-                this.value = request.getParameter(this.paramName);
-
+    public boolean validate(HttpServletRequest request) {
+        this.value = request.getParameter(this.paramName);
         return this.value != null;
     }
 

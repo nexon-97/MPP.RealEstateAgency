@@ -68,6 +68,10 @@
           <element id="library" level="project" name="Maven: net.bytebuddy:byte-buddy:1.7.0" />
           <element id="library" level="project" name="Maven: org.mockito:mockito-core:2.9.0" />
           <element id="library" level="project" name="Maven: org.objenesis:objenesis:2.6" />
+          <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:4.2.3.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-web:4.2.3.RELEASE" />
+          <element id="library" level="project" name="Maven: org.aspectj:aspectjweaver:1.8.10" />
         </element>
       </element>
     </root>

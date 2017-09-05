@@ -1,31 +1,39 @@
 package com.services.impl;
 
 import com.dao.PropertyDAO;
-import com.dao.impl.PropertyDAOImpl;
 import com.model.Property;
 import com.model.User;
 import com.model.PropertyType;
 
+import com.services.AuthService;
+import com.services.PermissionService;
 import com.services.PropertyService;
 import com.services.shared.BaseService;
 import com.utils.request.validator.RequestValidationChain;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Map;
 
 public class PropertyServiceImpl extends BaseService implements PropertyService {
 
+    @Autowired
+    AuthService authService;
+
+    @Autowired
+    PermissionService permissionService;
+
+    @Autowired
+    PropertyDAO propertyDAO;
+
     @Override
     public Property getPropertyById(int id) {
-        PropertyDAO dao = new PropertyDAOImpl();
-
-        return dao.getPropertyById(id);
+        return propertyDAO.getPropertyById(id);
     }
 
     @Override
     public boolean addProperty(RequestValidationChain requestValidationChain) {
         Property property = new Property();
-        PropertyDAO propertyDAO = new PropertyDAOImpl();
         boolean isCorrectFields = true;
 
         property.setType((PropertyType)requestValidationChain.getValue("type"));
@@ -46,12 +54,10 @@ public class PropertyServiceImpl extends BaseService implements PropertyService 
         property.setHasStove((Boolean) requestValidationChain.getValue("stove"));
         property.setDescription((String)requestValidationChain.getValue("description"));
 
-        /*User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
+        User loggedUser = authService.getLoggedUser();
         property.setOwner(loggedUser);
 
-        Map<String, Object> model = getSharedResources().getModel();
-        return propertyDAO.addProperty(property);*/
-        return false;
+        return propertyDAO.addProperty(property);
     }
 
     @Override
@@ -61,31 +67,23 @@ public class PropertyServiceImpl extends BaseService implements PropertyService 
 
     @Override
     public boolean deleteProperty(Property property) {
-        /*User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
-        boolean hasPermission = ServiceManager.getInstance().getPermissionService().canDeleteProperty(loggedUser, property);
+        User loggedUser = authService.getLoggedUser();
+        boolean hasPermission = permissionService.canDeleteProperty(loggedUser, property);
 
         if (hasPermission) {
-            PropertyDAO propertyDAO = new PropertyDAOImpl();
             return propertyDAO.deleteProperty(property);
-        }*/
+        }
 
         return false;
     }
 
     @Override
     public List<Property> getPropertiesOwnedByUser(User user) {
-        PropertyDAO propertyDAO = new PropertyDAOImpl();
-
         return propertyDAO.getPropertiesOwnedByUser(user);
     }
 
     @Override
     public List<Property> getList() {
-        PropertyDAO propertyDAO = new PropertyDAOImpl();
         return propertyDAO.list();
-    }
-
-    private boolean checkNotNullNumber(Integer data) {
-        return data>0;
     }
 }

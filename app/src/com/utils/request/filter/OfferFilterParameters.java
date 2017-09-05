@@ -5,6 +5,7 @@ import com.model.OfferType;
 import com.model.Property;
 import com.utils.request.validator.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +40,8 @@ public class OfferFilterParameters {
                 .addValidator(new ScopedBooleanParameterValidator("comforts", "fridge"));
     }
 
-    public boolean validate() {
-        return validatorChain.validate();
+    public boolean validate(HttpServletRequest request) {
+        return validatorChain.validate(request);
     }
 
     public List<FilterParameter> construct() {

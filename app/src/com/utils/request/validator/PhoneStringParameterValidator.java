@@ -11,10 +11,9 @@ public class PhoneStringParameterValidator extends RegexParameterValidator {
     }
 
     @Override
-    public boolean validate() {
+    public boolean validate(HttpServletRequest request) {
         this.errorMessage = null;
         try {
-            HttpServletRequest request = null;
             String paramValue = request.getParameter(this.paramName).trim();
             if ("".equals(paramValue)){
                 return checkNullPermission("Номер телефона отсутствует");

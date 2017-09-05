@@ -1,13 +1,10 @@
 package com.services.impl;
 
 import com.dao.UserDAO;
-import com.dao.impl.UserDAOImpl;
 import com.model.User;
 import com.services.AuthService;
 import com.services.shared.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,7 +13,6 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Map;
 
 public class AuthServiceImpl extends BaseService implements AuthService {
 

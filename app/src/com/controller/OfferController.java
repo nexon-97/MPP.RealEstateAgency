@@ -34,12 +34,6 @@ public class OfferController extends BaseController {
     @Autowired
     PermissionService permissionService;
 
-    private RequestValidationChain offerValidationChain;
-
-    public OfferController() {
-        this.offerValidationChain = buildOfferValidationChain();
-    }
-
     @GetMapping(value = "/offer")
     public String showOffer(@RequestParam("id") int offerId, Model model) {
         Offer offer = offerService.getOfferById(offerId);
@@ -67,14 +61,14 @@ public class OfferController extends BaseController {
 
     @PostMapping(value = "/addOffer")
     @RoleCheck(RoleId.User)
-    public String addOfferAction(@RequestParam("id") int offerId, Model model) {
+    public String addOfferAction(@RequestParam(value = "id", required = false) Integer offerId, Model model) {
+        RequestValidationChain offerValidationChain = buildOfferValidationChain();
         Offer offer = null;
 
         boolean offerValid = offerValidationChain.validate(request);
         if (offerValid) {
             OfferConstructor constructor = new OfferConstructor();
             offer = constructor.construct(offerValidationChain.getValidatedValues());
-            offer.setId(offerId);
 
             if (offerService.addOffer(offer)) {
                 return redirect("/profile");
@@ -115,6 +109,7 @@ public class OfferController extends BaseController {
     @PostMapping(value = "/editOffer")
     @RoleCheck(RoleId.User)
     public String editOfferAction(@RequestParam("id") int offerId, Model model) {
+        RequestValidationChain offerValidationChain = buildOfferValidationChain();
         boolean offerValid = offerValidationChain.validate(request);
         OfferConstructor constructor = new OfferConstructor();
         Offer offer = constructor.construct(offerValidationChain.getValidatedValues());
@@ -184,7 +179,7 @@ public class OfferController extends BaseController {
     private RequestValidationChain buildOfferValidationChain() {
         return new RequestValidationChain()
             .addValidator(new CostParameterValidator("cost", false))
-            .addValidator(new PropertyParameterValidator("property", false))
+            .addValidator(new PropertyParameterValidator(propertyService, "property", false))
             .addValidator(new EnumParameterValidator<>(OfferType.class, "offerType", false));
     }
 

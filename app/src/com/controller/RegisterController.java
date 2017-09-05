@@ -1,61 +1,50 @@
 package com.controller;
 
+import com.model.RoleId;
+import com.security.annotations.RoleCheck;
 import com.services.RegisterService;
 import com.utils.request.validator.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class RegisterController extends BaseController{
 
-    @RequestMapping(method = RequestMethod.GET, value = "/register")
-    public ModelAndView visitRegistrationForm(HttpServletResponse response) {
-        /*initControllerResources(response);
-        if (ServiceManager.getInstance().getAuthService().getLoggedUser() != null){
-            return buildModelAndView("register/register_logged");
-        }
-        else {
-            return buildModelAndView("register/register");
-        }*/
+    @Autowired
+    RegisterService registerService;
 
-        return null;
+    @GetMapping(value = "/register")
+    @RoleCheck(RoleId.Guest)
+    public String visitRegistrationForm() {
+        return "register/register";
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/register")
-    public ModelAndView register(HttpServletResponse response) {
-        /*initControllerResources(response);
-        RegisterService registerService = ServiceManager.getInstance().getRegisterService();
+    @PostMapping(value = "/register")
+    @RoleCheck(RoleId.Guest)
+    public String register(Model model) {
         RequestValidationChain requestValidator = buildRegisterDataValidator();
-        if (requestValidator.validate()){
+        if (requestValidator.validate(request)) {
             boolean isAdded = registerService.register(requestValidator);
-            if (isAdded){
-                return buildModelAndView("register/register_success");
-            }
-            else {
-                Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
-                model.put("values", requestValidator.getValidatedValues());
-                model.put("loginEmpty", false);
-                return buildModelAndView("register/register");
+            if (isAdded) {
+                return "register/register_success";
+            } else {
+                model.addAttribute("values", requestValidator.getValidatedValues());
+                model.addAttribute("loginEmpty", false);
+
+                return "register/register";
             }
         } else {
-            return getViewWithErrors("errors", requestValidator.getErrorMessageMap(), requestValidator.getValidatedValues());
-        }*/
-
-        return null;
+            return getViewWithErrors(model, "errors", requestValidator.getErrorMessageMap(), requestValidator.getValidatedValues());
+        }
     }
 
-    private ModelAndView getViewWithErrors(String key, Object error, Object values){
-        /*Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
-        model.put(key, error);
-        model.put("values", values);
-        return buildModelAndView("register/register");*/
-
-        return null;
+    private String getViewWithErrors(Model model, String key, Object error, Object values){
+        model.addAttribute(key, error);
+        model.addAttribute("values", values);
+        return "register/register";
     }
 
     private RequestValidationChain buildRegisterDataValidator(){
@@ -67,6 +56,5 @@ public class RegisterController extends BaseController{
                 .addValidator(new FullNameStringParameterValidator("surname", false))
                 .addValidator(new FullNameStringParameterValidator("patronymic", false))
                 .addValidator(new PhoneStringParameterValidator("phone", false));
-
     }
 }

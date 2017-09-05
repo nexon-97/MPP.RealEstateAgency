@@ -1,24 +1,23 @@
 package com.services.impl;
 
 import com.dao.UserDAO;
-import com.dao.impl.UserDAOImpl;
-
 import com.model.RoleId;
 import com.model.User;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
 import com.services.RegisterService;
 import com.services.shared.BaseService;
 import com.utils.request.validator.RequestValidationChain;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class RegisterServiceImpl extends BaseService implements RegisterService {
+
+    @Autowired
+    UserDAO userDAO;
 
     @Override
     public boolean register(RequestValidationChain requestValidationChain) {
         User user = new User();
-        UserDAO userDAO = new UserDAOImpl();
 
         user.setRoleId(RoleId.User);
         user.setLogin((String) requestValidationChain.getValue("login"));
@@ -37,7 +36,6 @@ public class RegisterServiceImpl extends BaseService implements RegisterService 
 
     @Override
     public boolean checkEmptyLogin(String login) {
-        UserDAO userDAO = new UserDAOImpl();
         return userDAO.getByLogin(login) == null;
     }
 

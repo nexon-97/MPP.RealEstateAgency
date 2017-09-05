@@ -1,29 +1,27 @@
 package com.services.impl;
 
 import com.dao.DealDAO;
-import com.dao.DealRequestDAO;
-import com.dao.impl.DealDAOImpl;
-import com.dao.impl.DealRequestDAOImpl;
 import com.model.*;
-import com.services.DealRequestService;
 import com.services.DealService;
 import com.services.DocumentService;
 import com.services.TransactionService;
 import com.services.shared.*;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 public class DealServiceImpl extends AbstractCrudService<Deal> implements DealService {
 
     @Autowired
-    TransactionService transactionService;
+    private TransactionService transactionService;
 
-    public DealServiceImpl() {
-        super(Deal.class);
+    private DealDAO dealDAO;
+
+    @Autowired
+    public DealServiceImpl(DealDAO dealDAO) {
+        super(dealDAO);
+        this.dealDAO = dealDAO;
     }
 
     @Override
@@ -63,27 +61,22 @@ public class DealServiceImpl extends AbstractCrudService<Deal> implements DealSe
 
     @Override
     public List<Deal> listUnsignedDeals() {
-        DealDAO dealDAO = new DealDAOImpl();
         return dealDAO.listUnsigned();
     }
 
     @Override
     public List<Deal> listBrokerDeals(User broker) {
-        DealDAO dealDAO = new DealDAOImpl();
         return dealDAO.listBrokerDeals(broker);
     }
 
     @Override
     public List<Deal> listRealtorDeals(User realtor) {
-        DealDAO dealDAO = new DealDAOImpl();
         return dealDAO.listRealtorValidatedDeals(realtor);
     }
 
     @Override
     public boolean hasDealOnOffer(Offer offer){
-        DealDAO dealDAO = new DealDAOImpl();
         List<Deal> deals = dealDAO.listOfferDeals(offer);
-        if(deals.size()!=0) return true;
-        return false;
+        return (deals.size() != 0);
     }
 }

@@ -18,9 +18,6 @@ import java.util.Map;
 public class ProfileController extends BaseController {
 
     @Autowired
-    AuthService authService;
-
-    @Autowired
     PropertyService propertyService;
 
     @Autowired
@@ -45,7 +42,7 @@ public class ProfileController extends BaseController {
         model.addAttribute("userProperties", userProperties);
         model.addAttribute("userOffers", userOffers);
 
-        if (loggedUser.getRoleId().equals(RoleId.Rieltor)) {
+        if (loggedUser.getRoleId().equals(RoleId.Realtor)) {
             List<DealRequest> uncommitedRequests = dealRequestService.listUncommittedRealtorRequests(loggedUser);
             model.addAttribute("uncommittedRealtorRequests", uncommitedRequests);
         } else if (loggedUser.getRoleId().equals(RoleId.Broker)) {

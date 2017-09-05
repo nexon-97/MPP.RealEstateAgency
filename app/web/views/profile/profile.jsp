@@ -95,7 +95,7 @@
                     <c:set var="dealHistory" value="${dealHistory}" scope="request" />
                     <jsp:include page="broker_view.jsp"/>
                 </c:when>
-                <c:when test="${user.roleId == 'Rieltor'}">
+                <c:when test="${user.roleId == 'Realtor'}">
                     <c:set var="uncommittedRequests" value="${uncommittedRealtorRequests}" scope="request" />
                     <jsp:include page="realtor_view.jsp"/>
                 </c:when>

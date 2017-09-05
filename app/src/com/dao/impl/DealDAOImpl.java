@@ -1,13 +1,11 @@
 package com.dao.impl;
 
 import com.dao.AbstractCrudDAO;
-import com.dao.BaseDAO;
 import com.dao.DealDAO;
 import com.model.*;
 import org.hibernate.*;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.engine.internal.JoinSequence;
 
 import java.util.List;
 
@@ -31,6 +29,8 @@ public class DealDAOImpl extends AbstractCrudDAO<Deal> implements DealDAO {
             }
             catch (HibernateException e){
                 e.printStackTrace();
+            } finally {
+                closeSession();
             }
         }
 
@@ -51,6 +51,8 @@ public class DealDAOImpl extends AbstractCrudDAO<Deal> implements DealDAO {
             }
             catch (HibernateException e){
                 e.printStackTrace();
+            } finally {
+                closeSession();
             }
         }
 
@@ -72,7 +74,7 @@ public class DealDAOImpl extends AbstractCrudDAO<Deal> implements DealDAO {
             if (session.getTransaction() != null) session.getTransaction().rollback();
             e.printStackTrace();
         } finally {
-            session.close();
+            closeSession();
         }
 
         return null;

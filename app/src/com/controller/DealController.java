@@ -1,277 +1,165 @@
 package com.controller;
 
 import com.dao.DealDAO;
-import com.dao.impl.DealDAOImpl;
+import com.exception.EntityNotFoundException;
+import com.exception.GenericException;
 import com.helper.SystemMessages;
 import com.model.*;
+import com.security.annotations.RoleCheck;
 import com.services.DealRequestService;
 import com.services.DealService;
+import com.services.OfferService;
 import com.services.UserService;
-import com.utils.request.ParseUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletResponse;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class DealController extends BaseController {
 
-    @RequestMapping(method = RequestMethod.GET, value = "/deal")
-    public ModelAndView showDeal(HttpServletResponse response) {
-        /*initControllerResources(response);
-        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
+    @Autowired
+    DealDAO dealDAO;
 
-        if (!hasAdminRights()) {
-            return showInsufficientRightsMessage();
-        }
+    @Autowired
+    OfferService offerService;
 
-        int dealId;
-        try {
-            dealId = Integer.valueOf(request.getParameter("id"));
-        } catch (NullPointerException | NumberFormatException e) {
-            model.put("msg", "Такой стелки не существует!");
-            return buildModelAndView("../error_message");
-        }
+    @Autowired
+    UserService userService;
 
-        DealDAO dao = new DealDAOImpl();
-        Deal deal = dao.get(dealId);
+    @Autowired
+    DealRequestService dealRequestService;
+
+    @Autowired
+    DealService dealService;
+
+    @GetMapping(value = "/deal")
+    @RoleCheck(RoleId.Admin)
+    public String showDeal(@RequestParam("id") int dealId, Model model) {
+        Deal deal = dealDAO.get(dealId);
         if (deal != null) {
-            model.put("deal", deal);
+            model.addAttribute("deal", deal);
         } else {
-            model.put("msg", "Такой стелки не существует!");
-            return buildModelAndView("../error_message");
+            throw new GenericException("Такой стелки не существует!");
         }
 
-        return buildModelAndView("deal_view");*/
-        return null;
+        return "deal/deal_view";
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/addDealRequest")
-    public ModelAndView addOfferRequest(HttpServletResponse response) {
-        /*initControllerResources(response);
-
-        ServiceManager serviceManager = ServiceManager.getInstance();
-        User loggedUser = serviceManager.getAuthService().getLoggedUser();
-        if (loggedUser != null) {
-            if (!loggedUser.getRoleId().equals(RoleId.User)) {
-                return showErrorMessage(HttpServletResponse.SC_FORBIDDEN, "Вы не имеете право откликаться на предложения!");
-            }
-
-            Integer offerId = getIdFromRequest();
-            Integer buyerId = getBuyerIdFromRequest();
-
-            if (offerId == null || buyerId == null) {
-                return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, "Отклик на предложение поврежден!");
-            }
-
-            Offer offer = serviceManager.getOfferService().getOfferById(offerId);
+    @GetMapping(value = "/addDealRequest")
+    @RoleCheck(RoleId.User)
+    public String addOfferRequest(@RequestParam("id") int offerId,
+                                  @RequestParam("buyer") int buyerId,
+                                  @RequestParam(value = "realtor", required = false) Integer realtorId,
+                                  Model model) {
+            Offer offer = offerService.getOfferById(offerId);
             if (offer == null) {
-                return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, SystemMessages.NoSuchOfferMessage);
+                throw new GenericException(SystemMessages.NoSuchOfferMessage);
             }
 
-            User buyer = serviceManager.getUserService().getUserByID(buyerId);
+            User buyer = userService.getUserByID(buyerId);
             if (buyer == null) {
-                return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, SystemMessages.InvalidDealRequestBuyerAssigned);
-            } else if (!loggedUser.equals(buyer)) {
-                return showErrorMessage(HttpServletResponse.SC_FORBIDDEN, "Вы не можете откликаться на предложение от имени другого пользователя!");
+                throw new GenericException(SystemMessages.InvalidDealRequestBuyerAssigned);
+            } else if (!authService.getLoggedUser().equals(buyer)) {
+                throw new GenericException("Вы не можете откликаться на предложение от имени другого пользователя!");
             }
 
             DealRequest dealRequest = new DealRequest();
             dealRequest.setOffer(offer);
             dealRequest.setBuyer(buyer);
 
-            if (serviceManager.getDealRequestService().isAlreadyRegistered(dealRequest)) {
-                return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, SystemMessages.SuchDealRequestAlreadyRegistered);
+            if (dealRequestService.isAlreadyRegistered(dealRequest)) {
+                throw new GenericException(SystemMessages.SuchDealRequestAlreadyRegistered);
             }
 
             // Add optional realtor
-            Integer realtorId = getRealtorIdFromRequest();
             if (realtorId == null) {
                 // Add model param to construct realtors selector
-                Map<String, Object> model = serviceManager.getSharedResources().getModel();
+                List<User> realtorsList = userService.getUsersByRole(RoleId.Realtor);
 
-                UserService userService = serviceManager.getUserService();
-                List<User> realtorsList = userService.getUsersByRole(RoleId.Rieltor);
+                model.addAttribute("realtorsList", realtorsList);
+                model.addAttribute("offer", offer);
 
-                model.put("realtorsList", realtorsList);
-                model.put("offer", offer);
-
-                return buildModelAndView("add_deal_request_view");
+                return "deal/add_deal_request_view";
             } else if (realtorId != 0) {
-                boolean realtorAdded = addDealRequestRealtor(dealRequest);
+                boolean realtorAdded = addDealRequestRealtor(dealRequest, realtorId);
                 if (!realtorAdded) {
-                    return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, SystemMessages.FailedToAddRealtorToDealRequest);
+                    throw new GenericException(SystemMessages.FailedToAddRealtorToDealRequest);
                 }
             }
 
-            boolean requestAdded = serviceManager.getDealRequestService().add(dealRequest);
+            boolean requestAdded = dealRequestService.add(dealRequest);
             if (!requestAdded) {
-                return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, SystemMessages.FailedToAddDealRequest);
-            } else {
-                return showSuccessMessage(SystemMessages.DealRequestHasBeenRegistered);
+                throw new GenericException(SystemMessages.FailedToAddDealRequest);
             }
-        }
 
-        return showUnauthorizedMessageView();*/
-        return null;
+            model.addAttribute("msg", SystemMessages.DealRequestHasBeenRegistered);
+            return "success_message";
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/confirmDealRealtor")
-    public ModelAndView confirmDealRequestRealtor(HttpServletResponse response) {
-        /*initControllerResources(response);
-
-        ServiceManager serviceManager = ServiceManager.getInstance();
-        User loggedUser = serviceManager.getAuthService().getLoggedUser();
-        if (loggedUser != null && loggedUser.getRoleId().equals(RoleId.Rieltor)) {
-            Integer requestId = getIdFromRequest();
-            Integer realtorId = getRealtorIdFromRequest();
-
-            if (requestId != null && realtorId != null) {
-                DealRequestService dealRequestService = serviceManager.getDealRequestService();
-                DealRequest request = dealRequestService.get(requestId);
-
-                if (request != null) {
-                    if (!request.getRealtor().equals(loggedUser)) {
-                        return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, "Вы не были помечены как риэлтор в этом отклике!");
-                    }
-
-                    request.setRealtorValidation(true);
-                    dealRequestService.update(request);
-
-                    return redirect("/profile");
-                } else {
-                    return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, "Такого отклика не существует!");
-                }
-            } else {
-                return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, "Не удалось изменить риэлтора в отклике на предложение!");
+    @GetMapping(value = "/confirmDealRealtor")
+    @RoleCheck(RoleId.Realtor)
+    public String confirmDealRequestRealtor(@RequestParam("id") int requestId, @RequestParam("realtor") int realtorId) {
+        DealRequest request = dealRequestService.get(requestId);
+        if (request != null) {
+            if (!request.getRealtor().equals(authService.getLoggedUser())) {
+                throw new GenericException("Вы не были помечены как риэлтор в этом отклике!");
             }
-        }
 
-        return showErrorMessage("Вы не риэлтор!");*/
-        return null;
+            request.setRealtorValidation(true);
+            dealRequestService.update(request);
+
+            return redirect("/profile");
+        } else {
+            throw new EntityNotFoundException("Такого отклика не существует!");
+        }
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/confirmDealSeller")
-    public ModelAndView confirmDealRequestSeller(HttpServletResponse response) {
-        /*initControllerResources(response);
-
-        ServiceManager serviceManager = ServiceManager.getInstance();
-        User loggedUser = serviceManager.getAuthService().getLoggedUser();
-        if (loggedUser != null) {
-            Integer requestId = getIdFromRequest();
-            Integer sellerId = getSellerIdFromRequest();
-
-            if (requestId != null && sellerId != null) {
-                DealRequestService dealRequestService = serviceManager.getDealRequestService();
-                DealRequest request = dealRequestService.get(requestId);
-
-                if (request != null) {
-                    if (!request.getOffer().getProperty().getOwner().equals(loggedUser)) {
-                        return showErrorMessage("Вы не владелец данной собственности!");
-                    }
-
-                    request.setSellerValidation(true);
-                    dealRequestService.update(request);
-
-                    return redirect("/profile");
-                } else {
-                    return showErrorMessage("Такого отклика не существует!");
-                }
-            } else {
-                return showErrorMessage("Не удалось подтвердить отклик на предложение!");
+    @GetMapping(value = "/confirmDealSeller")
+    @RoleCheck(RoleId.User)
+    public String confirmDealRequestSeller(@RequestParam("id") int requestId, @RequestParam("seller") int sellerId) {
+        DealRequest request = dealRequestService.get(requestId);
+        if (request != null) {
+            if (!request.getOffer().getProperty().getOwner().equals(authService.getLoggedUser())) {
+                throw new GenericException("Вы не владелец данной собственности!");
             }
-        }
 
-        return showUnauthorizedMessageView();*/
-        return null;
+            request.setSellerValidation(true);
+            dealRequestService.update(request);
+
+            return redirect("/profile");
+        } else {
+            throw new GenericException("Такого отклика не существует!");
+        }
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/confirmDealBroker")
-    public ModelAndView confirmDealBroker(HttpServletResponse response) {
-        /*initControllerResources(response);
-
-        User currentUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
-        if (!currentUser.getRoleId().equals(RoleId.Broker)) {
-            return showErrorMessage(SystemMessages.InsufficientRightsMessage);
-        }
-
-        Integer id = getIdFromRequest();
-        if (id != null) {
-            DealService dealService = ServiceManager.getInstance().getDealService();
-            Deal deal = dealService.get(id);
-
-            if (deal != null) {
-                if (dealService.signDeal(deal, currentUser)) {
-                    return redirectToReferer();
-                } else {
-                    return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, "Не удалось закрепить брокера за сделкой!");
-                }
+    @PostMapping(value = "/confirmDealBroker")
+    @RoleCheck(RoleId.Broker)
+    public String confirmDealBroker(@RequestParam("id") int id) {
+        Deal deal = dealService.get(id);
+        if (deal != null) {
+            if (dealService.signDeal(deal, authService.getLoggedUser())) {
+                return redirectToReferer();
             } else {
-                return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, SystemMessages.NoSuchDealMessage);
+                throw new GenericException("Не удалось закрепить брокера за сделкой!");
             }
         } else {
-            return showErrorMessage(HttpServletResponse.SC_BAD_REQUEST, SystemMessages.NoDealIdProvidedMessage);
-        }*/
-        return null;
-    }
-
-    private boolean hasAdminRights() {
-        //User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
-        //return loggedUser != null && loggedUser.getRoleId().equals(RoleId.Admin);
-        return false;
-    }
-
-    private Integer getBuyerIdFromRequest() {
-        String buyerIdParam = request.getParameter("buyer");
-        if (buyerIdParam != null) {
-            return ParseUtils.parseInteger(buyerIdParam);
+            throw new GenericException(SystemMessages.NoSuchDealMessage);
         }
-
-        return null;
     }
 
-    private Integer getRealtorIdFromRequest() {
-        String realtorIdParam = request.getParameter("realtor");
-        if (realtorIdParam != null) {
-            return ParseUtils.parseInteger(realtorIdParam);
-        }
-
-        return null;
-    }
-
-    private Integer getSellerIdFromRequest() {
-        String sellerIdParam = request.getParameter("seller");
-        if (sellerIdParam != null) {
-            return ParseUtils.parseInteger(sellerIdParam);
-        }
-
-        return null;
-    }
-
-    private boolean addDealRequestRealtor(DealRequest request) {
-        /*Integer realtorId = getRealtorIdFromRequest();
+    private boolean addDealRequestRealtor(DealRequest request, Integer realtorId) {
         if (realtorId != null) {
-            User realtor = ServiceManager.getInstance().getUserService().getUserByID(realtorId);
-
+            User realtor = userService.getUserByID(realtorId);
             if (realtor != null) {
                 request.setRealtor(realtor);
                 request.setRealtorValidation(false);
 
                 return true;
             }
-        }*/
+        }
 
         return false;
-    }
-
-    private ModelAndView showInsufficientRightsMessage() {
-        /*Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
-        model.put("msg", "Нужны права администратора для просмотра этой страницы!");
-        return buildModelAndView("../error_message");*/
-        return null;
     }
 }

@@ -1,156 +1,107 @@
 package com.controller;
 
+import com.exception.GenericException;
 import com.model.Offer;
 import com.model.Property;
 import com.model.RoleId;
 import com.model.User;
-import com.services.*;
+import com.security.annotations.RoleCheck;
+import com.services.OfferService;
+import com.services.PropertyService;
+import com.services.UserService;
 import com.utils.request.validator.EnumParameterValidator;
 import com.utils.request.validator.LoginStringParameterValidator;
 import com.utils.request.validator.RequestValidationChain;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 @Controller
 public class UserController extends BaseController {
 
-    @RequestMapping(method = RequestMethod.GET, value = "/user_roles")
-    public ModelAndView visitRegistrationForm(HttpServletResponse response) {
-        /*initControllerResources(response);
+    @Autowired
+    UserService userService;
 
-        User loggedUser = serviceManager.getAuthService().getLoggedUser();
-        if (loggedUser != null) {
-            if (loggedUser.getRoleId().equals(RoleId.Admin)){
-                int minUserId = getMinUserIdFromRequest();
-                List<User> users = ServiceManager.getInstance().getUserService().getSeveralUsers( minUserId, 30);
-                RoleId[] roles = RoleId.values();
-                model.put("roles", roles);
-                model.put("userList", users);
-            } else {
-                return showErrorMessage("Вы не администратор!");
-            }
-        }
+    @Autowired
+    PropertyService propertyService;
 
-        return buildModelAndView("user_roles");*/
-        return null;
+    @Autowired
+    OfferService offerService;
+
+    @GetMapping(value = "/user_roles")
+    @RoleCheck(RoleId.Admin)
+    public String showUserRoles(@RequestParam(value = "from", required = false, defaultValue = "0") Integer minUserId, Model model) {
+        List<User> users = userService.getSeveralUsers(minUserId, 30);
+        RoleId[] roles = RoleId.values();
+        model.addAttribute("roles", roles);
+        model.addAttribute("userList", users);
+
+        return "user/user_roles";
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/user_roles")
-    public ModelAndView changeUserRole(HttpServletResponse response) {
-        /*initControllerResources(response);
-        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
-        ServiceManager serviceManager = ServiceManager.getInstance();
-        HttpServletRequest request = ServiceManager.getInstance().getSharedResources().getRequest();
+    @PostMapping(value = "/user_roles")
+    @RoleCheck(RoleId.Admin)
+    public String changeUserRole(Model model) {
+        RequestValidationChain roleValidationChain = buildRoleValidationChain();
+        if (roleValidationChain.validate(request)) {
+            User user = userService.getUserByLogin((String)roleValidationChain.getValue("user_login"));
+            RoleId oldRole = user.getRoleId();
+            user.setRoleId((RoleId)roleValidationChain.getValue("user_role"));
 
-        User loggedUser = serviceManager.getAuthService().getLoggedUser();
-        if (loggedUser != null) {
-            if (loggedUser.getRoleId().equals(RoleId.Admin)){
-
-                RequestValidationChain roleValidationChain = buildRoleValidationChain();
-                if (roleValidationChain.validate()){
-                    UserService userService = ServiceManager.getInstance().getUserService();
-                    User user = userService.getUserByLogin((String)roleValidationChain.getValue("user_login"));
-                    RoleId oldRole = user.getRoleId();
-                    user.setRoleId((RoleId)roleValidationChain.getValue("user_role"));
-                    if (!user.equals(loggedUser)) {
-                        if (userService.updateUser(user)){
-                            model.put("success", "Роль пользователя "+user.getLogin()+" сменилась с "+oldRole+" на "+user.getRoleId());
-                        } else {
-                            model.put("error", "Произошла ошибка при изменении роли пользователя "+user.getLogin());
-                        }
-                    } else {
-                        model.put("error", "Вы не можете изменить роль самому себе!");
-                    }
-                }
-
-
-                int minUserId = getMinUserIdFromRequest();
-                List<User> users = ServiceManager.getInstance().getUserService().getSeveralUsers( minUserId, 30);
-                RoleId[] roles = RoleId.values();
-                model.put("roles", roles);
-                model.put("userList", users);
-            } else {
-                return showErrorMessage("Вы не администратор!");
-            }
-        }
-
-        return buildModelAndView("user_roles");*/
-
-        return null;
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/user")
-    public ModelAndView showUserProfilePage(HttpServletResponse response) {
-        /*initControllerResources(response);
-
-        Integer userId = getIdFromRequest();
-        if (userId != null) {
-            UserService userService = ServiceManager.getInstance().getUserService();
-            User requestedUser = userService.getUserByID(userId);
-
-            if (requestedUser != null) {
-                User loggedUser = ServiceManager.getInstance().getAuthService().getLoggedUser();
-
-                if (Objects.equals(loggedUser, requestedUser)) {
-                    return redirect("/profile");
+            User loggedUser = authService.getLoggedUser();
+            if (!user.equals(loggedUser)) {
+                if (userService.updateUser(user)) {
+                    model.addAttribute("success", "Роль пользователя " + user.getLogin() + " сменилась с " + oldRole + " на " + user.getRoleId());
                 } else {
-                    ServiceManager serviceManager = ServiceManager.getInstance();
-                    List<Property> userProperties = serviceManager.getPropertyService().getPropertiesOwnedByUser(requestedUser);
-                    List<Offer> userOffers = serviceManager.getOfferService().getUserOffers(requestedUser);
-
-                    Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
-                    model.put("selectedUser", requestedUser);
-                    model.put("userProperties", userProperties);
-                    model.put("userOffers", userOffers);
-
-                    return buildModelAndView("user");
+                    throw new GenericException("Произошла ошибка при изменении роли пользователя " + user.getLogin());
                 }
+            } else {
+                throw new GenericException("Вы не можете изменить роль самому себе!");
             }
         }
 
-        return showBadRequestView("Такого пользователя не существует!");*/
-
-        return null;
+        return redirectToReferer();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/team")
-    public ModelAndView showTeamPage(HttpServletResponse response) {
-        /*initControllerResources(response);
+    @GetMapping(value = "/user")
+    public String showUserProfilePage(@RequestParam("id") int userId, Model model) {
+        User requestedUser = userService.getUserByID(userId);
+        if (requestedUser != null) {
+            User loggedUser = authService.getLoggedUser();
 
-        UserService userService = ServiceManager.getInstance().getUserService();
+            if (Objects.equals(loggedUser, requestedUser)) {
+                return redirect("/profile");
+            } else {
+                List<Property> userProperties = propertyService.getPropertiesOwnedByUser(requestedUser);
+                List<Offer> userOffers = offerService.getUserOffers(requestedUser);
+
+                model.addAttribute("selectedUser", requestedUser);
+                model.addAttribute("userProperties", userProperties);
+                model.addAttribute("userOffers", userOffers);
+
+                return "user/user";
+            }
+        }
+
+        throw new GenericException("Такого пользователя не существует!");
+    }
+
+    @GetMapping(value = "/team")
+    public String showTeamPage(Model model) {
         List<User> adminsList = userService.getUsersByRole(RoleId.Admin);
-        List<User> realtorsList = userService.getUsersByRole(RoleId.Rieltor);
+        List<User> realtorsList = userService.getUsersByRole(RoleId.Realtor);
         List<User> brokersList = userService.getUsersByRole(RoleId.Broker);
 
-        Map<String, Object> model = ServiceManager.getInstance().getSharedResources().getModel();
-        model.put("adminsList", adminsList);
-        model.put("realtorsList", realtorsList);
-        model.put("brokersList", brokersList);
+        model.addAttribute("adminsList", adminsList);
+        model.addAttribute("realtorsList", realtorsList);
+        model.addAttribute("brokersList", brokersList);
 
-        return buildModelAndView("team");*/
-
-        return null;
-    }
-
-    private int getMinUserIdFromRequest(){
-        int userId;
-        try {
-            userId = Integer.valueOf(request.getParameter("from"));
-            if (userId < 0) {
-                userId = 0;
-            }
-        } catch (NullPointerException | NumberFormatException e) {
-            userId = 0;
-        }
-        return userId;
+        return "user/team";
     }
 
     private RequestValidationChain buildRoleValidationChain(){

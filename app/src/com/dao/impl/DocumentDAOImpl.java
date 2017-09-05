@@ -19,6 +19,8 @@ public class DocumentDAOImpl extends BaseDAO implements DocumentDAO {
             }
             catch (HibernateException e){
                 e.printStackTrace();
+            } finally {
+                closeSession();
             }
         }
        return document;
@@ -35,9 +37,10 @@ public class DocumentDAOImpl extends BaseDAO implements DocumentDAO {
             } catch (HibernateException e) {
                 return false;
             } finally {
-                session.close();
+                closeSession();
             }
         }
+
         return true;
     }
 
@@ -52,11 +55,11 @@ public class DocumentDAOImpl extends BaseDAO implements DocumentDAO {
             }
             catch (HibernateException e){
                 return false;
-            }
-            finally {
-                session.close();
+            } finally {
+                closeSession();
             }
         }
+
         return true;
     }
 
@@ -72,9 +75,10 @@ public class DocumentDAOImpl extends BaseDAO implements DocumentDAO {
                 System.out.println(e.getMessage());
                 return false;
             } finally {
-                session.close();
+                closeSession();
             }
         }
+
         return true;
     }
 

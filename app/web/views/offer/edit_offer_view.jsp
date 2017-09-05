@@ -57,6 +57,7 @@
                     <div class="error-field">${errors['cost']}</div>
                 </c:if>
                 <div style="text-align: center; margin-top: 10px;">
+                    <input type="hidden" name="id" value="${offer.id}" />
                     <input type="submit" value="Изменить" class="buttonSimple" />
                 </div>
             </form>

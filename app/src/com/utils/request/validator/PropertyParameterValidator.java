@@ -9,17 +9,16 @@ import javax.servlet.http.HttpServletRequest;
 
 public class PropertyParameterValidator implements RequestParameterValidator<Property>, RequestValueContainer<Property> {
 
-    @Autowired
-    PropertyService propertyService;
-
     private String paramName;
     private Property value;
     protected String errorMessage;
     private boolean isNullAllowed;
+    PropertyService propertyService;
 
-    public PropertyParameterValidator(String paramName, boolean isNullAllowed) {
+    public PropertyParameterValidator(PropertyService propertyService, String paramName, boolean isNullAllowed) {
         this.paramName = paramName;
         this.isNullAllowed = isNullAllowed;
+        this.propertyService = propertyService;
     }
 
     @Override

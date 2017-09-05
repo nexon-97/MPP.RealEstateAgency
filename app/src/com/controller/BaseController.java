@@ -2,7 +2,6 @@ package com.controller;
 
 import com.exception.*;
 import com.services.AuthService;
-import com.utils.request.ParseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
@@ -13,8 +12,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.view.JstlView;
-
 import javax.servlet.http.HttpServletRequest;
 
 @Controller

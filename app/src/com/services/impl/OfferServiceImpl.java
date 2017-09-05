@@ -52,10 +52,10 @@ public class OfferServiceImpl extends BaseService implements OfferService {
             if (Objects.equals(loggedUser, offer.getProperty().getOwner())) {
                 return offerDAO.add(offer);
             } else {
-                setErrorInfo(HttpServletResponse.SC_FORBIDDEN, SystemMessages.UserIsNotOfferOwnerMessage);
+                setErrorInfo(SystemMessages.UserIsNotOfferOwnerMessage);
             }
         } else {
-            setErrorInfo(HttpServletResponse.SC_BAD_REQUEST, SystemMessages.UnacceptableOfferParams);
+            setErrorInfo(SystemMessages.UnacceptableOfferParams);
         }
 
         return false;

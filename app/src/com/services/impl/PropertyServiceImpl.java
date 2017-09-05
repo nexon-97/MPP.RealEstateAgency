@@ -34,7 +34,6 @@ public class PropertyServiceImpl extends BaseService implements PropertyService 
     @Override
     public boolean addProperty(RequestValidationChain requestValidationChain) {
         Property property = new Property();
-        boolean isCorrectFields = true;
 
         property.setType((PropertyType)requestValidationChain.getValue("type"));
         property.setCity((String)requestValidationChain.getValue("city"));

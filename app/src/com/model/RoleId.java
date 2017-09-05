@@ -4,5 +4,6 @@ public enum RoleId {
     Admin,
     User,
     Broker,
-    Rieltor,
+    Realtor,
+    Guest,
 }

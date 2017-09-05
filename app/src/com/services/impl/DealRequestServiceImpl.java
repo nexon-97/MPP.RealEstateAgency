@@ -1,7 +1,6 @@
 package com.services.impl;
 
 import com.dao.DealRequestDAO;
-import com.dao.impl.DealRequestDAOImpl;
 import com.model.Deal;
 import com.model.DealRequest;
 import com.model.User;
@@ -15,17 +14,18 @@ import java.util.List;
 
 public class DealRequestServiceImpl extends AbstractCrudService<DealRequest> implements DealRequestService {
 
-    @Autowired
-    DealRequestDAO dealRequestDAO;
+    private DealRequestDAO dealRequestDAO;
 
     @Autowired
-    DealService dealService;
+    private DealService dealService;
 
     @Autowired
-    AuthService authService;
+    private AuthService authService;
 
-    public DealRequestServiceImpl() {
-        super(DealRequest.class);
+    @Autowired
+    public DealRequestServiceImpl(DealRequestDAO dealRequestDAO) {
+        super(dealRequestDAO);
+        this.dealRequestDAO = dealRequestDAO;
     }
 
     @Override

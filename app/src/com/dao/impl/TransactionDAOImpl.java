@@ -41,7 +41,7 @@ public class TransactionDAOImpl extends BaseDAO implements TransactionDAO {
         } catch (HibernateException e) {
             e.printStackTrace();
         } finally {
-            session.close();
+            closeSession();
         }
 
         return transactions;
@@ -63,7 +63,7 @@ public class TransactionDAOImpl extends BaseDAO implements TransactionDAO {
         } catch (HibernateException e) {
             e.printStackTrace();
         } finally {
-            session.close();
+            closeSession();
         }
 
         return transactions;
@@ -81,7 +81,7 @@ public class TransactionDAOImpl extends BaseDAO implements TransactionDAO {
                 e.printStackTrace();
                 return false;
             } finally {
-                session.close();
+                closeSession();
             }
         }
         return true;
@@ -100,7 +100,7 @@ public class TransactionDAOImpl extends BaseDAO implements TransactionDAO {
             if (session.getTransaction() != null) session.getTransaction().rollback();
             e.printStackTrace();
         } finally {
-            session.close();
+            closeSession();
         }
 
         return transactions;

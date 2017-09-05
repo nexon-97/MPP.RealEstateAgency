@@ -64,7 +64,7 @@ public class SecurityAnnotationsHandler {
         Method method = signature.getMethod();
         RoleId role = method.getAnnotation(RoleCheck.class).value();
 
-        if (authService.isUserLoggedIn() && authService.getLoggedUser().getRoleId() == role) {
+        if ((authService.isUserLoggedIn() && authService.getLoggedUser().getRoleId() == role) || (!authService.isUserLoggedIn() && role == RoleId.Guest)) {
             try {
                 return (String) joinPoint.proceed();
             } catch (Throwable ex) {

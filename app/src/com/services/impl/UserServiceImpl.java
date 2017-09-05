@@ -1,15 +1,12 @@
 package com.services.impl;
 
 import com.dao.UserDAO;
-import com.dao.impl.UserDAOImpl;
 import com.model.RoleId;
 import com.model.User;
 import com.services.PermissionService;
 import com.services.UserService;
 import com.services.shared.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public class UserServiceImpl extends BaseService implements UserService {
@@ -26,7 +23,7 @@ public class UserServiceImpl extends BaseService implements UserService {
             return userDAO.update(user);
         }
 
-        setErrorInfo(HttpServletResponse.SC_FORBIDDEN, "У вас нет прав для изменения информации в профиле!");
+        setErrorInfo("У вас нет прав для изменения информации в профиле!");
         return false;
     }
 

@@ -5,7 +5,8 @@ import com.model.RoleId;
 public enum AccessLevel {
     Any(0),
     Authorized(1),
-    Admin(2);
+    Management(1),
+    Admin(3);
 
     private int value;
 
@@ -20,11 +21,12 @@ public enum AccessLevel {
     public static int getValueForRole(RoleId roleId) {
         switch (roleId) {
             case User:
-            case Broker:
-            case Rieltor:
                 return 1;
-            case Admin:
+            case Broker:
+            case Realtor:
                 return 2;
+            case Admin:
+                return 3;
             default:
                 return 0;
         }

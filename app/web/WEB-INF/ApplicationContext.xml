@@ -39,6 +39,23 @@
         <property name="password" value="somestrongpassword" />
     </bean>
 
+    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <bean class="com.converter.PropertyTypeConverter"/>
+            </set>
+        </property>
+    </bean>
+
+    <bean id="PropertyValidator" class="com.validators.PropertyValidator"/>
+
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basename" value="/messages/messages" />
+        <property name="useCodeAsDefaultMessage" value="true" />
+        <property name="fileEncodings" value="UTF-8" />
+        <property name="defaultEncoding" value="UTF-8" />
+    </bean>
+
     <!-- Hibernate 4 SessionFactory Bean definition -->
     <bean id="hibernate4SessionFactory"
           class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">

@@ -34,7 +34,7 @@ public class AdministrativeController extends BaseController {
     @RoleCheck(RoleId.Admin)
     public String visitAdminData(Model model) {
         List<User> users = userService.getList();
-        List<Property> properties = propertyService.getList();
+        List<Property> properties = propertyService.list();
         List<Offer> offers = offerService.listAllOffers();
         List<Deal> deals = dealService.list();
         Map<Property, Boolean> hasOfferMap = getHasOfferMap(properties);

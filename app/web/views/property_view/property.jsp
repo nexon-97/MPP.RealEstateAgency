@@ -14,7 +14,12 @@
                 <table style="width: 100%">
                     <tr>
                         <td colspan="2" class="propertyDescriptionTableHeaderCell">
-                            <div class="propertyDescriptionTableHeader">Собственность [${property.id}]</div>
+                            <div class="propertyDescriptionTableHeader">
+                                <h3>Собственность [${property.id}]</h3>
+                                <c:if test="${property.owner.id == user.id}">
+                                    <a href="/deleteProperty?id=${property.id}"><div class="delete-button-full"><img src="/img/cross.png" /></div></a>
+                                </c:if>
+                            </div>
                         </td>
                     </tr>
                     <tr>

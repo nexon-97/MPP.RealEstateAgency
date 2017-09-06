@@ -21,6 +21,7 @@ public class Property extends Entity {
     private boolean hasStove;
     private String description;
 
+
     public void setType(PropertyType type) {
         this.type = type;
     }

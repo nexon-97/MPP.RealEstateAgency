@@ -8,6 +8,7 @@ import com.model.PropertyType;
 import com.services.AuthService;
 import com.services.PermissionService;
 import com.services.PropertyService;
+import com.services.shared.AbstractCrudService;
 import com.services.shared.BaseService;
 import com.utils.request.validator.RequestValidationChain;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,23 +16,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import java.util.Map;
 
-public class PropertyServiceImpl extends BaseService implements PropertyService {
+public class PropertyServiceImpl extends AbstractCrudService<Property> implements PropertyService {
 
     @Autowired
-    AuthService authService;
+    private AuthService authService;
 
     @Autowired
-    PermissionService permissionService;
+    private PermissionService permissionService;
+
+    private PropertyDAO propertyDAO;
+
 
     @Autowired
-    PropertyDAO propertyDAO;
-
-    @Override
-    public Property getPropertyById(int id) {
-        return propertyDAO.getPropertyById(id);
+    public PropertyServiceImpl(PropertyDAO propertyDAO) {
+        super(propertyDAO);
+        this.propertyDAO = propertyDAO;
     }
 
-    @Override
+    /*@Override
     public boolean addProperty(RequestValidationChain requestValidationChain) {
         Property property = new Property();
 
@@ -57,20 +59,13 @@ public class PropertyServiceImpl extends BaseService implements PropertyService 
         property.setOwner(loggedUser);
 
         return propertyDAO.addProperty(property);
-    }
+    }*/
 
     @Override
-    public boolean updateProperty(Map<String, String[]> params) {
-        return false;
-    }
-
-    @Override
-    public boolean deleteProperty(Property property) {
+    public boolean delete(Property property) {
         User loggedUser = authService.getLoggedUser();
-        boolean hasPermission = permissionService.canDeleteProperty(loggedUser, property);
-
-        if (hasPermission) {
-            return propertyDAO.deleteProperty(property);
+        if (permissionService.canDeleteProperty(loggedUser, property)) {
+            return super.delete(property);
         }
 
         return false;
@@ -79,10 +74,5 @@ public class PropertyServiceImpl extends BaseService implements PropertyService 
     @Override
     public List<Property> getPropertiesOwnedByUser(User user) {
         return propertyDAO.getPropertiesOwnedByUser(user);
-    }
-
-    @Override
-    public List<Property> getList() {
-        return propertyDAO.list();
     }
 }

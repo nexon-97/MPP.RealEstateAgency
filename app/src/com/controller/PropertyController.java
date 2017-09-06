@@ -8,22 +8,29 @@ import com.model.PropertyType;
 import com.model.RoleId;
 import com.security.annotations.RoleCheck;
 import com.services.PropertyService;
-import com.utils.request.validator.*;
+import com.validators.PropertyValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 
 @Controller
 public class PropertyController extends BaseController  {
 
     @Autowired
-    PropertyService propertyService;
+    private PropertyService propertyService;
+
+    @Autowired
+    private PropertyValidator propertyValidator;
 
     @GetMapping(value = "/property")
     public String showPropertyInfo(@RequestParam("id") int propertyId, Model model) {
-        Property property = propertyService.getPropertyById(propertyId);
+        Property property = propertyService.get(propertyId);
         if (property == null) {
             throw new EntityNotFoundException("Такой собственности не существует!");
         }
@@ -35,71 +42,46 @@ public class PropertyController extends BaseController  {
     @GetMapping(value = "/addProperty")
     @RoleCheck(RoleId.User)
     public String visitAddPropertyForm(Model model) {
-        PropertyType[] types = PropertyType.values();
-        model.addAttribute("types", types);
+        Property defaultProperty = new Property();
+        defaultProperty.setType(PropertyType.Flat);
+
+        model.addAttribute("property", defaultProperty);
+        model.addAttribute("propertyTypes", PropertyType.values());
 
         return "property_view/addProperty";
     }
 
     @PostMapping(value = "/addProperty")
     @RoleCheck(RoleId.User)
-    public String doAddProperty(Model model) {
-        RequestValidationChain requestValidator = buildPropertyValidationChain();
-        if (requestValidator.validate(request)) {
-            boolean isAdded = propertyService.addProperty(requestValidator);
-            if (isAdded) {
-                return redirect("/profile");
-            } else {
-                return getViewWithErrors(model, "addError", "Ошибка при добавлении собственности", requestValidator.getValidatedValues());
-            }
+    public String doAddProperty(@Valid @ModelAttribute("property") Property property, BindingResult result, Model model, HttpServletResponse response) {
+        propertyValidator.validate(property, result);
+
+        if (result.hasErrors()) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         } else {
-            return getViewWithErrors(model, "errors", requestValidator.getErrorMessageMap(), requestValidator.getValidatedValues());
+            property.setOwner(authService.getLoggedUser());
+            propertyService.add(property);
+
+            return redirect("/profile");
         }
+
+        model.addAttribute("propertyTypes", PropertyType.values());
+        return "property_view/addProperty";
     }
 
     @GetMapping(value = "/deleteProperty")
     @RoleCheck(RoleId.User)
     public String deleteOfferAction(@RequestParam("id") int propertyId) {
-        Property property = propertyService.getPropertyById(propertyId);
+        Property property = propertyService.get(propertyId);
         if (property != null) {
-            boolean deletionSuccess = propertyService.deleteProperty(property);
+            boolean deletionSuccess = propertyService.delete(property);
             if (deletionSuccess) {
-                return redirectToReferer();
+                return redirect("/profile");
             } else {
                 throw new GenericException(SystemMessages.FailedToDeletePropertyMessage);
             }
         }
 
         throw new EntityNotFoundException(SystemMessages.NoSuchProperyMessage);
-    }
-
-    private RequestValidationChain buildPropertyValidationChain() {
-        return new RequestValidationChain()
-                .addValidator(new EnumParameterValidator<>(PropertyType.class, "type", false))
-                .addValidator(new PropertyStringParameterValidator("city",  false))
-                .addValidator(new PropertyStringParameterValidator("street", false))
-                .addValidator(new IntegerParameterValidator("houseNumber", false))
-                .addValidator(new IntegerParameterValidator("blockNumber", true))
-                .addValidator(new IntegerParameterValidator("flatNumber", true))
-                .addValidator(new IntegerParameterValidator("roomsCount", true))
-                .addValidator(new IntegerParameterValidator("area", false))
-                .addValidator(new IntegerParameterValidator("subway", true))
-                .addValidator(new IntegerParameterValidator("bus",true))
-                .addValidator(new BooleanParameterValidator("furniture"))
-                .addValidator(new BooleanParameterValidator("internet"))
-                .addValidator(new BooleanParameterValidator("tv"))
-                .addValidator(new BooleanParameterValidator("phone"))
-                .addValidator(new BooleanParameterValidator("fridge"))
-                .addValidator(new BooleanParameterValidator("stove"))
-                .addValidator(new StringParameterValidator("description", false));
-    }
-
-    private String getViewWithErrors(Model model, String key, Object error, Object values) {
-        PropertyType[] types = PropertyType.values();
-        model.addAttribute(key, error);
-        model.addAttribute("values", values);
-        model.addAttribute("types", types);
-
-        return "addProperty";
     }
 }

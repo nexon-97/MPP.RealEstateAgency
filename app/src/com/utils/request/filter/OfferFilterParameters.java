@@ -31,13 +31,7 @@ public class OfferFilterParameters {
                 .addValidator(new IntegerParameterValidator("distanceToSubwayMin", true))
                 .addValidator(new IntegerParameterValidator("distanceToSubwayMax", true))
                 .addValidator(new IntegerParameterValidator("distanceToTransportStopMin", true))
-                .addValidator(new IntegerParameterValidator("distanceToTransportStopMax", true))
-                .addValidator(new ScopedBooleanParameterValidator("comforts", "furniture"))
-                .addValidator(new ScopedBooleanParameterValidator("comforts", "tv"))
-                .addValidator(new ScopedBooleanParameterValidator("comforts", "internet"))
-                .addValidator(new ScopedBooleanParameterValidator("comforts", "phone"))
-                .addValidator(new ScopedBooleanParameterValidator("comforts", "stove"))
-                .addValidator(new ScopedBooleanParameterValidator("comforts", "fridge"));
+                .addValidator(new IntegerParameterValidator("distanceToTransportStopMax", true));
     }
 
     public boolean validate(HttpServletRequest request) {

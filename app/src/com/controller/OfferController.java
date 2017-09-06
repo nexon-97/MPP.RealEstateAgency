@@ -179,7 +179,6 @@ public class OfferController extends BaseController {
     private RequestValidationChain buildOfferValidationChain() {
         return new RequestValidationChain()
             .addValidator(new CostParameterValidator("cost", false))
-            .addValidator(new PropertyParameterValidator(propertyService, "property", false))
             .addValidator(new EnumParameterValidator<>(OfferType.class, "offerType", false));
     }
 

@@ -2,7 +2,6 @@ package com.dao;
 
 import com.model.DealRequest;
 import com.model.User;
-
 import java.util.List;
 
 public interface DealRequestDAO extends CrudDAO<DealRequest> {

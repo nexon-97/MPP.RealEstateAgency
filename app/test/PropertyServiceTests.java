@@ -19,7 +19,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class PropertyServiceTests {
+public class PropertyServiceTests extends TestBase {
 
     @Mock
     private PropertyDAO propertyDAO;
@@ -36,24 +36,9 @@ public class PropertyServiceTests {
     @Mock
     private List<Property> propertiesList;
 
-    private Property property;
-
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
-
-    private User constructUser(int id, RoleId roleId) {
-        User user = new User();
-        user.setId(id);
-        user.setRoleId(roleId);
-
-        return user;
-    }
-
-    @BeforeMethod
-    public void initMocks(){
-        MockitoAnnotations.initMocks(this);
-    }
 
     @Test
     public void testGetProperty()  {

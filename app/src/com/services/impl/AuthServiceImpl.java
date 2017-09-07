@@ -131,7 +131,7 @@ public class AuthServiceImpl extends BaseService implements AuthService {
         return cookie;
     }
 
-    private static String getPasswordHash(String password){
+    private static String getPasswordHash(String password) {
         String passwordHash = "";
 
         try {

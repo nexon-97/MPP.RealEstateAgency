@@ -39,14 +39,6 @@
         <property name="password" value="somestrongpassword" />
     </bean>
 
-    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
-        <property name="converters">
-            <set>
-                <bean class="com.converter.PropertyTypeConverter"/>
-            </set>
-        </property>
-    </bean>
-
     <bean id="PropertyValidator" class="com.validators.PropertyValidator"/>
 
     <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">

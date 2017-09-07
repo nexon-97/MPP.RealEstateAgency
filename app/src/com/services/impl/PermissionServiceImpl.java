@@ -13,9 +13,6 @@ import java.util.Set;
 
 public class PermissionServiceImpl extends BaseService implements PermissionService {
 
-    @Autowired
-    AuthService authService;
-
     @Override
     public boolean canEditOffer(User user, Offer offer) {
         if (offer != null && user != null) {
@@ -30,7 +27,7 @@ public class PermissionServiceImpl extends BaseService implements PermissionServ
     public boolean canDeleteOffer(User user, Offer offer) {
         if (offer != null && user != null) {
             boolean isOwner = (user.getId() == offer.getProperty().getOwner().getId());
-            return isOwner || isLoggedUserAdmin();
+            return isOwner || user.getRoleId().equals(RoleId.Admin);
         }
 
         return false;
@@ -39,20 +36,14 @@ public class PermissionServiceImpl extends BaseService implements PermissionServ
     public boolean canDeleteProperty(User user, Property property) {
         if (property != null && user != null) {
             boolean isOwner = (user.getId() == property.getOwner().getId());
-            return isOwner || isLoggedUserAdmin();
+            return isOwner || user.getRoleId().equals(RoleId.Admin);
         }
 
         return false;
     }
 
     @Override
-    public boolean canEditUserInfo(User user) {
-        User loggedUser = authService.getLoggedUser();
-        return (loggedUser != null && user != null && (loggedUser.equals(user) || loggedUser.getRoleId() == RoleId.Admin));
-    }
-
-    private boolean isLoggedUserAdmin() {
-        User loggedUser = authService.getLoggedUser();
-        return (loggedUser != null && loggedUser.getRoleId().equals(RoleId.Admin));
+    public boolean canEditUserInfo(User editorUser, User user) {
+        return (editorUser != null && user != null && (editorUser.equals(user) || editorUser.getRoleId() == RoleId.Admin));
     }
 }

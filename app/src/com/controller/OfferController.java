@@ -37,12 +37,12 @@ public class OfferController extends BaseController {
     @GetMapping(value = "/offer")
     public String showOffer(@RequestParam("id") int offerId, Model model) {
         Offer offer = offerService.getOfferById(offerId);
-        if (offer != null) {
-            model.addAttribute("offer", offer);
-            return "offer/offer_view";
+        if (offer == null) {
+            throw new EntityNotFoundException(SystemMessages.NoSuchOfferMessage);
         }
 
-        throw new EntityNotFoundException(SystemMessages.NoSuchOfferMessage);
+        model.addAttribute("offer", offer);
+        return "offer/offer_view";
     }
 
     @GetMapping(value = "/addOffer")

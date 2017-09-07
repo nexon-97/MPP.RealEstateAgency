@@ -1,6 +1,5 @@
 import com.model.User;
 import com.services.UserService;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.Rule;
@@ -11,17 +10,12 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.springframework.context.ApplicationContext;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import static org.junit.Assert.*;
-
 import static org.mockito.Mockito.*;
 
 public class UserServiceTests {
+
     @Mock private ApplicationContext context;
-    @Mock private HttpServletRequest request;
-    @Mock private HttpServletResponse response;
     @Mock private SessionFactory sessionFactory;
     @Mock private Session session;
     @Mock private UserService service;

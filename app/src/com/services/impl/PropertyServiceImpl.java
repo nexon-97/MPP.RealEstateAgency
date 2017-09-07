@@ -33,34 +33,6 @@ public class PropertyServiceImpl extends AbstractCrudService<Property> implement
         this.propertyDAO = propertyDAO;
     }
 
-    /*@Override
-    public boolean addProperty(RequestValidationChain requestValidationChain) {
-        Property property = new Property();
-
-        property.setType((PropertyType)requestValidationChain.getValue("type"));
-        property.setCity((String)requestValidationChain.getValue("city"));
-        property.setStreet((String)requestValidationChain.getValue("street"));
-        property.setHouseNumber((Integer) requestValidationChain.getValue("houseNumber"));
-        property.setBlockNumber((Integer) requestValidationChain.getValue("blockNumber"));
-        property.setFlatNumber((Integer) requestValidationChain.getValue("flatNumber"));
-        property.setRoomsCount((Integer) requestValidationChain.getValue("roomsCount"));
-        property.setArea((Integer) requestValidationChain.getValue("area"));
-        property.setDistanceToSubway((Integer) requestValidationChain.getValue("subway"));
-        property.setDistanceToTransportStop((Integer) requestValidationChain.getValue("bus"));
-        property.setHasFurniture((Boolean) requestValidationChain.getValue("furniture"));
-        property.setHasInternet((Boolean) requestValidationChain.getValue("internet"));
-        property.setHasTv((Boolean) requestValidationChain.getValue("tv"));
-        property.setHasPhone((Boolean) requestValidationChain.getValue("phone"));
-        property.setHasFridge((Boolean) requestValidationChain.getValue("fridge"));
-        property.setHasStove((Boolean) requestValidationChain.getValue("stove"));
-        property.setDescription((String)requestValidationChain.getValue("description"));
-
-        User loggedUser = authService.getLoggedUser();
-        property.setOwner(loggedUser);
-
-        return propertyDAO.addProperty(property);
-    }*/
-
     @Override
     public boolean delete(Property property) {
         User loggedUser = authService.getLoggedUser();

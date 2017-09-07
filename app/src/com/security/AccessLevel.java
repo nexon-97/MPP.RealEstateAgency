@@ -5,7 +5,7 @@ import com.model.RoleId;
 public enum AccessLevel {
     Any(0),
     Authorized(1),
-    Management(1),
+    Management(2),
     Admin(3);
 
     private int value;

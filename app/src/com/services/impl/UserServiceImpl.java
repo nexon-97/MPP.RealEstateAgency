@@ -3,6 +3,7 @@ package com.services.impl;
 import com.dao.UserDAO;
 import com.model.RoleId;
 import com.model.User;
+import com.services.AuthService;
 import com.services.PermissionService;
 import com.services.UserService;
 import com.services.shared.BaseService;
@@ -17,9 +18,12 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Autowired
     UserDAO userDAO;
 
+    @Autowired
+    AuthService authService;
+
     @Override
     public boolean updateUser(User user) {
-        if (permissionService.canEditUserInfo(user)) {
+        if (permissionService.canEditUserInfo(authService.getLoggedUser(), user)) {
             return userDAO.update(user);
         }
 

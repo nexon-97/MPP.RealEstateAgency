@@ -12,7 +12,6 @@ import org.junit.Test;
 import org.mockito.*;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import org.testng.annotations.BeforeMethod;
 
 import java.util.List;
 
